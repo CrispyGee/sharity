@@ -59,4 +59,12 @@ public class Angebot implements Serializable {
     this.id = id;
   }
 
+  @Override
+  public String toString() {
+    return "Angebot [id=" + id + ", titel=" + titel + ", beschreibung=" + beschreibung + ", gueltigAb=" + gueltigAb
+        + ", gueltigBis=" + gueltigBis + "]";
+  }
+  
+  
+
 }

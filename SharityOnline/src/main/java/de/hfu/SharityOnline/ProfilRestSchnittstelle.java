@@ -14,9 +14,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-@Path("/profile")
+@Path("/profil")
 @Produces(MediaType.APPLICATION_JSON)
-public class RestSchnittstelle extends Application {
+public class ProfilRestSchnittstelle extends Application {
 
 //  private final String jsonErrorMsg = "{Error: \"x\"";
 //  private final String jsonSuccessMsg = "{Success: \"x\"";

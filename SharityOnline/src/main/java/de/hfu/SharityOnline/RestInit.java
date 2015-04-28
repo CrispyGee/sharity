@@ -12,7 +12,8 @@ public class RestInit extends Application {
 
   public RestInit() {
     // ADD YOUR RESTFUL RESOURCES HERE
-    this.singletons.add(new RestSchnittstelle());
+    this.singletons.add(new ProfilRestSchnittstelle());
+    this.singletons.add(new AngebotRestSchnittstelle());
   }
 
   public Set<Class<?>> getClasses() {
