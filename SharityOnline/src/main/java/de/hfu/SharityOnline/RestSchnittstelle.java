@@ -1,8 +1,8 @@
 package de.hfu.SharityOnline;
 
 import java.util.List;
+import java.util.UUID;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -16,7 +16,6 @@ import javax.ws.rs.core.Response.Status;
 
 @Path("/profile")
 @Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
 public class RestSchnittstelle extends Application {
 
 //  private final String jsonErrorMsg = "{Error: \"x\"";
@@ -41,7 +40,7 @@ public class RestSchnittstelle extends Application {
   @Path("/create")
   public Response createEntity(Profil profil) {
     if (profil != null) {
-      profil.setId("abc");
+      profil.setId(UUID.randomUUID().toString());
       repository.save(profil);
       return Response.status(200).entity(profil.getId()).type(MediaType.APPLICATION_JSON).build();
     }
