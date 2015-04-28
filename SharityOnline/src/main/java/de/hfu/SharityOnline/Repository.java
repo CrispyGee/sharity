@@ -20,6 +20,11 @@ public class Repository<T> {
     }
   }
   
+  @SuppressWarnings("unchecked")
+  public T loadById(Class<?> T, String id){
+    return (T) ds.find(T).field("_id").equal(id).get();
+  }
+  
   public void save(Object entity){
     ds.save(entity);
   }
