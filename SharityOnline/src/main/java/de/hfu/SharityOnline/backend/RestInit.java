@@ -1,4 +1,4 @@
-package de.hfu.SharityOnline;
+package de.hfu.SharityOnline.backend;
 
 import java.util.HashSet;
 import java.util.Set;

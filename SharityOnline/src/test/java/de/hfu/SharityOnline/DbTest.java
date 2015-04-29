@@ -4,6 +4,10 @@ import java.util.UUID;
 
 import org.junit.Test;
 
+import de.hfu.SharityOnline.backend.Angebot;
+import de.hfu.SharityOnline.backend.Profil;
+import de.hfu.SharityOnline.backend.Repository;
+
 public class DbTest {
   
   @Test
@@ -27,7 +31,5 @@ public class DbTest {
     rep.save(angebot);
     System.out.println(rep.loadAll(Angebot.class));
   }
-  
-  
 
 }

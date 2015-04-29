@@ -1,4 +1,4 @@
-package de.hfu.SharityOnline;
+package de.hfu.SharityOnline.backend;
 
 import java.net.UnknownHostException;
 import java.util.List;
@@ -23,6 +23,11 @@ public class Repository<T> {
   @SuppressWarnings("unchecked")
   public T loadById(Class<?> T, String id){
     return (T) ds.find(T).field("_id").equal(id).get();
+  }
+  
+  @SuppressWarnings("unchecked")
+  public T loadByKey(Class<?> T, String key, String value){
+    return (T) ds.find(T).field(key).equal(value).get();
   }
   
   public void save(Object entity){

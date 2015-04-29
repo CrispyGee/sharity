@@ -1,5 +1,6 @@
-package de.hfu.SharityOnline;
+package de.hfu.SharityOnline.backend;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,26 +15,51 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.modelmapper.ModelMapper;
+
+import de.hfu.SharityOnline.frontend.ProfilFrontend;
+
 @Path("/profil")
 @Produces(MediaType.APPLICATION_JSON)
 public class ProfilRestSchnittstelle extends Application {
 
 //  private final String jsonErrorMsg = "{Error: \"x\"";
 //  private final String jsonSuccessMsg = "{Success: \"x\"";
-  private static final Repository<Profil> repository = new Repository<Profil>();
+  private static final Repository<Profil> REPO = new Repository<Profil>();
+  private static final ModelMapper MAPPER = new ModelMapper();
 
   @GET
   @Path("")
   public Response loadEntity() {
-    List<Profil> allProfiles = repository.loadAll(Profil.class);
-    return Response.status(200).entity(allProfiles).type(MediaType.APPLICATION_JSON).build();
+    List<Profil> allProfiles = REPO.loadAll(Profil.class);
+    List<ProfilFrontend> allProfilesForFrontend = new ArrayList<ProfilFrontend>();
+    for (Profil profil : allProfiles) {
+     allProfilesForFrontend.add(MAPPER.map(profil, ProfilFrontend.class)); 
+    }
+    return Response.status(200).entity(allProfilesForFrontend).type(MediaType.APPLICATION_JSON).build();
   }
   
   @GET
   @Path("/{id}")
   public Response loadEntityById(@PathParam("id") String id) {
-    Profil profil = repository.loadById(Profil.class, id);
+    Profil profil = REPO.loadById(Profil.class, id);
     return Response.status(200).entity(profil).type(MediaType.APPLICATION_JSON).build();
+  }
+  
+  @GET
+  @Path("/{username}/{pwhash}")
+  public Response login(@PathParam("username") String username, @PathParam("pwhash") String pwhash) {
+   
+    
+    return Response.status(200).entity(null).type(MediaType.APPLICATION_JSON).build();
+  }
+  
+  @GET
+  @Path("/{id}")
+  public Response logout() {
+
+    
+    return Response.status(200).entity(null).type(MediaType.APPLICATION_JSON).build();
   }
 
   @POST
@@ -41,7 +67,7 @@ public class ProfilRestSchnittstelle extends Application {
   public Response createEntity(Profil profil) {
     if (profil != null) {
       profil.setId(UUID.randomUUID().toString());
-      repository.save(profil);
+      REPO.save(profil);
       return Response.status(200).entity(profil.getId()).type(MediaType.APPLICATION_JSON).build();
     }
     return Response.status(Status.BAD_REQUEST).build();
@@ -51,7 +77,7 @@ public class ProfilRestSchnittstelle extends Application {
   @Path("/update")
   public Response updateEntity(Profil profil) {
     if (profil.getId() != null) {
-      repository.save(profil);
+      REPO.save(profil);
       return Response.status(200).entity(profil.getId()).type(MediaType.APPLICATION_JSON).build();
     }
     return Response.status(Status.BAD_REQUEST).build();

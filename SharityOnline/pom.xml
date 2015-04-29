@@ -9,7 +9,7 @@
 
 	<name>SharityOnline</name>
 	<url>http://maven.apache.org</url>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -55,6 +55,11 @@
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jackson-provider</artifactId>
 			<version>3.0.11.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>0.7.4</version>
 		</dependency>
 	</dependencies>
 </project>

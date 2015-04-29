@@ -1,10 +1,11 @@
-package de.hfu.SharityOnline;
+package de.hfu.SharityOnline.backend;
 
 import java.io.Serializable;
 import java.util.Calendar;
 
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Indexed;
 
 @Entity("Profile")
 public class Profil implements Serializable {
@@ -17,6 +18,10 @@ public class Profil implements Serializable {
   private String vorname;
   private String nachname;
   private Calendar geburtstag;
+  private String password;
+  
+  @Indexed(unique = true)
+  private String username;
 
   public String getVorname() {
     return vorname;
@@ -52,7 +57,23 @@ public class Profil implements Serializable {
 
   @Override
   public String toString() {
-    return "Profil [id=" + id + ", vorname=" + vorname + ", nachname=" + nachname + ", geburtstag=" + geburtstag + "]";
+    return "ProfilFrontend [id=" + id + ", vorname=" + vorname + ", nachname=" + nachname + ", geburtstag=" + geburtstag + "]";
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String loginName) {
+    this.username = loginName;
   }
   
 }
