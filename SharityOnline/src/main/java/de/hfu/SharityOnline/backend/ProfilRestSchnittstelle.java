@@ -49,9 +49,12 @@ public class ProfilRestSchnittstelle extends Application {
   @GET
   @Path("/{username}/{pwhash}")
   public Response login(@PathParam("username") String username, @PathParam("pwhash") String pwhash) {
-   
-    
-    return Response.status(200).entity(null).type(MediaType.APPLICATION_JSON).build();
+    Profil profil = REPO.loadByKey(Profil.class, "username", username);
+    if(profil.getPassword() == pwhash) {
+      return Response.status(200).entity(null).type(MediaType.APPLICATION_JSON).build();
+    } else {
+      return Response.serverError().entity("Wrong Username or password").build();
+    }
   }
   
   @GET

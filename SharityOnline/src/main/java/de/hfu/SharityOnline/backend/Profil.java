@@ -19,10 +19,19 @@ public class Profil implements Serializable {
   private String nachname;
   private Calendar geburtstag;
   private String password;
-  
-  @Indexed(unique = true)
+  private boolean loggedIn;
+
+@Indexed(unique = true)
   private String username;
 
+  public boolean isLoggedIn() {
+    return loggedIn;
+  }
+
+  public void setLoggedIn(boolean loggedIn) {
+    this.loggedIn = loggedIn;
+  }
+  
   public String getVorname() {
     return vorname;
   }
@@ -55,11 +64,6 @@ public class Profil implements Serializable {
     this.id = id;
   }
 
-  @Override
-  public String toString() {
-    return "ProfilFrontend [id=" + id + ", vorname=" + vorname + ", nachname=" + nachname + ", geburtstag=" + geburtstag + "]";
-  }
-
   public String getPassword() {
     return password;
   }
@@ -76,4 +80,8 @@ public class Profil implements Serializable {
     this.username = loginName;
   }
   
+  @Override
+  public String toString() {
+    return "ProfilFrontend [id=" + id + ", vorname=" + vorname + ", nachname=" + nachname + ", geburtstag=" + geburtstag + "]";
+  }
 }
