@@ -34,6 +34,13 @@ public class AngebotRestSchnittstelle {
     Angebot angebot = repository.loadById(Angebot.class, id);
     return Response.status(200).entity(angebot).type(MediaType.APPLICATION_JSON).build();
   }
+  
+  @GET
+  @Path("/{detail}")
+  public Response loadEntityDetail() {
+    List<Angebot> alleAngebote = repository.loadWithLimit(30, Angebot.class);
+    return Response.status(200).entity(alleAngebote).type(MediaType.APPLICATION_JSON).build();
+  }
 
   @POST
   @Path("/create")

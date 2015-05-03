@@ -18,6 +18,44 @@ public class Angebot implements Serializable {
   private String beschreibung;
   private Calendar gueltigAb;
   private Calendar gueltigBis;
+  private int preis;
+  private int verfügbarkeit;
+  private String kategorie;
+  private Calendar erstelldatum;
+  
+  public int getPreis() {
+    return preis;
+  }
+
+  public void setPreis(int preis) {
+    this.preis = preis;
+  }
+
+  public int getVerfügbarkeit() {
+    return verfügbarkeit;
+  }
+
+  public void setVerfügbarkeit(int verfügbarkeit) {
+    this.verfügbarkeit = verfügbarkeit;
+  }
+
+  public String getKategorie() {
+    return kategorie;
+  }
+
+  public void setKategorie(String kategorie) {
+    this.kategorie = kategorie;
+  }
+
+  public String getBezeichnung() {
+    return bezeichnung;
+  }
+
+  public void setBezeichnung(String bezeichnung) {
+    this.bezeichnung = bezeichnung;
+  }
+
+  private String bezeichnung;
 
   public String getTitel() {
     return titel;

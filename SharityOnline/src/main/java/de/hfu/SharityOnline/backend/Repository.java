@@ -35,6 +35,11 @@ public class Repository<T> {
   }
   
   @SuppressWarnings("unchecked")
+  public List<T> loadWithLimit(int limit, Class<?> T) {
+    return (List<T>) ds.find(T).limit(limit).asList();
+  }
+  
+  @SuppressWarnings("unchecked")
   public List<T> loadAll(Class<?> T){
     return (List<T>) ds.find(T).asList();
   }

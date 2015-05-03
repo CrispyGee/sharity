@@ -14,12 +14,137 @@ public class Profil implements Serializable {
 	 * 
 	 */
   private static final long serialVersionUID = 1L;
+  private String benutzername;
+  private String passwort;
+  private String anrede;
   @Id private String id;
   private String vorname;
   private String nachname;
+  private String plz;
+  private String wohnort;
   private Calendar geburtstag;
-  private String password;
+  private String telefon;
+  private String email;
+  private String taetigkeit;
+  private String studiengang;
+  private String klasse;
+  private String schulart;
+  private String beruf;
   private boolean loggedIn;
+  private String referenzen;
+  private String selbstportrait;
+
+public String getBenutzername() {
+    return benutzername;
+  }
+
+  public void setBenutzername(String benutzername) {
+    this.benutzername = benutzername;
+  }
+
+  public String getPasswort() {
+    return passwort;
+  }
+
+  public void setPasswort(String passwort) {
+    this.passwort = passwort;
+  }
+
+  public String getAnrede() {
+    return anrede;
+  }
+
+  public void setAnrede(String anrede) {
+    this.anrede = anrede;
+  }
+
+  public String getPlz() {
+    return plz;
+  }
+
+  public void setPlz(String plz) {
+    this.plz = plz;
+  }
+
+  public String getWohnort() {
+    return wohnort;
+  }
+
+  public void setWohnort(String wohnort) {
+    this.wohnort = wohnort;
+  }
+
+  public String getTelefon() {
+    return telefon;
+  }
+
+  public void setTelefon(String telefon) {
+    this.telefon = telefon;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getTaetigkeit() {
+    return taetigkeit;
+  }
+
+  public void setTaetigkeit(String taetigkeit) {
+    this.taetigkeit = taetigkeit;
+  }
+
+  public String getStudiengang() {
+    return studiengang;
+  }
+
+  public void setStudiengang(String studiengang) {
+    this.studiengang = studiengang;
+  }
+
+  public String getKlasse() {
+    return klasse;
+  }
+
+  public void setKlasse(String klasse) {
+    this.klasse = klasse;
+  }
+
+  public String getSchulart() {
+    return schulart;
+  }
+
+  public void setSchulart(String schulart) {
+    this.schulart = schulart;
+  }
+
+  public String getBeruf() {
+    return beruf;
+  }
+
+  public void setBeruf(String beruf) {
+    this.beruf = beruf;
+  }
+
+  public String getReferenzen() {
+    return referenzen;
+  }
+
+  public void setReferenzen(String referenzen) {
+    this.referenzen = referenzen;
+  }
+
+  public String getSelbstportrait() {
+    return selbstportrait;
+  }
+
+  public void setSelbstportrait(String selbstportrait) {
+    this.selbstportrait = selbstportrait;
+  }
 
 @Indexed(unique = true)
   private String username;
@@ -62,14 +187,6 @@ public class Profil implements Serializable {
 
   public void setId(String id) {
     this.id = id;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   public String getUsername() {

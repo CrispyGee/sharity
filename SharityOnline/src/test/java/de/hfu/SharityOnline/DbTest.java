@@ -23,6 +23,7 @@ public class DbTest {
   
   @Test
   public void testAngebot(){
+    for(int i = 0; i < 39; i++) {
     Repository<Angebot> rep = new Repository<Angebot>();
     Angebot angebot= new Angebot();
     angebot.setId(UUID.randomUUID().toString());
@@ -30,6 +31,7 @@ public class DbTest {
     angebot.setTitel("titelllll");
     rep.save(angebot);
     System.out.println(rep.loadAll(Angebot.class));
+    }
   }
 
 }

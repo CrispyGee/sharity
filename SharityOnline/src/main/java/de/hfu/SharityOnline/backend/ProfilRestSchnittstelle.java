@@ -50,7 +50,7 @@ public class ProfilRestSchnittstelle extends Application {
   @Path("/{username}/{pwhash}")
   public Response login(@PathParam("username") String username, @PathParam("pwhash") String pwhash) {
     Profil profil = REPO.loadByKey(Profil.class, "username", username);
-    if(profil.getPassword() == pwhash) {
+    if(profil.getPasswort() == pwhash) {
       return Response.status(200).entity(null).type(MediaType.APPLICATION_JSON).build();
     } else {
       return Response.serverError().entity("Wrong Username or password").build();
