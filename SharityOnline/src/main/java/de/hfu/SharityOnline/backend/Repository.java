@@ -3,8 +3,6 @@ package de.hfu.SharityOnline.backend;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import javax.ws.rs.DELETE;
-
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
@@ -16,7 +14,7 @@ public class Repository<T> {
   
   public Repository(){
     try {
-      ds = new Morphia().createDatastore(new MongoClient("localhost"), "SharityOnlineDb");
+      ds = new Morphia().createDatastore(new MongoClient("localhost"), "sharitydb");
     } catch (UnknownHostException e) {
       e.printStackTrace();
     }

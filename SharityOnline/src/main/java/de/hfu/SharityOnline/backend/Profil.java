@@ -7,7 +7,7 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
 
-@Entity("Profile")
+@Entity("profile")
 public class Profil implements Serializable {
 
   /**

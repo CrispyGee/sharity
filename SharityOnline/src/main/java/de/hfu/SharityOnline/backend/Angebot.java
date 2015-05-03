@@ -6,7 +6,7 @@ import java.util.Calendar;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
-@Entity("Angebote")
+@Entity("angebote")
 public class Angebot implements Serializable {
 
   /**
@@ -100,6 +100,14 @@ public class Angebot implements Serializable {
   public String toString() {
     return "AngebotFrontend [id=" + id + ", titel=" + titel + ", beschreibung=" + beschreibung + ", gueltigAb=" + gueltigAb
         + ", gueltigBis=" + gueltigBis + "]";
+  }
+
+  public Calendar getErstelldatum() {
+    return erstelldatum;
+  }
+
+  public void setErstelldatum(Calendar erstelldatum) {
+    this.erstelldatum = erstelldatum;
   }
   
   

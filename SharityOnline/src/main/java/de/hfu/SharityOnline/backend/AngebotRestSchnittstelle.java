@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.modelmapper.ModelMapper;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -15,7 +14,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import de.hfu.SharityOnline.frontend.ProfilFrontend;
+import org.modelmapper.ModelMapper;
+
+import de.hfu.SharityOnline.frontend.KomprimiertesAngebot;
 
 @Path("/angebot")
 @Produces(MediaType.APPLICATION_JSON)
