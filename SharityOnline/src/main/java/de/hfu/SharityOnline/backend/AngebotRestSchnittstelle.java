@@ -56,8 +56,7 @@ public class AngebotRestSchnittstelle {
   public Response createEntity(Angebot angebot) {
     if (angebot != null && angebotAnforderung(angebot)) {
       angebot.setId(UUID.randomUUID().toString());
-      repository.save(angebot);
-      return Response.status(200).entity(angebot.getId()).type(MediaType.APPLICATION_JSON).build();
+      createOrUpdateEntity(angebot);
     }
     return Response.status(Status.BAD_REQUEST).build();
   }
@@ -66,10 +65,14 @@ public class AngebotRestSchnittstelle {
   @Path("/update")
   public Response updateEntity(Angebot angebot) {
     if (angebot.getId() != null && angebotAnforderung(angebot)) {
-      repository.save(angebot);
-      return Response.status(200).entity(angebot.getId()).type(MediaType.APPLICATION_JSON).build();
+      createOrUpdateEntity(angebot);
     }
     return Response.status(Status.BAD_REQUEST).build();
+  }
+  
+  public Response createOrUpdateEntity(Angebot angebot) {
+    repository.save(angebot);
+    return Response.status(200).entity(angebot.getId()).type(MediaType.APPLICATION_JSON).build();
   }
   
   public boolean angebotAnforderung(Angebot angebot) {

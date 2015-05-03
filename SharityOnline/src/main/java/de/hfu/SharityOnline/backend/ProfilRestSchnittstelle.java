@@ -51,6 +51,7 @@ public class ProfilRestSchnittstelle extends Application {
   public Response login(@PathParam("username") String username, @PathParam("pwhash") String pwhash) {
     Profil profil = REPO.loadByKey(Profil.class, "username", username);
     if(profil.getPasswort() == pwhash) {
+      profil.setLoggedIn(true);
       return Response.status(200).entity(null).type(MediaType.APPLICATION_JSON).build();
     } else {
       return Response.serverError().entity("Wrong Username or password").build();
@@ -59,9 +60,9 @@ public class ProfilRestSchnittstelle extends Application {
   
   @GET
   @Path("/{id}")
-  public Response logout() {
-
-    
+  public Response logout(@PathParam("id") String id) {
+    Profil profil = REPO.loadById(Profil.class, id);
+    profil.setLoggedIn(false);
     return Response.status(200).entity(null).type(MediaType.APPLICATION_JSON).build();
   }
 
@@ -71,8 +72,7 @@ public class ProfilRestSchnittstelle extends Application {
     if (profil != null && 
           profilanforderungen(profil)) {
       profil.setId(UUID.randomUUID().toString());
-      REPO.save(profil);
-      return Response.status(200).entity(profil.getId()).type(MediaType.APPLICATION_JSON).build();
+      createOrUpdateEntity(profil);
     }
     return Response.status(Status.BAD_REQUEST).build();
   }
@@ -81,12 +81,17 @@ public class ProfilRestSchnittstelle extends Application {
   @Path("/update")
   public Response updateEntity(Profil profil) {
     if (profil.getId() != null && profilanforderungen(profil)) {
-      REPO.save(profil);
-      return Response.status(200).entity(profil.getId()).type(MediaType.APPLICATION_JSON).build();
+      createOrUpdateEntity(profil);
     }
     return Response.status(Status.BAD_REQUEST).build();
   }
+  
 
+ public Response createOrUpdateEntity(Profil profil) {
+   REPO.save(profil);
+   profil.setLoggedIn(true);
+   return Response.status(200).entity(profil.getId()).type(MediaType.APPLICATION_JSON).build();
+ }
   
   public boolean profilanforderungen(Profil profil) {
     if(profil.getBenutzername() != null &&
