@@ -25,13 +25,13 @@ public class ProfilRestSchnittstelle extends Application {
 
 //  private final String jsonErrorMsg = "{Error: \"x\"";
 //  private final String jsonSuccessMsg = "{Success: \"x\"";
-  private static final Repository<Profil> REPO = new Repository<Profil>();
+  private static final Repository<Profil> repository = new Repository<Profil>();
   private static final ModelMapper MAPPER = new ModelMapper();
 
   @GET
   @Path("")
   public Response loadEntity() {
-    List<Profil> allProfiles = REPO.loadAll(Profil.class);
+    List<Profil> allProfiles = repository.loadAll(Profil.class);
     List<ProfilFrontend> allProfilesForFrontend = new ArrayList<ProfilFrontend>();
     for (Profil profil : allProfiles) {
      allProfilesForFrontend.add(MAPPER.map(profil, ProfilFrontend.class)); 
@@ -42,14 +42,14 @@ public class ProfilRestSchnittstelle extends Application {
   @GET
   @Path("/{id}")
   public Response loadEntityById(@PathParam("id") String id) {
-    Profil profil = REPO.loadById(Profil.class, id);
+    Profil profil = repository.loadById(Profil.class, id);
     return Response.status(200).entity(profil).type(MediaType.APPLICATION_JSON).build();
   }
   
   @GET
   @Path("/{username}/{pwhash}")
   public Response login(@PathParam("username") String username, @PathParam("pwhash") String pwhash) {
-    Profil profil = REPO.loadByKey(Profil.class, "username", username);
+    Profil profil = repository.loadByKey(Profil.class, "username", username);
     if(profil.getPasswort() == pwhash) {
       profil.setLoggedIn(true);
       return Response.status(200).entity(null).type(MediaType.APPLICATION_JSON).build();
@@ -61,7 +61,7 @@ public class ProfilRestSchnittstelle extends Application {
   @GET
   @Path("/{id}")
   public Response logout(@PathParam("id") String id) {
-    Profil profil = REPO.loadById(Profil.class, id);
+    Profil profil = repository.loadById(Profil.class, id);
     profil.setLoggedIn(false);
     return Response.status(200).entity(null).type(MediaType.APPLICATION_JSON).build();
   }
@@ -86,9 +86,20 @@ public class ProfilRestSchnittstelle extends Application {
     return Response.status(Status.BAD_REQUEST).build();
   }
   
+  @GET
+  @Path("/delete/{id}")
+  public Response deleteEntity(@PathParam("id") String id) {
+    if(repository.deleteByID(Profil.class, id)) {
+    return Response.status(200).build();
+    } else {
+      return Response.status(204).build();
+    }
+    
+  }
+  
 
  public Response createOrUpdateEntity(Profil profil) {
-   REPO.save(profil);
+   repository.save(profil);
    profil.setLoggedIn(true);
    return Response.status(200).entity(profil.getId()).type(MediaType.APPLICATION_JSON).build();
  }

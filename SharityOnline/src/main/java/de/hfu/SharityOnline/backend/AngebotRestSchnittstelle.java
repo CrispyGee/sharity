@@ -74,6 +74,17 @@ public class AngebotRestSchnittstelle {
     repository.save(angebot);
     return Response.status(200).entity(angebot.getId()).type(MediaType.APPLICATION_JSON).build();
   }
+ 
+  @GET
+  @Path("/delete/{id}")
+  public Response deleteEntity(@PathParam("id") String id) {
+    if(repository.deleteByID(Angebot.class, id)) {
+    return Response.status(200).build();
+    } else {
+      return Response.status(204).build();
+    }
+    
+  }
   
   public boolean angebotAnforderung(Angebot angebot) {
     if(angebot.getBeschreibung() != null && 

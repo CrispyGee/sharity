@@ -3,6 +3,8 @@ package de.hfu.SharityOnline.backend;
 import java.net.UnknownHostException;
 import java.util.List;
 
+import javax.ws.rs.DELETE;
+
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
@@ -23,6 +25,15 @@ public class Repository<T> {
   @SuppressWarnings("unchecked")
   public T loadById(Class<?> T, String id){
     return (T) ds.find(T).field("_id").equal(id).get();
+  }
+
+  public boolean deleteByID(Class<?> T, String id){
+    ds.delete(T, id);
+    if(ds.find(T).field("_id").equal(id).get() == null) {
+      return true;
+    } else {
+      return false;
+    }
   }
   
   @SuppressWarnings("unchecked")
