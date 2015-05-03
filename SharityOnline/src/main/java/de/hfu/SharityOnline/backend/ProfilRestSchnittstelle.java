@@ -68,7 +68,8 @@ public class ProfilRestSchnittstelle extends Application {
   @POST
   @Path("/create")
   public Response createEntity(Profil profil) {
-    if (profil != null) {
+    if (profil != null && 
+          profilanforderungen(profil)) {
       profil.setId(UUID.randomUUID().toString());
       REPO.save(profil);
       return Response.status(200).entity(profil.getId()).type(MediaType.APPLICATION_JSON).build();
@@ -79,11 +80,26 @@ public class ProfilRestSchnittstelle extends Application {
   @PUT
   @Path("/update")
   public Response updateEntity(Profil profil) {
-    if (profil.getId() != null) {
+    if (profil.getId() != null && profilanforderungen(profil)) {
       REPO.save(profil);
       return Response.status(200).entity(profil.getId()).type(MediaType.APPLICATION_JSON).build();
     }
     return Response.status(Status.BAD_REQUEST).build();
   }
 
+  
+  public boolean profilanforderungen(Profil profil) {
+    if(profil.getBenutzername() != null &&
+          profil.getPasswort() != null &&
+          profil.getVorname() != null &&
+          profil.getNachname() != null &&
+          profil.getPlz() != null &&
+          profil.getWohnort() != null &&
+          profil.getEmail() != null && //TODO - Je nach Tätigkeit, student schüler etc ausfüllen. 
+          profil.getTaetigkeit() != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
