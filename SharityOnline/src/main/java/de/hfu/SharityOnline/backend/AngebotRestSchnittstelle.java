@@ -1,8 +1,10 @@
 package de.hfu.SharityOnline.backend;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.modelmapper.ModelMapper;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -13,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import de.hfu.SharityOnline.frontend.ProfilFrontend;
+
 @Path("/angebot")
 @Produces(MediaType.APPLICATION_JSON)
 public class AngebotRestSchnittstelle {
@@ -20,6 +24,7 @@ public class AngebotRestSchnittstelle {
   // private final String jsonErrorMsg = "{Error: \"x\"";
   // private final String jsonSuccessMsg = "{Success: \"x\"";
   private static final Repository<Angebot> repository = new Repository<Angebot>();
+  private static final ModelMapper MAPPER = new ModelMapper();
 
   @GET
   @Path("")
@@ -39,7 +44,11 @@ public class AngebotRestSchnittstelle {
   @Path("/{detail}")
   public Response loadEntityDetail() {
     List<Angebot> alleAngebote = repository.loadWithLimit(30, Angebot.class);
-    return Response.status(200).entity(alleAngebote).type(MediaType.APPLICATION_JSON).build();
+    List<KomprimiertesAngebot> alleAngeboteKomprimiert = new ArrayList<KomprimiertesAngebot>();
+    for (Angebot angebot : alleAngebote) {
+      alleAngeboteKomprimiert.add(MAPPER.map(angebot, KomprimiertesAngebot.class)); 
+    }
+    return Response.status(200).entity(alleAngeboteKomprimiert).type(MediaType.APPLICATION_JSON).build();
   }
 
   @POST

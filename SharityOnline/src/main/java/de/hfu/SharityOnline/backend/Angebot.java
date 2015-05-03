@@ -22,6 +22,7 @@ public class Angebot implements Serializable {
   private int verfügbarkeit;
   private String kategorie;
   private Calendar erstelldatum;
+  private String bezeichnung;
   
   public int getPreis() {
     return preis;
@@ -54,8 +55,6 @@ public class Angebot implements Serializable {
   public void setBezeichnung(String bezeichnung) {
     this.bezeichnung = bezeichnung;
   }
-
-  private String bezeichnung;
 
   public String getTitel() {
     return titel;

@@ -23,12 +23,16 @@ public class DbTest {
   
   @Test
   public void testAngebot(){
-    for(int i = 0; i < 39; i++) {
     Repository<Angebot> rep = new Repository<Angebot>();
+    for(int i = 0; i < 39; i++) {
     Angebot angebot= new Angebot();
     angebot.setId(UUID.randomUUID().toString());
     angebot.setBeschreibung("beschreibung huehuehuehhue asasdasd");
     angebot.setTitel("titelllll");
+    angebot.setBeschreibung("kekekeke");
+    angebot.setPreis(i);
+    angebot.setKategorie("Miep");
+    
     rep.save(angebot);
     System.out.println(rep.loadAll(Angebot.class));
     }
