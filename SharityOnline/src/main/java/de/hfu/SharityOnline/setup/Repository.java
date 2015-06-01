@@ -1,4 +1,4 @@
-package de.hfu.SharityOnline.backend;
+package de.hfu.SharityOnline.setup;
 
 import java.net.UnknownHostException;
 import java.util.List;

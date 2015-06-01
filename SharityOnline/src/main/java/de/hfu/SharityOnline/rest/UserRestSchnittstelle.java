@@ -1,0 +1,111 @@
+package de.hfu.SharityOnline.rest;
+
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Application;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
+import de.hfu.SharityOnline.entities.User;
+import de.hfu.SharityOnline.setup.Repository;
+
+@Path("/user")
+public class UserRestSchnittstelle extends Application {
+
+  // private final String jsonErrorMsg = "{Error: \"x\"";
+  // private final String jsonSuccessMsg = "{Success: \"x\"";
+  private static final Repository<User> repository = new Repository<User>();
+
+  @PermitAll
+  @GET
+  @Path("")
+  public Response loadEntity() {
+    List<User> allProfiles = repository.loadAll(User.class);
+    return Response.status(200).entity(allProfiles).type(MediaType.APPLICATION_JSON).build();
+  }
+
+  @PermitAll
+  @GET
+  @Path("/{id}")
+  public Response loadEntityById(@PathParam("id") String id) {
+    User user = repository.loadById(User.class, id);
+    return Response.status(200).entity(user).type(MediaType.APPLICATION_JSON).build();
+  }
+
+  @POST
+  @Path("/new")
+  public Response createEntity(User user) {
+    if (user != null && profilanforderungen(user)) {
+      user.setId(UUID.randomUUID().toString());
+      user.setUserRole("FREEUSER");
+      repository.save(user);
+      return Response.status(Status.ACCEPTED).build();
+    }
+    return Response.status(Status.BAD_REQUEST).build();
+  }
+
+  @DenyAll
+  @PUT
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/update")
+  public Response updateEntity(User user) {
+    if (user.getId() != null && profilanforderungen(user)) {
+      User foundUser = repository.loadById(User.class, user.getId());
+      if (foundUser != null) {
+        user.setUserRole(foundUser.getUserRole());
+        repository.save(user);
+        return Response.status(Status.ACCEPTED).build();
+      }
+    }
+    return Response.status(Status.BAD_REQUEST).build();
+  }
+
+  @GET
+  @Path("/upgradeAccount/{id}")
+  public Response upgradeAccount(@PathParam("id") String id) {
+    User foundUser = repository.loadById(User.class, id);
+    // TODO Paypal/Paymill check here
+    if (foundUser != null) {
+      foundUser.setUserRole("VERIFIEDUSER");
+      repository.save(foundUser);
+      return Response.status(Status.ACCEPTED).build();
+    }
+    return Response.status(Status.BAD_REQUEST).build();
+  }
+
+  @GET
+  @Path("/delete/{id}")
+  public Response deleteEntity(@PathParam("id") String id) {
+    if (repository.deleteByID(User.class, id)) {
+      return Response.status(200).build();
+    } else {
+      return Response.status(204).build();
+    }
+
+  }
+
+  public boolean profilanforderungen(User user) {
+    return true;
+    // if (user.getUsername() != null && user.getHashedPassword() != null &&
+    // user.getVorname() != null
+    // && user.getNachname() != null && user.getPlz() != null &&
+    // user.getWohnort() != null && user.getEmail() != null
+    // && // TODO - Je nach Tätigkeit, student
+    // // schüler etc ausfüllen.
+    // user.getTaetigkeit() != null) {
+    // return true;
+    // } else {
+    // return false;
+    // }
+  }
+}

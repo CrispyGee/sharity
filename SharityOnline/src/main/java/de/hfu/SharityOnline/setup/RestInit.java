@@ -1,9 +1,13 @@
-package de.hfu.SharityOnline.backend;
+package de.hfu.SharityOnline.setup;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.ws.rs.core.Application;
+
+import de.hfu.SharityOnline.rest.AngebotRestSchnittstelle;
+import de.hfu.SharityOnline.rest.PageRestSchnittstelle;
+import de.hfu.SharityOnline.rest.UserRestSchnittstelle;
 
 public class RestInit extends Application {
 
@@ -12,7 +16,8 @@ public class RestInit extends Application {
 
   public RestInit() {
     // ADD YOUR RESTFUL RESOURCES HERE
-    this.singletons.add(new ProfilRestSchnittstelle());
+    this.singletons.add(new PageRestSchnittstelle());
+    this.singletons.add(new UserRestSchnittstelle());
     this.singletons.add(new AngebotRestSchnittstelle());
   }
 

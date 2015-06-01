@@ -1,4 +1,4 @@
-package de.hfu.SharityOnline.backend;
+package de.hfu.SharityOnline.entities;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -7,13 +7,14 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
 @Entity("angebote")
-public class Angebot implements Serializable {
+public class Offer implements Serializable {
 
   /**
 	 * 
 	 */
   private static final long serialVersionUID = 1L;
-  @Id private String id;
+  @Id
+  private String id;
   private String titel;
   private String beschreibung;
   private Calendar gueltigAb;
@@ -23,7 +24,7 @@ public class Angebot implements Serializable {
   private String kategorie;
   private Calendar erstelldatum;
   private String bezeichnung;
-  
+
   public int getPreis() {
     return preis;
   }
@@ -98,7 +99,7 @@ public class Angebot implements Serializable {
 
   @Override
   public String toString() {
-    return "AngebotFrontend [id=" + id + ", titel=" + titel + ", beschreibung=" + beschreibung + ", gueltigAb=" + gueltigAb
+    return "Offer [id=" + id + ", titel=" + titel + ", beschreibung=" + beschreibung + ", gueltigAb=" + gueltigAb
         + ", gueltigBis=" + gueltigBis + "]";
   }
 
@@ -109,7 +110,5 @@ public class Angebot implements Serializable {
   public void setErstelldatum(Calendar erstelldatum) {
     this.erstelldatum = erstelldatum;
   }
-  
-  
 
 }
