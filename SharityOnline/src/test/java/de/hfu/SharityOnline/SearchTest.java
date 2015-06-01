@@ -2,7 +2,7 @@ package de.hfu.SharityOnline;
 
 import org.junit.Test;
 
-import de.hfu.SharityOnline.backend.Search;
+import de.hfu.SharityOnline.elastic.Search;
 
 public class SearchTest {
   

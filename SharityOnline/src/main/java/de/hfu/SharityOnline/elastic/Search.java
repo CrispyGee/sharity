@@ -1,4 +1,4 @@
-package de.hfu.SharityOnline.backend;
+package de.hfu.SharityOnline.elastic;
 
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
@@ -6,7 +6,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.node.Node;
 

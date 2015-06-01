@@ -6,7 +6,7 @@ import java.util.Calendar;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
-@Entity("angebote")
+@Entity("offers")
 public class Offer implements Serializable {
 
   /**
