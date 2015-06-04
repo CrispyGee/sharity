@@ -16,6 +16,7 @@ public class RestInit extends Application {
 
   public RestInit() {
     // ADD YOUR RESTFUL RESOURCES HERE
+    this.singletons.add(new SecurityInterceptor());
     this.singletons.add(new PageRestSchnittstelle());
     this.singletons.add(new UserRestSchnittstelle());
     this.singletons.add(new AngebotRestSchnittstelle());
