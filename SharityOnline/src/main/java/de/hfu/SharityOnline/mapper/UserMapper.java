@@ -15,19 +15,19 @@ import de.hfu.SharityOnline.mongo.UserMongo;
 public class UserMapper {
 
   private static final ModelMapper MODEL_MAPPER = new ModelMapper();
-//  private static boolean toFront = true;
+  // private static boolean toFront = true;
   static {
     MODEL_MAPPER.addMappings(new ToFrontendProps());
     MODEL_MAPPER.addMappings(new ToBackendProps());
   }
-  
-//  private static switchMapper(boolean toFront){
-//    if (UserMapper.toFront == toFront){
-//    }
-//    else if (toFront == false){
-//      
-//    }
-//  }
+
+  // private static switchMapper(boolean toFront){
+  // if (UserMapper.toFront == toFront){
+  // }
+  // else if (toFront == false){
+  //
+  // }
+  // }
 
   public static User mapUserToFrontend(UserMongo userMongo) {
     User user = MODEL_MAPPER.map(userMongo, User.class);
@@ -61,22 +61,18 @@ public class UserMapper {
 
 }
 
-class ToFrontendProps extends PropertyMap<UserMongo, User>
-{
-    @Override
-    protected void configure()
-    {
-        skip().setActivity(0);
-        skip().setSalutation(0);
-    }
+class ToFrontendProps extends PropertyMap<UserMongo, User> {
+  @Override
+  protected void configure() {
+    skip().setActivity(0);
+    skip().setSalutation(0);
+  }
 }
 
-class ToBackendProps extends PropertyMap<User, UserMongo>
-{
-    @Override
-    protected void configure()
-    {
-        skip().setActivity(null);
-        skip().setSalutation(null);
-    }
+class ToBackendProps extends PropertyMap<User, UserMongo> {
+  @Override
+  protected void configure() {
+    skip().setActivity(null);
+    skip().setSalutation(null);
+  }
 }

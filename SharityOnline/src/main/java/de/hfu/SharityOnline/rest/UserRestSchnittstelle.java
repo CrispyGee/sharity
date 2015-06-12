@@ -16,10 +16,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.jasypt.util.password.StrongPasswordEncryptor;
+import org.jboss.resteasy.util.Base64;
+
 import de.hfu.SharityOnline.entities.User;
 import de.hfu.SharityOnline.mapper.UserMapper;
 import de.hfu.SharityOnline.mongo.UserMongo;
 import de.hfu.SharityOnline.setup.Repository;
+import de.hfu.SharityOnline.util.PasswordHasher;
 
 @Path("/user")
 public class UserRestSchnittstelle extends Application {
@@ -52,9 +56,14 @@ public class UserRestSchnittstelle extends Application {
   @Path("/new")
   public Response createEntity(User user) {
     if (user != null && profilanforderungen(user)) {
-      user.setId(UUID.randomUUID().toString());
-      user.setUserRole("FREEUSER");
-      repository.save(UserMapper.mapUserToBackend(user));
+      if(repository.loadByKey(UserMongo.class, "username", user.getUsername())!=null){
+        return Response.status(Status.CONFLICT).build();
+      }
+      UserMongo userBackend = UserMapper.mapUserToBackend(user);
+      userBackend.setId(UUID.randomUUID().toString());
+      userBackend.setUserRole("FREE");
+      userBackend.setPassword(PasswordHasher.getEncryptor().encryptPassword(user.getPassword()));
+      repository.save(userBackend);
       return Response.status(Status.ACCEPTED).build();
     }
     return Response.status(Status.BAD_REQUEST).build();

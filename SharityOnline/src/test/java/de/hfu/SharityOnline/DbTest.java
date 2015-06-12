@@ -1,17 +1,19 @@
 package de.hfu.SharityOnline;
 
+import org.jboss.resteasy.util.Base64;
 import org.junit.Test;
 
 import de.hfu.SharityOnline.entities.Offer;
 import de.hfu.SharityOnline.entities.User;
 import de.hfu.SharityOnline.mapper.UserMapper;
+import de.hfu.SharityOnline.mongo.UserMongo;
 import de.hfu.SharityOnline.setup.Repository;
 
 public class DbTest {
   
   @Test
   public void testDummyDatenprofil() {
-    Repository<User> rep = new Repository<User>();
+    Repository<UserMongo> rep = new Repository<UserMongo>();
     User user = new User();
     user.setId("1");
     user.setLastname("Mustermann");
@@ -25,7 +27,10 @@ public class DbTest {
     user.setZip("77955");
     user.setPhone("078228942");
     user.setHometown("Ettenheim");
-    rep.save(UserMapper.mapUserToBackend(user));
+    UserMongo userBackend = UserMapper.mapUserToBackend(user);
+    String usernameAndPassword = user.getUsername() + ":" + user.getPassword();
+    userBackend.setUsernameAndPassword(new String(Base64.encodeBytes(usernameAndPassword.getBytes())));
+    rep.save(userBackend);
     
     user.setId("2");
     user.setLastname("Müller");

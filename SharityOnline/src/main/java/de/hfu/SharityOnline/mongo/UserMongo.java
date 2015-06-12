@@ -19,6 +19,7 @@ public class UserMongo implements Serializable {
   @Indexed(unique = true)
   private String username;
   private String password;
+  private String usernameAndPassword;
   private String userRole;
   private Salutation salutation;
   private String lastname;
@@ -121,6 +122,12 @@ public class UserMongo implements Serializable {
   }
   public void setSelfportrait(String selfportrait) {
     this.selfportrait = selfportrait;
+  }
+  public String getUsernameAndPassword() {
+    return usernameAndPassword;
+  }
+  public void setUsernameAndPassword(String usernameAndPassword) {
+    this.usernameAndPassword = usernameAndPassword;
   }
   
 }

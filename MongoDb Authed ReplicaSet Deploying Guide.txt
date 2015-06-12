@@ -1,0 +1,1 @@
+http://docs.mongodb.org/manual/tutorial/deploy-replica-set-with-auth/
