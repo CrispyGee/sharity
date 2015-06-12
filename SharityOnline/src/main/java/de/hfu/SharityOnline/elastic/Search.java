@@ -40,7 +40,6 @@ public class Search {
       Map<String, Object> result = hit.getSource();
       System.out.println(result);
     }
-    node.close();
     return response;
   }
   
@@ -61,6 +60,10 @@ public class Search {
 //    qb.should(QueryBuilders.prefixQuery("_all", suchterm));
     qb.should(QueryBuilders.matchPhrasePrefixQuery("_all", suchterm));
     return qb;
+  }
+  
+  public void close(){
+    node.close();
   }
   
 }

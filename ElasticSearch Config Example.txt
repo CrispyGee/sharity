@@ -1,0 +1,46 @@
+DELETE /_all
+
+PUT /users/
+PUT /offers/
+
+PUT /_river/users/_meta
+  {
+  "index": {
+    "name": "users",
+    "type": "user"
+  },
+  "type": "mongodb",
+  "mongodb": {
+    "collection": "users",
+    "db": "sharitydb",
+     "options": {
+              "exclude_fields": ["password", "username", "className", "userRole", "phone", "email"]
+            }
+  }
+}
+
+GET /users/_search
+{
+  "query": {
+    "match": {
+      "firstname": "max"
+    }
+  }
+}
+
+PUT /_river/offers/_meta
+  {
+  "index": {
+    "name": "offers",
+    "type": "offer"
+  },
+  "type": "mongodb",
+  "mongodb": {
+    "collection": "offers",
+    "db": "sharitydb"
+  }
+}
+  
+  
+  
+  GET /offers/_mapping
