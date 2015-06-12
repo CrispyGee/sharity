@@ -3,8 +3,8 @@ package de.hfu.SharityOnline.rest;
 import java.util.List;
 import java.util.UUID;
 
-import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -17,6 +17,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import de.hfu.SharityOnline.entities.User;
+import de.hfu.SharityOnline.mapper.UserMapper;
+import de.hfu.SharityOnline.mongo.UserMongo;
 import de.hfu.SharityOnline.setup.Repository;
 
 @Path("/user")
@@ -24,69 +26,74 @@ public class UserRestSchnittstelle extends Application {
 
   // private final String jsonErrorMsg = "{Error: \"x\"";
   // private final String jsonSuccessMsg = "{Success: \"x\"";
-  private static final Repository<User> repository = new Repository<User>();
+  private static final Repository<UserMongo> repository = new Repository<UserMongo>();
 
-  @PermitAll
+  @RolesAllowed("ADMIN")
   @GET
   @Path("")
   public Response loadEntity() {
-    List<User> allProfiles = repository.loadAll(User.class);
-    return Response.status(200).entity(allProfiles).type(MediaType.APPLICATION_JSON).build();
+    List<UserMongo> allProfiles = repository.loadAll(UserMongo.class);
+    return Response.status(200).entity(UserMapper.mapUserListToFrontend(allProfiles)).type(MediaType.APPLICATION_JSON)
+        .build();
   }
 
   @PermitAll
   @GET
   @Path("/{id}")
   public Response loadEntityById(@PathParam("id") String id) {
-    User user = repository.loadById(User.class, id);
-    return Response.status(200).entity(user).type(MediaType.APPLICATION_JSON).build();
+    UserMongo user = repository.loadById(UserMongo.class, id);
+    user.setPassword(null);
+    user.setUsername(null);
+    return Response.status(200).entity(UserMapper.mapUserToFrontend(user)).type(MediaType.APPLICATION_JSON).build();
   }
 
+  @PermitAll
   @POST
   @Path("/new")
   public Response createEntity(User user) {
     if (user != null && profilanforderungen(user)) {
       user.setId(UUID.randomUUID().toString());
       user.setUserRole("FREEUSER");
-      repository.save(user);
+      repository.save(UserMapper.mapUserToBackend(user));
       return Response.status(Status.ACCEPTED).build();
     }
     return Response.status(Status.BAD_REQUEST).build();
   }
 
-  @DenyAll
+  @PermitAll
   @PUT
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/update")
   public Response updateEntity(User user) {
     if (user.getId() != null && profilanforderungen(user)) {
-      User foundUser = repository.loadById(User.class, user.getId());
-      if (foundUser != null) {
+      UserMongo foundUser = repository.loadById(UserMongo.class, user.getId());
+      if (foundUser != null && foundUser.getPassword().equals(user.getPassword())
+          && foundUser.getUsername().equals(user.getUsername())) {
         user.setUserRole(foundUser.getUserRole());
-        repository.save(user);
+        repository.save(UserMapper.mapUserToBackend(user));
         return Response.status(Status.ACCEPTED).build();
       }
     }
     return Response.status(Status.BAD_REQUEST).build();
   }
 
-  @GET
-  @Path("/upgradeAccount/{id}")
-  public Response upgradeAccount(@PathParam("id") String id) {
-    User foundUser = repository.loadById(User.class, id);
-    // TODO Paypal/Paymill check here
-    if (foundUser != null) {
-      foundUser.setUserRole("VERIFIEDUSER");
-      repository.save(foundUser);
-      return Response.status(Status.ACCEPTED).build();
-    }
-    return Response.status(Status.BAD_REQUEST).build();
-  }
+  // @GET
+  // @Path("/upgradeAccount/{id}")
+  // public Response upgradeAccount(@PathParam("id") String id) {
+  // User foundUser = repository.loadById(User.class, id);
+  // // TODO Paypal/Paymill check here
+  // if (foundUser != null) {
+  // foundUser.setUserRole("VERIFIEDUSER");
+  // repository.save(foundUser);
+  // return Response.status(Status.ACCEPTED).build();
+  // }
+  // return Response.status(Status.BAD_REQUEST).build();
+  // }
 
   @GET
   @Path("/delete/{id}")
   public Response deleteEntity(@PathParam("id") String id) {
-    if (repository.deleteByID(User.class, id)) {
+    if (repository.deleteByID(UserMongo.class, id)) {
       return Response.status(200).build();
     } else {
       return Response.status(204).build();

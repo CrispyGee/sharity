@@ -15,6 +15,7 @@ import java.util.StringTokenizer;
 
 
 
+
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -28,12 +29,14 @@ import javax.ws.rs.ext.Provider;
 
 
 
+
 import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.util.Base64;
 
 import de.hfu.SharityOnline.entities.User;
+import de.hfu.SharityOnline.mongo.UserMongo;
  
 /**
  * This interceptor verify the access permissions for a user
@@ -47,7 +50,7 @@ public class SecurityInterceptor implements javax.ws.rs.container.ContainerReque
     private static final ServerResponse ACCESS_DENIED = new ServerResponse("Access denied for this resource", 401, new Headers<Object>());;
     private static final ServerResponse ACCESS_FORBIDDEN = new ServerResponse("Nobody can access this resource", 403, new Headers<Object>());;
     private static final ServerResponse SERVER_ERROR = new ServerResponse("INTERNAL SERVER ERROR", 500, new Headers<Object>());;
-    private static final Repository<User> repository = new Repository<User>();
+    private static final Repository<UserMongo> repository = new Repository<UserMongo>();
    
     
     @Override
@@ -120,7 +123,7 @@ public class SecurityInterceptor implements javax.ws.rs.container.ContainerReque
         boolean isAllowed = false;
          
         //Step 1. Fetch password from database and match with password in argument
-        User user = repository.loadByKey(User.class, "username", username);
+        UserMongo user = repository.loadByKey(UserMongo.class, "username", username);
         //user not found
         if (user==null){
           return false;

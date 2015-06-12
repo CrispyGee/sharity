@@ -8,7 +8,8 @@ public class SearchTest {
   
   @Test
   public void testest(){
-    System.out.println(Search.search("Max").getHits().getTotalHits());
+    Search search = new Search();
+    search.searchTest("Musti");
   }
 
 }

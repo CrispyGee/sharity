@@ -1,23 +1,25 @@
 package de.hfu.SharityOnline.setup;
 
-import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 
 public class Repository<T> {
   
   private Datastore ds;
   
   public Repository(){
-    try {
-      ds = new Morphia().createDatastore(new MongoClient("localhost"), "sharitydb");
-    } catch (UnknownHostException e) {
-      e.printStackTrace();
-    }
+//    For Authentication:
+//    MongoCredential mongoC = MongoCredential.createCredential("chris2", "admin", "passwort".toCharArray());
+//    ds = new Morphia().createDatastore(new MongoClient(new ServerAddress("localhost"), Arrays.asList(mongoC)), "sharitydb");
+//    Unauthorized:
+      ds = new Morphia().createDatastore(new MongoClient(new ServerAddress("localhost")), "sharitydb");
   }
   
   @SuppressWarnings("unchecked")

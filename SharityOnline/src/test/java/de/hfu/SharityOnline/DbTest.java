@@ -4,62 +4,10 @@ import org.junit.Test;
 
 import de.hfu.SharityOnline.entities.Offer;
 import de.hfu.SharityOnline.entities.User;
+import de.hfu.SharityOnline.mapper.UserMapper;
 import de.hfu.SharityOnline.setup.Repository;
 
 public class DbTest {
-
-  // @Test
-  // public void testProfil(){
-  // Repository<User> rep = new Repository<User>();
-  // User profil = new User();
-  // profil.setId(UUID.randomUUID().toString());
-  // profil.setLastname("horst");
-  // profil.setFirstname("horsti");
-  // rep.save(profil);
-  // System.out.println(rep.loadAll(User.class));
-  // }
-
-  // @Test
-  // public void testAngebot(){
-  // Repository<Offer> rep = new Repository<Offer>();
-  // for(int i = 0; i < 39; i++) {
-  // Offer angebot= new Offer();
-  // angebot.setId(UUID.randomUUID().toString());
-  // angebot.setBeschreibung("beschreibung huehuehuehhue asasdasd");
-  // angebot.setTitel("titelllll");
-  // angebot.setBeschreibung("kekekeke");
-  // angebot.setPreis(i);
-  // angebot.setKategorie("Miep");
-  //
-  // rep.save(angebot);
-  // System.out.println(rep.loadAll(Offer.class));
-  // }
-  // }
-
-//  public void testIDAngebot() {
-//    Repository<Offer> rep = new Repository<Offer>();
-//    Offer angebot = new Offer();
-//    angebot.setId("UAARGH");
-//    angebot.setBeschreibung("beschreibung huehuehuehhue asasdasd");
-//    angebot.setTitel("titelllll");
-//    angebot.setBeschreibung("kekekeke");
-//    angebot.setPreis(42);
-//    angebot.setKategorie("Miep");
-//
-//    rep.save(angebot);
-//    System.out.println(rep.loadAll(Offer.class));
-//  }
-//
-//  @Test
-//  public void testIDProfil() {
-//    Repository<User> rep = new Repository<User>();
-//    User profil = new User();
-//    profil.setId("aloha");
-//    profil.setLastname("Für dich");
-//    profil.setFirstname("Falsche Band");
-//    rep.save(profil);
-//    System.out.println(rep.loadAll(User.class));
-//  }
   
   @Test
   public void testDummyDatenprofil() {
@@ -68,14 +16,16 @@ public class DbTest {
     user.setId("1");
     user.setLastname("Mustermann");
     user.setFirstname("Max");
+    user.setUserRole("ADMIN");
+    user.setPassword("123");
+    user.setUsername("asd");
     user.setSalutation(1);
     user.setSelfportrait("Student");
     user.setEmail("max@mustermann.de");
     user.setZip("77955");
     user.setPhone("078228942");
     user.setHometown("Ettenheim");
-    user.setUsername("mustiman");
-    rep.save(user);
+    rep.save(UserMapper.mapUserToBackend(user));
     
     user.setId("2");
     user.setLastname("Müller");
@@ -87,7 +37,7 @@ public class DbTest {
     user.setPhone("0007822");
     user.setHometown("Furtwangen");
     user.setUsername("horstimülli");
-    rep.save(user);
+    rep.save(UserMapper.mapUserToBackend(user));
     
     user.setId("3");
     user.setLastname("Müller");
@@ -99,7 +49,7 @@ public class DbTest {
     user.setPhone("01782830932");
     user.setHometown("Stuttgart");
     user.setUsername("Binchen");
-    rep.save(user);
+    rep.save(UserMapper.mapUserToBackend(user));
     
     user.setId("4");
     user.setLastname("Plotzky");
@@ -111,7 +61,7 @@ public class DbTest {
     user.setPhone("0151294024");
     user.setHometown("Freiburg");
     user.setUsername("crispyGee");
-    rep.save(user);
+    rep.save(UserMapper.mapUserToBackend(user));
     
     user.setId("5");
     user.setLastname("Fischer");
@@ -123,7 +73,7 @@ public class DbTest {
     user.setPhone("078228942");
     user.setHometown("Ettenheim");
     user.setUsername("nikki");
-    rep.save(user);
+    rep.save(UserMapper.mapUserToBackend(user));
     
     user.setId("6");
     user.setLastname("Albach");
@@ -135,7 +85,7 @@ public class DbTest {
     user.setPhone("02318942");
     user.setHometown("Freudenstadt");
     user.setUsername("Etualb");
-    rep.save(user);
+    rep.save(UserMapper.mapUserToBackend(user));
     
     user.setId("7");
     user.setLastname("Günther");
@@ -147,7 +97,7 @@ public class DbTest {
     user.setPhone("004978223123");
     user.setHometown("Berlin");
     user.setUsername("MannfredG");
-    rep.save(user);
+    rep.save(UserMapper.mapUserToBackend(user));
     
     user.setId("8");
     user.setLastname("Knorke");
@@ -159,7 +109,7 @@ public class DbTest {
     user.setPhone("0362193");
     user.setHometown("Villingen");
     user.setUsername("knorkeheike");
-    rep.save(user);
+    rep.save(UserMapper.mapUserToBackend(user));
     
     user.setId("9");
     user.setLastname("Müller");
@@ -171,7 +121,7 @@ public class DbTest {
     user.setPhone("0172894");
     user.setHometown("Frankfurt");
     user.setUsername("Elki");
-    rep.save(user);
+    rep.save(UserMapper.mapUserToBackend(user));
     
     user.setId("10");
     user.setLastname("Wasser");
@@ -183,7 +133,7 @@ public class DbTest {
     user.setPhone("078228942");
     user.setHometown("Hamburg");
     user.setUsername("Wasedgar");
-    rep.save(user);
+    rep.save(UserMapper.mapUserToBackend(user));
   }
   @Test
   public void testDummyDatenAngebot() {
