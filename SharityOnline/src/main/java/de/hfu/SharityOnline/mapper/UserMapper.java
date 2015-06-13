@@ -5,11 +5,10 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
-import org.modelmapper.convention.MatchingStrategies;
 
-import de.hfu.SharityOnline.entities.User;
-import de.hfu.SharityOnline.mongo.Activity;
-import de.hfu.SharityOnline.mongo.Salutation;
+import de.hfu.SharityOnline.frontend.entities.User;
+import de.hfu.SharityOnline.innerObjects.Activity;
+import de.hfu.SharityOnline.innerObjects.Salutation;
 import de.hfu.SharityOnline.mongo.UserMongo;
 
 public class UserMapper {
@@ -17,17 +16,9 @@ public class UserMapper {
   private static final ModelMapper MODEL_MAPPER = new ModelMapper();
   // private static boolean toFront = true;
   static {
-    MODEL_MAPPER.addMappings(new ToFrontendProps());
+    MODEL_MAPPER.addMappings(new UserToFrontendProps());
     MODEL_MAPPER.addMappings(new ToBackendProps());
   }
-
-  // private static switchMapper(boolean toFront){
-  // if (UserMapper.toFront == toFront){
-  // }
-  // else if (toFront == false){
-  //
-  // }
-  // }
 
   public static User mapUserToFrontend(UserMongo userMongo) {
     User user = MODEL_MAPPER.map(userMongo, User.class);
@@ -61,7 +52,7 @@ public class UserMapper {
 
 }
 
-class ToFrontendProps extends PropertyMap<UserMongo, User> {
+class UserToFrontendProps extends PropertyMap<UserMongo, User> {
   @Override
   protected void configure() {
     skip().setActivity(0);

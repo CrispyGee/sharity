@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import de.hfu.SharityOnline.entities.Offer;
+import de.hfu.SharityOnline.frontend.entities.Offer;
 import de.hfu.SharityOnline.setup.Repository;
 
 @Path("/angebot")
@@ -49,9 +49,9 @@ public class AngebotRestSchnittstelle {
   @Path("/new")
   public Response createEntity(Offer offer) {
     if (offer != null && angebotAnforderung(offer)) {
-      offer.setId(UUID.randomUUID().toString());
+      offer.setOffer_id(UUID.randomUUID().toString());
       repository.save(offer);
-      return Response.status(200).entity(offer.getId()).type(MediaType.APPLICATION_JSON).build();
+      return Response.status(200).entity(offer.getOffer_id()).type(MediaType.APPLICATION_JSON).build();
     }
     return Response.status(Status.BAD_REQUEST).build();
   }
@@ -61,9 +61,9 @@ public class AngebotRestSchnittstelle {
   @PUT
   @Path("/update")
   public Response updateEntity(Offer offer) {
-    if (offer.getId() != null && angebotAnforderung(offer)) {
+    if (offer.getOffer_id() != null && angebotAnforderung(offer)) {
       repository.save(offer);
-      return Response.status(200).entity(offer.getId()).type(MediaType.APPLICATION_JSON).build();
+      return Response.status(200).entity(offer.getOffer_id()).type(MediaType.APPLICATION_JSON).build();
     }
     return Response.status(Status.BAD_REQUEST).build();
   }

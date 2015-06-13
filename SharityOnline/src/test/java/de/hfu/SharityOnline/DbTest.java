@@ -3,8 +3,8 @@ package de.hfu.SharityOnline;
 import org.jboss.resteasy.util.Base64;
 import org.junit.Test;
 
-import de.hfu.SharityOnline.entities.Offer;
-import de.hfu.SharityOnline.entities.User;
+import de.hfu.SharityOnline.frontend.entities.Offer;
+import de.hfu.SharityOnline.frontend.entities.User;
 import de.hfu.SharityOnline.mapper.UserMapper;
 import de.hfu.SharityOnline.mongo.UserMongo;
 import de.hfu.SharityOnline.setup.Repository;
@@ -144,118 +144,118 @@ public class DbTest {
   public void testDummyDatenAngebot() {
     Repository<Offer> rep = new Repository<Offer>();
     Offer offer = new Offer();
-    offer.setId("1");
-    offer.setBeschreibung("Biete Nachhilfe in Mathematik");
-    offer.setTitel("Mathe Nachhilfe");
-    offer.setPreis(42);
-    offer.setKategorie("Nachhilfe");
+    offer.setOffer_id("1");
+    offer.setDescription("Biete Nachhilfe in Mathematik");
+    offer.setTitle("Mathe Nachhilfe");
+    offer.setPrice(42);
+    offer.setCategory_id("Nachhilfe");
     rep.save(offer);
     
-    offer.setId("2");
-    offer.setBeschreibung("Biete Nachhilfe in Mathematik");
-    offer.setTitel("Mathe Nachhilfe für Schüler");
-    offer.setPreis(60);
-    offer.setKategorie("Nachhilfe");
+    offer.setOffer_id("2");
+    offer.setDescription("Biete Nachhilfe in Mathematik");
+    offer.setTitle("Mathe Nachhilfe für Schüler");
+    offer.setPrice(60);
+    offer.setCategory_id("Nachhilfe");
     rep.save(offer);
     
-    offer.setId("3");
-    offer.setBeschreibung("Biete Nachhilfe in Programmieren");
-    offer.setTitel("Programmieren Grundkurs");
-    offer.setPreis(12);
-    offer.setKategorie("Nachhilfe");
+    offer.setOffer_id("3");
+    offer.setDescription("Biete Nachhilfe in Programmieren");
+    offer.setTitle("Programmieren Grundkurs");
+    offer.setPrice(12);
+    offer.setCategory_id("Nachhilfe");
     rep.save(offer);
     
-    offer.setId("4");
-    offer.setBeschreibung("Gassi gehen mit Hund, gerne auch täglich, ohne Bezahlung");
-    offer.setTitel("Hunde ausführen");
-    offer.setPreis(0);
-    offer.setKategorie("Tiere");
+    offer.setOffer_id("4");
+    offer.setDescription("Gassi gehen mit Hund, gerne auch täglich, ohne Bezahlung");
+    offer.setTitle("Hunde ausführen");
+    offer.setPrice(0);
+    offer.setCategory_id("Tiere");
     rep.save(offer);
     
-    offer.setId("5");
-    offer.setBeschreibung("Gartenarbeit für 10 euro die stunde!");
-    offer.setTitel("Hilfe im Garten");
-    offer.setPreis(10);
-    offer.setKategorie("Garten");
+    offer.setOffer_id("5");
+    offer.setDescription("Gartenarbeit für 10 euro die stunde!");
+    offer.setTitle("Hilfe im Garten");
+    offer.setPrice(10);
+    offer.setCategory_id("Garten");
     rep.save(offer);
   
-    offer.setId("6");
-    offer.setBeschreibung("Biete Nachhilfe in Informatik");
-    offer.setTitel("Informatik Nachhilfe");
-    offer.setPreis(19);
-    offer.setKategorie("Nachhilfe");
+    offer.setOffer_id("6");
+    offer.setDescription("Biete Nachhilfe in Informatik");
+    offer.setTitle("Informatik Nachhilfe");
+    offer.setPrice(19);
+    offer.setCategory_id("Nachhilfe");
     rep.save(offer);
     
-    offer.setId("7");
-    offer.setBeschreibung("Biete Nachhilfe in Geschichte");
-    offer.setTitel("Geschichte Nachhilfe");
-    offer.setPreis(15);
-    offer.setKategorie("Nachhilfe");
+    offer.setOffer_id("7");
+    offer.setDescription("Biete Nachhilfe in Geschichte");
+    offer.setTitle("Geschichte Nachhilfe");
+    offer.setPrice(15);
+    offer.setCategory_id("Nachhilfe");
     rep.save(offer);
     
-    offer.setId("8");
-    offer.setBeschreibung("Haushaltshilfe");
-    offer.setTitel("Helfe im Haus!");
-    offer.setPreis(22);
-    offer.setKategorie("Haus");
+    offer.setOffer_id("8");
+    offer.setDescription("Haushaltshilfe");
+    offer.setTitle("Helfe im Haus!");
+    offer.setPrice(22);
+    offer.setCategory_id("Haus");
     rep.save(offer);
     
-    offer.setId("9");
-    offer.setBeschreibung("Biete Nachhilfe in Mathematik");
-    offer.setTitel("Mathe Nachhilfe");
-    offer.setPreis(20);
-    offer.setKategorie("Nachhilfe");
+    offer.setOffer_id("9");
+    offer.setDescription("Biete Nachhilfe in Mathematik");
+    offer.setTitle("Mathe Nachhilfe");
+    offer.setPrice(20);
+    offer.setCategory_id("Nachhilfe");
     rep.save(offer);
     
-    offer.setId("10");
-    offer.setBeschreibung("Biete Nachhilfe in Mathematik");
-    offer.setTitel("Mathe Nachhilfe");
-    offer.setPreis(15);
-    offer.setKategorie("Nachhilfe");
+    offer.setOffer_id("10");
+    offer.setDescription("Biete Nachhilfe in Mathematik");
+    offer.setTitle("Mathe Nachhilfe");
+    offer.setPrice(15);
+    offer.setCategory_id("Nachhilfe");
     rep.save(offer);
     
-    offer.setId("11");
-    offer.setBeschreibung("Biete Nachhilfe in Mathematik");
-    offer.setTitel("Mathe Nachhilfe");
-    offer.setPreis(10);
-    offer.setKategorie("Nachhilfe");
+    offer.setOffer_id("11");
+    offer.setDescription("Biete Nachhilfe in Mathematik");
+    offer.setTitle("Mathe Nachhilfe");
+    offer.setPrice(10);
+    offer.setCategory_id("Nachhilfe");
     rep.save(offer);
     
-    offer.setId("12");
-    offer.setBeschreibung("Koche gerne, Helfe im Haushalt, putze und erledige kleiner Besorgungen");
-    offer.setTitel("Haushaltshilfe");
-    offer.setPreis(20);
-    offer.setKategorie("Haus");
+    offer.setOffer_id("12");
+    offer.setDescription("Koche gerne, Helfe im Haushalt, putze und erledige kleiner Besorgungen");
+    offer.setTitle("Haushaltshilfe");
+    offer.setPrice(20);
+    offer.setCategory_id("Haus");
     rep.save(offer);
     
-    offer.setId("12");
-    offer.setBeschreibung("Babysitte gerne, habe viel Erfahrung, von 2 bis 12 Jahren!");
-    offer.setTitel("Babysitten geboten!");
-    offer.setPreis(42);
-    offer.setKategorie("Babysitten");
+    offer.setOffer_id("12");
+    offer.setDescription("Babysitte gerne, habe viel Erfahrung, von 2 bis 12 Jahren!");
+    offer.setTitle("Babysitten geboten!");
+    offer.setPrice(42);
+    offer.setCategory_id("Babysitten");
     rep.save(offer);
     
-    offer.setId("13");
-    offer.setBeschreibung("Passe auf ihre Kinder auf, gerne auch abends, bevorzugt am Wochenende");
-    offer.setTitel("Babysitten!");
-    offer.setPreis(10);
-    offer.setKategorie("Babysitten");
-    rep.save(offer);
-    
-    
-    offer.setId("14");
-    offer.setBeschreibung("Bin ein guter Babysitter, habe schon auf viele Kinder aufgepasst.");
-    offer.setTitel("Kleinkinder hüten");
-    offer.setPreis(15);
-    offer.setKategorie("Babysitten");
+    offer.setOffer_id("13");
+    offer.setDescription("Passe auf ihre Kinder auf, gerne auch abends, bevorzugt am Wochenende");
+    offer.setTitle("Babysitten!");
+    offer.setPrice(10);
+    offer.setCategory_id("Babysitten");
     rep.save(offer);
     
     
-    offer.setId("15");
-    offer.setBeschreibung("Passe gerne tagsüber auf Ihre Kinder auf!");
-    offer.setTitel("Babysitten tagsüber!");
-    offer.setPreis(20);
-    offer.setKategorie("Babysitten");
+    offer.setOffer_id("14");
+    offer.setDescription("Bin ein guter Babysitter, habe schon auf viele Kinder aufgepasst.");
+    offer.setTitle("Kleinkinder hüten");
+    offer.setPrice(15);
+    offer.setCategory_id("Babysitten");
+    rep.save(offer);
+    
+    
+    offer.setOffer_id("15");
+    offer.setDescription("Passe gerne tagsüber auf Ihre Kinder auf!");
+    offer.setTitle("Babysitten tagsüber!");
+    offer.setPrice(20);
+    offer.setCategory_id("Babysitten");
     rep.save(offer);
   
   

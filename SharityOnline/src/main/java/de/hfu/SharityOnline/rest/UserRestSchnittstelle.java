@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response.Status;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.jboss.resteasy.util.Base64;
 
-import de.hfu.SharityOnline.entities.User;
+import de.hfu.SharityOnline.frontend.entities.User;
 import de.hfu.SharityOnline.mapper.UserMapper;
 import de.hfu.SharityOnline.mongo.UserMongo;
 import de.hfu.SharityOnline.setup.Repository;

@@ -1,4 +1,4 @@
-package de.hfu.SharityOnline.entities;
+package de.hfu.SharityOnline.frontend.entities;
 
 import java.io.Serializable;
 
@@ -11,8 +11,8 @@ public class Page implements Serializable {
   /**
    * 
    */
-  private static final long serialVersionUID = 1L;
-
+  private static final long serialVersionUID = 522215797451368986L;
+  
   @Id
   private String id;
   private String title;

@@ -1,4 +1,4 @@
-package de.hfu.SharityOnline.mongo;
+package de.hfu.SharityOnline.innerObjects;
 
 public enum Salutation {
 

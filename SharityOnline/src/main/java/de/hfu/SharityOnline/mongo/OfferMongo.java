@@ -1,10 +1,12 @@
 package de.hfu.SharityOnline.mongo;
 
 import java.io.Serializable;
-import java.util.Calendar;
 
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
+
+import de.hfu.SharityOnline.frontend.entities.Category;
+import de.hfu.SharityOnline.innerObjects.Availability;
 
 @Entity("offers")
 public class OfferMongo implements Serializable {
@@ -14,39 +16,39 @@ public class OfferMongo implements Serializable {
 	 */
   private static final long serialVersionUID = 1L;
   @Id
-  private String id;
-  private String titel;
-  private String beschreibung;
-  private Calendar gueltigAb;
-  private Calendar gueltigBis;
-  private int preis;
-  private int verfügbarkeit;
-  private String kategorie;
-  private Calendar erstelldatum;
+  private String offer_id;
+  private String title;
+  private String description;
+  private double price;
+  private Availability availability;
+  private Category category;
   private String bezeichnung;
+  private int currency;
+  private long creation_date;
+  private boolean active;
 
-  public int getPreis() {
-    return preis;
+  public long getCreation_date() {
+    return creation_date;
   }
 
-  public void setPreis(int preis) {
-    this.preis = preis;
+  public void setCreation_date(long creation_date) {
+    this.creation_date = creation_date;
   }
 
-  public int getVerfügbarkeit() {
-    return verfügbarkeit;
+  public double getPrice() {
+    return price;
   }
 
-  public void setVerfügbarkeit(int verfügbarkeit) {
-    this.verfügbarkeit = verfügbarkeit;
+  public void setPrice(double preis) {
+    this.price = preis;
   }
 
-  public String getKategorie() {
-    return kategorie;
+  public int getAvailability() {
+    return availability;
   }
 
-  public void setKategorie(String kategorie) {
-    this.kategorie = kategorie;
+  public void setAvailability(int verfügbarkeit) {
+    this.availability = verfügbarkeit;
   }
 
   public String getBezeichnung() {
@@ -57,58 +59,52 @@ public class OfferMongo implements Serializable {
     this.bezeichnung = bezeichnung;
   }
 
-  public String getTitel() {
-    return titel;
+  public String getTitle() {
+    return title;
   }
 
-  public void setTitel(String titel) {
-    this.titel = titel;
+  public void setTitle(String titel) {
+    this.title = titel;
   }
 
-  public String getBeschreibung() {
-    return beschreibung;
+  public String getDescription() {
+    return description;
   }
 
-  public void setBeschreibung(String beschreibung) {
-    this.beschreibung = beschreibung;
+  public void setDescription(String beschreibung) {
+    this.description = beschreibung;
   }
 
-  public Calendar getGueltigAb() {
-    return gueltigAb;
+  public String getOffer_id() {
+    return offer_id;
   }
 
-  public void setGueltigAb(Calendar gueltigAb) {
-    this.gueltigAb = gueltigAb;
+  public void setOffer_id(String id) {
+    this.offer_id = id;
   }
 
-  public Calendar getGueltigBis() {
-    return gueltigBis;
+  public boolean isActive() {
+    return active;
   }
 
-  public void setGueltigBis(Calendar gueltigBis) {
-    this.gueltigBis = gueltigBis;
+  public void setActive(boolean active) {
+    this.active = active;
   }
 
-  public String getId() {
-    return id;
+  public int getCurrency() {
+    return currency;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public void setCurrency(int currency) {
+    this.currency = currency;
   }
 
-  @Override
-  public String toString() {
-    return "OfferMongo [id=" + id + ", titel=" + titel + ", beschreibung=" + beschreibung + ", gueltigAb=" + gueltigAb
-        + ", gueltigBis=" + gueltigBis + "]";
+  public Category getCategory() {
+    return category;
   }
 
-  public Calendar getErstelldatum() {
-    return erstelldatum;
-  }
-
-  public void setErstelldatum(Calendar erstelldatum) {
-    this.erstelldatum = erstelldatum;
+  public void setCategory(Category category) {
+    this.category = category;
   }
 
 }

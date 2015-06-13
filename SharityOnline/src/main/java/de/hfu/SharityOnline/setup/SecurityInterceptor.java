@@ -20,7 +20,7 @@ import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ServerResponse;
 import org.jboss.resteasy.util.Base64;
 
-import de.hfu.SharityOnline.entities.User;
+import de.hfu.SharityOnline.frontend.entities.User;
 import de.hfu.SharityOnline.mongo.UserMongo;
 import de.hfu.SharityOnline.util.PasswordHasher;
 

@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import de.hfu.SharityOnline.entities.Page;
+import de.hfu.SharityOnline.frontend.entities.Page;
 import de.hfu.SharityOnline.setup.Repository;
 
 @Path("/page")

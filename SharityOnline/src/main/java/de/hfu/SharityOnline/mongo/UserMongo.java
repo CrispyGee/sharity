@@ -7,6 +7,9 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
 
+import de.hfu.SharityOnline.innerObjects.Activity;
+import de.hfu.SharityOnline.innerObjects.Salutation;
+
 @Entity("users")
 public class UserMongo implements Serializable {
 
@@ -33,6 +36,17 @@ public class UserMongo implements Serializable {
   private Activity activity;
   private String references_experiences;
   private String selfportrait;
+  private long creation_date;
+  
+  public long getCreation_date() {
+    return creation_date;
+  }
+
+  public void setCreation_date(long creation_date) {
+    this.creation_date = creation_date;
+  }
+  
+  
   public String getId() {
     return id;
   }
