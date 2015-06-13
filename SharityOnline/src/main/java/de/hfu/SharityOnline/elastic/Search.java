@@ -50,6 +50,7 @@ public class Search {
     BoolQueryBuilder qb = QueryBuilders.boolQuery();
     qb.should(QueryBuilders.matchQuery("_all", suchterm));
     qb.should(QueryBuilders.fuzzyQuery("_all", suchterm));
+    qb.should(QueryBuilders.matchPhrasePrefixQuery("_all", suchterm));
     return qb;
   }
 

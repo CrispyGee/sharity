@@ -16,7 +16,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import de.hfu.SharityOnline.elastic.Search;
 import de.hfu.SharityOnline.entities.Offer;
+import de.hfu.SharityOnline.entities.OfferMongo;
+import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.setup.Repository;
 
 @Path("/angebot")
@@ -26,6 +29,8 @@ public class AngebotRestSchnittstelle {
   // private final String jsonErrorMsg = "{Error: \"x\"";
   // private final String jsonSuccessMsg = "{Success: \"x\"";
   private static final Repository<Offer> repository = new Repository<Offer>();
+  private static final Search search = new Search();
+
 
   @PermitAll
   @GET
@@ -41,6 +46,15 @@ public class AngebotRestSchnittstelle {
   public Response loadEntityById(@PathParam("id") String id) {
     Offer offer = repository.loadById(Offer.class, id);
     return Response.status(200).entity(offer).type(MediaType.APPLICATION_JSON).build();
+  }
+  
+  @PermitAll
+  @GET
+  @Path("/search/{term}")
+  public Response searchFulltext(@PathParam("term") String term) {
+    List<OfferMongo> offerMongoList = search.searchAllActive(term);
+    List<Offer> offers = OfferMapper.mapOfferListToFrontend(offerMongoList );
+    return Response.status(200).entity(offers).type(MediaType.APPLICATION_JSON).build();
   }
 
   @RolesAllowed({ "ADMIN", "VERIFIEDUSER" })
@@ -91,5 +105,5 @@ public class AngebotRestSchnittstelle {
     // RETURN FALSE;
     // }
   }
-
+  
 }

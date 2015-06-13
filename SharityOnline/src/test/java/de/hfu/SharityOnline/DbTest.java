@@ -9,6 +9,8 @@ import de.hfu.SharityOnline.entities.Page;
 import de.hfu.SharityOnline.entities.User;
 import de.hfu.SharityOnline.entities.UserMongo;
 import de.hfu.SharityOnline.innerObjects.EmployedInfo;
+import de.hfu.SharityOnline.innerObjects.PupilInfo;
+import de.hfu.SharityOnline.innerObjects.StudentInfo;
 import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.mapper.UserMapper;
 import de.hfu.SharityOnline.setup.Repository;
@@ -28,17 +30,17 @@ public class DbTest {
     createAdminUser();
     createSomeOffers();
   }
-  
+
   /**
    * Use to delete Db content
    */
-//  @AfterClass
-//  public static void clearDbUp() {
-//    userRepo.dropCollection(UserMongo.class);
-//    offerRepo.dropCollection(OfferMongo.class);
-//    catRepo.dropCollection(Category.class);
-//    pageRepo.dropCollection(Page.class);
-//  }
+  // @AfterClass
+  // public static void clearDbUp() {
+  // userRepo.dropCollection(UserMongo.class);
+  // offerRepo.dropCollection(OfferMongo.class);
+  // catRepo.dropCollection(Category.class);
+  // pageRepo.dropCollection(Page.class);
+  // }
 
   private void createCategories() {
     Category category1 = new Category();
@@ -107,6 +109,7 @@ public class DbTest {
     user.setPhone("078228942");
     user.setHometown("Ettenheim");
     EmployedInfo employed_info1 = new EmployedInfo();
+    employed_info1.setProfession("profession");
     user.setEmployed_info(employed_info1);
     user.setActivity(1);
     userRepo.save(UserMapper.mapUserToBackend(user));
@@ -122,8 +125,8 @@ public class DbTest {
     user2.setPhone("0007822");
     user2.setHometown("Furtwangen");
     user2.setUsername("horstimülli");
-    EmployedInfo employed_info2 = new EmployedInfo();
-    user2.setEmployed_info(employed_info2);
+    StudentInfo studentInfo = new StudentInfo();
+    user2.setStudent_info(studentInfo);
     userRepo.save(UserMapper.mapUserToBackend(user2));
     User user3 = new User();
     user3.setId("3");
@@ -137,9 +140,9 @@ public class DbTest {
     user3.setPhone("0007822");
     user3.setHometown("Freiburg");
     user3.setUsername("gabigab");
-    EmployedInfo employed_info3 = new EmployedInfo();
-    user3.setEmployed_info(employed_info3);
-    userRepo.save(UserMapper.mapUserToBackend(user2));
+    PupilInfo pupilInfo = new PupilInfo();
+    user3.setPupil_info(pupilInfo);
+    userRepo.save(UserMapper.mapUserToBackend(user3));
   }
 
   private void createSomeOffers() {
