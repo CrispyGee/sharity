@@ -3,10 +3,10 @@ package de.hfu.SharityOnline;
 import org.jboss.resteasy.util.Base64;
 import org.junit.Test;
 
-import de.hfu.SharityOnline.frontend.entities.Offer;
-import de.hfu.SharityOnline.frontend.entities.User;
+import de.hfu.SharityOnline.entities.Offer;
+import de.hfu.SharityOnline.entities.User;
+import de.hfu.SharityOnline.entities.UserMongo;
 import de.hfu.SharityOnline.mapper.UserMapper;
-import de.hfu.SharityOnline.mongo.UserMongo;
 import de.hfu.SharityOnline.setup.Repository;
 
 public class DbTest {

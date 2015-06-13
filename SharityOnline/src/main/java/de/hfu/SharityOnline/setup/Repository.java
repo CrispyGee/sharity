@@ -1,13 +1,11 @@
 package de.hfu.SharityOnline.setup;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
 import com.mongodb.MongoClient;
-import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
 public class Repository<T> {

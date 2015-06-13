@@ -1,4 +1,4 @@
-package de.hfu.SharityOnline.mongo;
+package de.hfu.SharityOnline.entities;
 
 import java.io.Serializable;
 import java.util.Calendar;

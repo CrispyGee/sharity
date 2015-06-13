@@ -1,11 +1,10 @@
-package de.hfu.SharityOnline.mongo;
+package de.hfu.SharityOnline.entities;
 
 import java.io.Serializable;
 
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
-import de.hfu.SharityOnline.frontend.entities.Category;
 import de.hfu.SharityOnline.innerObjects.Availability;
 
 @Entity("offers")
@@ -43,12 +42,12 @@ public class OfferMongo implements Serializable {
     this.price = preis;
   }
 
-  public int getAvailability() {
+  public Availability getAvailability() {
     return availability;
   }
 
-  public void setAvailability(int verfügbarkeit) {
-    this.availability = verfügbarkeit;
+  public void setAvailability(Availability availability) {
+    this.availability = availability;
   }
 
   public String getBezeichnung() {

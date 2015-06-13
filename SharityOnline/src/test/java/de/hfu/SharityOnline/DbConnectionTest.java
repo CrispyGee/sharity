@@ -2,7 +2,7 @@ package de.hfu.SharityOnline;
 
 import org.junit.Test;
 
-import de.hfu.SharityOnline.frontend.entities.User;
+import de.hfu.SharityOnline.entities.User;
 import de.hfu.SharityOnline.setup.Repository;
 
 public class DbConnectionTest {

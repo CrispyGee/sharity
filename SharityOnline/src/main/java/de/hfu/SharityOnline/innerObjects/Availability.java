@@ -2,7 +2,7 @@ package de.hfu.SharityOnline.innerObjects;
 
 public enum Availability {
   
-  student(0), schueler(1), arbeitend(2), arbeitslos(3), rentner(4);
+  vollzeit(0), teilzeit(1), minijob(2), stundenbasiert(3);
 
   int number;
   

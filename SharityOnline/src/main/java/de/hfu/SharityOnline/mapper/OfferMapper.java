@@ -6,14 +6,17 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 
-import de.hfu.SharityOnline.frontend.entities.Offer;
-import de.hfu.SharityOnline.innerObjects.Activity;
-import de.hfu.SharityOnline.innerObjects.Salutation;
-import de.hfu.SharityOnline.mongo.OfferMongo;
+import de.hfu.SharityOnline.entities.Category;
+import de.hfu.SharityOnline.entities.Offer;
+import de.hfu.SharityOnline.entities.OfferMongo;
+import de.hfu.SharityOnline.innerObjects.Availability;
+import de.hfu.SharityOnline.setup.Repository;
 
 public class OfferMapper {
 
   private static final ModelMapper MODEL_MAPPER = new ModelMapper();
+  private static final Repository<Category> repository = new Repository<Category>();
+
   // private static boolean toFront = true;
   static {
     MODEL_MAPPER.addMappings(new OfferToFrontendProps());
@@ -29,8 +32,9 @@ public class OfferMapper {
 
   public static OfferMongo mapOfferToBackend(Offer offer) {
     OfferMongo offerMongo = MODEL_MAPPER.map(offer, OfferMongo.class);
-    offerMongo.setSalutation(Salutation.fromNumber(offer.getSalutation()));
-//    offerMongo.setActivity(Activity.fromNumber(offer.getActivity()));
+    Category category = repository.loadByKey(Category.class, "category_id", offer.getCategory_id());
+    offerMongo.setCategory(category);
+    offerMongo.setAvailability(Availability.fromNumber(offer.getAvailability()));
     return offerMongo;
   }
 
@@ -55,15 +59,15 @@ public class OfferMapper {
 class OfferToFrontendProps extends PropertyMap<OfferMongo, Offer> {
   @Override
   protected void configure() {
-//    skip().setActivity(0);
-//    skip().setSalutation(0);
+    skip().setCategory_id(null);
+    skip().setAvailability(0);
   }
 }
 
 class OfferToBackendProps extends PropertyMap<Offer, OfferMongo> {
   @Override
   protected void configure() {
-//    skip().setActivity(null);
-//    skip().setSalutation(null);
+    skip().setCategory(null);
+    skip().setAvailability(null);
   }
 }

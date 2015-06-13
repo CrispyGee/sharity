@@ -6,10 +6,10 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 
-import de.hfu.SharityOnline.frontend.entities.User;
+import de.hfu.SharityOnline.entities.User;
+import de.hfu.SharityOnline.entities.UserMongo;
 import de.hfu.SharityOnline.innerObjects.Activity;
 import de.hfu.SharityOnline.innerObjects.Salutation;
-import de.hfu.SharityOnline.mongo.UserMongo;
 
 public class UserMapper {
 

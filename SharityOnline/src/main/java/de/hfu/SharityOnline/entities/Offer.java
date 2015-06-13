@@ -1,4 +1,4 @@
-package de.hfu.SharityOnline.frontend.entities;
+package de.hfu.SharityOnline.entities;
 
 
 public class Offer {
