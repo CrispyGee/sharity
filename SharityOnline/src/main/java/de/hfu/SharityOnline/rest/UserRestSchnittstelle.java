@@ -53,7 +53,7 @@ public class UserRestSchnittstelle extends Application {
   @Path("/new")
   public Response createEntity(User user) {
     if (user != null) {
-      if (profilanforderungen(user)) {
+      if (isValid(user)) {
         if(repository.loadByKey(UserMongo.class, "username", user.getUsername())!= null){
           return Response.status(Status.CONFLICT).build();
         }
@@ -112,6 +112,17 @@ public class UserRestSchnittstelle extends Application {
       return Response.status(204).build();
     }
 
+  }
+  public boolean isValid(User user) {
+    if(user.max_Char(user.getUsername(), 20) && (user.getUsername().length() >= 1) && 
+          user.max_Char(user.getLastname(), 15) && !user.hasNumbers(user.getLastname()) && user.getLastname().length() > 1 &&
+          user.max_Char(user.getFirstname(), 15) && !user.hasNumbers(user.getFirstname()) && user.getFirstname().length() > 1 &&
+          user.exact_Char(user.getZip(), 5) && user.onlyNumbers(user.getZip()) &&
+          user.max_Char(user.getPhone(), 30) && user.onlyNumbers(user.getPhone())) {
+      return true;
+    }
+    return false;
+    
   }
 
   public boolean profilanforderungen(User user) {

@@ -53,11 +53,7 @@ public class User{
   }
 
   public void setUsername(String username) {
-    if(max_Char(username, 20) && username.length() >= 1) {
     this.username = username;
-    } else {
-      throw new IllegalArgumentException();
-    }
   }
 
   public String getPassword() {
@@ -89,11 +85,7 @@ public class User{
   }
 
   public void setLastname(String lastname) {
-    if(max_Char(lastname, 15) && !hasNumbers(lastname) && lastname.length() > 1) {
       this.lastname = lastname;
-    } else {
-      throw new IllegalArgumentException();
-    }
   }
 
   public String getFirstname() {
@@ -101,11 +93,7 @@ public class User{
   }
 
   public void setFirstname(String firstname) {
-    if(max_Char(firstname, 15) && !hasNumbers(firstname) && firstname.length() > 1) {
       this.firstname = firstname;
-    } else {
-      throw new IllegalArgumentException();
-    }
   }
 
   public String getZip() {
@@ -113,11 +101,7 @@ public class User{
   }
 
   public void setZip(String zip) {
-    if(exact_Char(zip, 5) && onlyNumbers(zip)) {
       this.zip = zip;
-    } else {
-      throw new IllegalArgumentException();
-    }
   }
 
   public String getHometown() {
@@ -149,11 +133,7 @@ public class User{
   }
 
   public void setPhone(String phone) {
-    if(max_Char(phone, 30) && onlyNumbers(phone)) {
       this.phone = phone; 
-    } else {
-      throw new IllegalArgumentException();
-    }
   }
 
   public String getEmail() {
@@ -161,19 +141,7 @@ public class User{
   }
 
   public void setEmail(String email) { //Valid Email
-//    boolean isValid = false;
-//    try {
-//      InternetAddress emailAddr = new InternetAddress(email);
-//      emailAddr.validate();
-//      isValid = true;
-//    } catch (AddressException e) {
-//      throw new IllegalArgumentException();
-//    }
-//    if( isValid) {
     this.email = email;
-//    } else {
-//      throw new IllegalArgumentException();
-//    }
   }
 
   public int getActivity() {
