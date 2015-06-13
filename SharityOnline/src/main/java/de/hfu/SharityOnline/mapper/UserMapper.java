@@ -27,7 +27,7 @@ public class UserMapper {
     return user;
   }
 
-  public static UserMongo mapUserToBackend(User user) {
+  public static UserMongo mapUserToBackend(User user) throws IllegalArgumentException {
     UserMongo userMongo = MODEL_MAPPER.map(user, UserMongo.class);
     userMongo.setSalutation(Salutation.fromNumber(user.getSalutation()));
     userMongo.setActivity(Activity.fromNumber(user.getActivity()));

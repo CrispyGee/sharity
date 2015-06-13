@@ -52,18 +52,25 @@ public class UserRestSchnittstelle extends Application {
   @POST
   @Path("/new")
   public Response createEntity(User user) {
-    if (user != null && profilanforderungen(user)) {
-      if(repository.loadByKey(UserMongo.class, "username", user.getUsername())!=null){
-        return Response.status(Status.CONFLICT).build();
+    if (user != null) {
+      if (profilanforderungen(user)) {
+        if(repository.loadByKey(UserMongo.class, "username", user.getUsername())!= null){
+          return Response.status(Status.CONFLICT).build();
+        }
+        try {
+          UserMongo userBackend = UserMapper.mapUserToBackend(user);
+          userBackend.setId(UUID.randomUUID().toString());
+          userBackend.setUserRole("FREE");
+          userBackend.setPassword(PasswordHasher.getEncryptor().encryptPassword(user.getPassword()));
+          repository.save(userBackend);
+        } catch(IllegalArgumentException e) {
+          return Response.status(Status.BAD_REQUEST).build();
+        }
+        return Response.status(Status.ACCEPTED).build();
       }
-      UserMongo userBackend = UserMapper.mapUserToBackend(user);
-      userBackend.setId(UUID.randomUUID().toString());
-      userBackend.setUserRole("FREE");
-      userBackend.setPassword(PasswordHasher.getEncryptor().encryptPassword(user.getPassword()));
-      repository.save(userBackend);
-      return Response.status(Status.ACCEPTED).build();
-    }
     return Response.status(Status.BAD_REQUEST).build();
+    }
+    return Response.status(Status.UNAUTHORIZED).build();
   }
 
   @PermitAll
