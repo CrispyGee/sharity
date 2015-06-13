@@ -3,7 +3,6 @@ package de.hfu.SharityOnline;
 import org.junit.Test;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.paymill.models.Payment;
 import com.paymill.models.Transaction;
 
 import de.hfu.SharityOnline.paymill.Paymill;

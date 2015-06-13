@@ -1,7 +1,5 @@
 package de.hfu.SharityOnline;
 
-import org.junit.AfterClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.hfu.SharityOnline.entities.Category;
@@ -169,7 +167,6 @@ public class DbTest {
     offerRepo.save(OfferMapper.mapOfferToBackend(offer2));
     offerRepo.save(OfferMapper.mapOfferToBackend(offer3));
     offerRepo.save(OfferMapper.mapOfferToBackend(offer4));
-
   }
 
 }
