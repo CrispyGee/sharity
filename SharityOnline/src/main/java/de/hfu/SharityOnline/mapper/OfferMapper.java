@@ -9,13 +9,15 @@ import org.modelmapper.PropertyMap;
 import de.hfu.SharityOnline.entities.Category;
 import de.hfu.SharityOnline.entities.Offer;
 import de.hfu.SharityOnline.entities.OfferMongo;
+import de.hfu.SharityOnline.entities.UserMongo;
 import de.hfu.SharityOnline.innerObjects.Availability;
 import de.hfu.SharityOnline.setup.Repository;
 
 public class OfferMapper {
 
   private static final ModelMapper MODEL_MAPPER = new ModelMapper();
-  private static final Repository<Category> repository = new Repository<Category>();
+  private static final Repository<Category> categoryRepo = new Repository<Category>();
+  private static final Repository<UserMongo> userRepo = new Repository<UserMongo>();
 
   // private static boolean toFront = true;
   static {
@@ -27,13 +29,18 @@ public class OfferMapper {
     Offer offer = MODEL_MAPPER.map(offerMongo, Offer.class);
     offer.setCategory_id(offerMongo.getCategory().getCategory_id());
     offer.setAvailability(offerMongo.getAvailability().getNumber());
+    if (offerMongo.getUserMongo() != null) {
+      offer.setUser_id(offerMongo.getUserMongo().getId());
+    }
     return offer;
   }
 
   public static OfferMongo mapOfferToBackend(Offer offer) {
     OfferMongo offerMongo = MODEL_MAPPER.map(offer, OfferMongo.class);
-    Category category = repository.loadByKey(Category.class, "category_id", offer.getCategory_id());
+    Category category = categoryRepo.loadByKey(Category.class, "category_id", offer.getCategory_id());
     offerMongo.setCategory(category);
+    UserMongo userMongo = userRepo.loadById(UserMongo.class, offer.getUser_id());
+    offerMongo.setUserMongo(userMongo);
     offerMongo.setAvailability(Availability.fromNumber(offer.getAvailability()));
     return offerMongo;
   }
@@ -53,7 +60,6 @@ public class OfferMapper {
     }
     return offerMongoList;
   }
-
 }
 
 class OfferToFrontendProps extends PropertyMap<OfferMongo, Offer> {
@@ -61,6 +67,7 @@ class OfferToFrontendProps extends PropertyMap<OfferMongo, Offer> {
   protected void configure() {
     skip().setCategory_id(null);
     skip().setAvailability(0);
+    skip().setUser_id(null);
   }
 }
 
@@ -69,5 +76,6 @@ class OfferToBackendProps extends PropertyMap<Offer, OfferMongo> {
   protected void configure() {
     skip().setCategory(null);
     skip().setAvailability(null);
+    skip().setUserMongo(null);
   }
 }

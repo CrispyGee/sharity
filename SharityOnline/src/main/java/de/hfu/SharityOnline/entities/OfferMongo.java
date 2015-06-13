@@ -18,6 +18,7 @@ public class OfferMongo implements Serializable {
   private String offer_id;
   private String title;
   private String description;
+  private UserMongo userMongo;
   private double price;
   private Availability availability;
   private Category category;
@@ -104,6 +105,14 @@ public class OfferMongo implements Serializable {
 
   public void setCategory(Category category) {
     this.category = category;
+  }
+
+  public UserMongo getUserMongo() {
+    return userMongo;
+  }
+
+  public void setUserMongo(UserMongo userMongo) {
+    this.userMongo = userMongo;
   }
 
 }

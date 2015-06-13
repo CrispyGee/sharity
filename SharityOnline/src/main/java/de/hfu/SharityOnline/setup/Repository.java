@@ -17,7 +17,7 @@ public class Repository<T> {
 //    MongoCredential mongoC = MongoCredential.createCredential("chris2", "admin", "passwort".toCharArray());
 //    ds = new Morphia().createDatastore(new MongoClient(new ServerAddress("localhost"), Arrays.asList(mongoC)), "sharitydb");
 //    Unauthorized:
-      ds = new Morphia().createDatastore(new MongoClient(new ServerAddress("localhost")), "sharitydb");
+      ds = new Morphia().createDatastore(new MongoClient(new ServerAddress("localhost")), "sharityonlinedb");
   }
   
   @SuppressWarnings("unchecked")
@@ -52,6 +52,9 @@ public class Repository<T> {
   public List<T> loadAll(Class<?> T){
     return (List<T>) ds.find(T).asList();
   }
-
+  
+  public void dropCollection(Class<?> T){
+    this.ds.delete(ds.createQuery(T));
+  }
 
 }

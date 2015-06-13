@@ -1,264 +1,175 @@
 package de.hfu.SharityOnline;
 
-import org.jboss.resteasy.util.Base64;
+import org.junit.AfterClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import de.hfu.SharityOnline.entities.Category;
 import de.hfu.SharityOnline.entities.Offer;
+import de.hfu.SharityOnline.entities.OfferMongo;
+import de.hfu.SharityOnline.entities.Page;
 import de.hfu.SharityOnline.entities.User;
 import de.hfu.SharityOnline.entities.UserMongo;
+import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.mapper.UserMapper;
 import de.hfu.SharityOnline.setup.Repository;
 
 public class DbTest {
-  
+
+  private static final Repository<UserMongo> userRepo = new Repository<UserMongo>();
+  private static final Repository<OfferMongo> offerRepo = new Repository<OfferMongo>();
+  private static final Repository<Category> catRepo = new Repository<Category>();
+  private static final Repository<Page> pageRepo = new Repository<Page>();
+
   @Test
-  public void testDummyDatenprofil() {
-    Repository<UserMongo> rep = new Repository<UserMongo>();
+  public void fillDatabaseWithLegitData() {
+    createPages();
+    createCategories();
+    createNormalFreeUsers();
+    createAdminUser();
+    createSomeOffers();
+  }
+  
+  /**
+   * Use to delete Db content
+   */
+//  @AfterClass
+//  public static void clearDbUp() {
+//    userRepo.dropCollection(UserMongo.class);
+//    offerRepo.dropCollection(OfferMongo.class);
+//    catRepo.dropCollection(Category.class);
+//    pageRepo.dropCollection(Page.class);
+//  }
+
+  private void createCategories() {
+    Category category1 = new Category();
+    category1.setCategory_id("cat_id1");
+    category1.setCategory_term("Gartenarbeit");
+    Category category2 = new Category();
+    category2.setCategory_id("cat_id2");
+    category2.setCategory_term("Nachhilfe");
+    Category category3 = new Category();
+    category3.setCategory_id("cat_id3");
+    category3.setCategory_term("Programmieren");
+    Category category4 = new Category();
+    category4.setCategory_id("cat_id4");
+    category4.setCategory_term("Praktikum");
+    catRepo.save(category1);
+    catRepo.save(category2);
+    catRepo.save(category3);
+    catRepo.save(category4);
+  }
+
+  private void createPages() {
+    Page page1 = new Page();
+    page1.setId("page1");
+    page1.setMain_content("maaaain_coooonteeent");
+    page1.setMeta_description("sooo meeetaaa");
+    page1.setMeta_keywords("SEO SEO SEO SEO");
+    Page page2 = new Page();
+    page2.setId("page2");
+    page2.setMain_content("maaaain_coooonteeent");
+    page2.setMeta_description("sooo meeetaaa");
+    page2.setMeta_keywords("SEO SEO SEO SEO");
+    pageRepo.save(page1);
+    pageRepo.save(page2);
+  }
+
+  private void createAdminUser() {
+    User user = new User();
+    user.setId("3");
+    user.setLastname("Uwot");
+    user.setFirstname("Mate");
+    user.setPassword("123");
+    user.setUsername("name");
+    user.setSalutation(1);
+    user.setActivity(0);
+    user.setSelfportrait("Huehuehue");
+    user.setEmail("uwot@mate.de");
+    user.setZip("1234");
+    user.setPhone("0007822");
+    user.setHometown("Furtwangen");
+    userRepo.save(UserMapper.mapUserToBackend(user));
+
+  }
+
+  private void createNormalFreeUsers() {
     User user = new User();
     user.setId("1");
     user.setLastname("Mustermann");
     user.setFirstname("Max");
-    user.setUserRole("ADMIN");
+    user.setUserRole("FREE");
     user.setPassword("123");
     user.setUsername("asd");
     user.setSalutation(1);
-    user.setSelfportrait("Student");
+    user.setSelfportrait("Ich bin cool");
     user.setEmail("max@mustermann.de");
     user.setZip("77955");
     user.setPhone("078228942");
     user.setHometown("Ettenheim");
-    UserMongo userBackend = UserMapper.mapUserToBackend(user);
-    String usernameAndPassword = user.getUsername() + ":" + user.getPassword();
-    userBackend.setUsernameAndPassword(new String(Base64.encodeBytes(usernameAndPassword.getBytes())));
-    rep.save(userBackend);
-    
-    user.setId("2");
-    user.setLastname("Müller");
-    user.setFirstname("Horst");
-    user.setSalutation(1);
-    user.setSelfportrait("Schüler");
-    user.setEmail("müllerhorst@mustermann.de");
-    user.setZip("1234");
-    user.setPhone("0007822");
-    user.setHometown("Furtwangen");
-    user.setUsername("horstimülli");
-    rep.save(UserMapper.mapUserToBackend(user));
-    
-    user.setId("3");
-    user.setLastname("Müller");
-    user.setFirstname("Sabine");
-    user.setSalutation(0);
-    user.setSelfportrait("Student");
-    user.setEmail("email@domain.de");
-    user.setZip("78170");
-    user.setPhone("01782830932");
-    user.setHometown("Stuttgart");
-    user.setUsername("Binchen");
-    rep.save(UserMapper.mapUserToBackend(user));
-    
-    user.setId("4");
-    user.setLastname("Plotzky");
-    user.setFirstname("Chris");
-    user.setSalutation(1);
-    user.setSelfportrait("Student");
-    user.setEmail("christian@plotzky.de");
-    user.setZip("78123");
-    user.setPhone("0151294024");
-    user.setHometown("Freiburg");
-    user.setUsername("crispyGee");
-    rep.save(UserMapper.mapUserToBackend(user));
-    
-    user.setId("5");
-    user.setLastname("Fischer");
-    user.setFirstname("Niklas");
-    user.setSalutation(1);
-    user.setSelfportrait("Azubi");
-    user.setEmail("nf@gmail.de");
-    user.setZip("77955");
-    user.setPhone("078228942");
-    user.setHometown("Ettenheim");
-    user.setUsername("nikki");
-    rep.save(UserMapper.mapUserToBackend(user));
-    
-    user.setId("6");
-    user.setLastname("Albach");
-    user.setFirstname("Etu");
-    user.setSalutation(1);
-    user.setSelfportrait("Student");
-    user.setEmail("email@random.de");
-    user.setZip("77953");
-    user.setPhone("02318942");
-    user.setHometown("Freudenstadt");
-    user.setUsername("Etualb");
-    rep.save(UserMapper.mapUserToBackend(user));
-    
-    user.setId("7");
-    user.setLastname("Günther");
-    user.setFirstname("Mannfred");
-    user.setSalutation(1);
-    user.setSelfportrait("Schüler");
-    user.setEmail("fred@gmail.de");
-    user.setZip("37955");
-    user.setPhone("004978223123");
-    user.setHometown("Berlin");
-    user.setUsername("MannfredG");
-    rep.save(UserMapper.mapUserToBackend(user));
-    
-    user.setId("8");
-    user.setLastname("Knorke");
-    user.setFirstname("Heike");
-    user.setSalutation(0);
-    user.setSelfportrait("Rentner");
-    user.setEmail("heike@rentner.de");
-    user.setZip("78812");
-    user.setPhone("0362193");
-    user.setHometown("Villingen");
-    user.setUsername("knorkeheike");
-    rep.save(UserMapper.mapUserToBackend(user));
-    
-    user.setId("9");
-    user.setLastname("Müller");
-    user.setFirstname("Elke");
-    user.setSalutation(0);
-    user.setSelfportrait("Selbstständig");
-    user.setEmail("mueller@heike.de");
-    user.setZip("32342");
-    user.setPhone("0172894");
-    user.setHometown("Frankfurt");
-    user.setUsername("Elki");
-    rep.save(UserMapper.mapUserToBackend(user));
-    
-    user.setId("10");
-    user.setLastname("Wasser");
-    user.setFirstname("Edgar");
-    user.setSalutation(1);
-    user.setSelfportrait("Student");
-    user.setEmail("edgar.wasser@gmail.de");
-    user.setZip("12345");
-    user.setPhone("078228942");
-    user.setHometown("Hamburg");
-    user.setUsername("Wasedgar");
-    rep.save(UserMapper.mapUserToBackend(user));
+    user.setActivity(1);
+    userRepo.save(UserMapper.mapUserToBackend(user));
+    User user2 = new User();
+    user2.setId("2");
+    user2.setLastname("Müller");
+    user2.setFirstname("Horst");
+    user2.setSalutation(1);
+    user2.setActivity(2);
+    user2.setSelfportrait("Spinnenmann");
+    user2.setEmail("müllerhorst@mustermann.de");
+    user2.setZip("1234");
+    user2.setPhone("0007822");
+    user2.setHometown("Furtwangen");
+    user2.setUsername("horstimülli");
+    userRepo.save(UserMapper.mapUserToBackend(user2));
   }
-  @Test
-  public void testDummyDatenAngebot() {
-    Repository<Offer> rep = new Repository<Offer>();
-    Offer offer = new Offer();
-    offer.setOffer_id("1");
-    offer.setDescription("Biete Nachhilfe in Mathematik");
-    offer.setTitle("Mathe Nachhilfe");
-    offer.setPrice(42);
-    offer.setCategory_id("Nachhilfe");
-    rep.save(offer);
-    
-    offer.setOffer_id("2");
-    offer.setDescription("Biete Nachhilfe in Mathematik");
-    offer.setTitle("Mathe Nachhilfe für Schüler");
-    offer.setPrice(60);
-    offer.setCategory_id("Nachhilfe");
-    rep.save(offer);
-    
-    offer.setOffer_id("3");
-    offer.setDescription("Biete Nachhilfe in Programmieren");
-    offer.setTitle("Programmieren Grundkurs");
-    offer.setPrice(12);
-    offer.setCategory_id("Nachhilfe");
-    rep.save(offer);
-    
-    offer.setOffer_id("4");
-    offer.setDescription("Gassi gehen mit Hund, gerne auch täglich, ohne Bezahlung");
-    offer.setTitle("Hunde ausführen");
-    offer.setPrice(0);
-    offer.setCategory_id("Tiere");
-    rep.save(offer);
-    
-    offer.setOffer_id("5");
-    offer.setDescription("Gartenarbeit für 10 euro die stunde!");
-    offer.setTitle("Hilfe im Garten");
-    offer.setPrice(10);
-    offer.setCategory_id("Garten");
-    rep.save(offer);
-  
-    offer.setOffer_id("6");
-    offer.setDescription("Biete Nachhilfe in Informatik");
-    offer.setTitle("Informatik Nachhilfe");
-    offer.setPrice(19);
-    offer.setCategory_id("Nachhilfe");
-    rep.save(offer);
-    
-    offer.setOffer_id("7");
-    offer.setDescription("Biete Nachhilfe in Geschichte");
-    offer.setTitle("Geschichte Nachhilfe");
-    offer.setPrice(15);
-    offer.setCategory_id("Nachhilfe");
-    rep.save(offer);
-    
-    offer.setOffer_id("8");
-    offer.setDescription("Haushaltshilfe");
-    offer.setTitle("Helfe im Haus!");
-    offer.setPrice(22);
-    offer.setCategory_id("Haus");
-    rep.save(offer);
-    
-    offer.setOffer_id("9");
-    offer.setDescription("Biete Nachhilfe in Mathematik");
-    offer.setTitle("Mathe Nachhilfe");
-    offer.setPrice(20);
-    offer.setCategory_id("Nachhilfe");
-    rep.save(offer);
-    
-    offer.setOffer_id("10");
-    offer.setDescription("Biete Nachhilfe in Mathematik");
-    offer.setTitle("Mathe Nachhilfe");
-    offer.setPrice(15);
-    offer.setCategory_id("Nachhilfe");
-    rep.save(offer);
-    
-    offer.setOffer_id("11");
-    offer.setDescription("Biete Nachhilfe in Mathematik");
-    offer.setTitle("Mathe Nachhilfe");
-    offer.setPrice(10);
-    offer.setCategory_id("Nachhilfe");
-    rep.save(offer);
-    
-    offer.setOffer_id("12");
-    offer.setDescription("Koche gerne, Helfe im Haushalt, putze und erledige kleiner Besorgungen");
-    offer.setTitle("Haushaltshilfe");
-    offer.setPrice(20);
-    offer.setCategory_id("Haus");
-    rep.save(offer);
-    
-    offer.setOffer_id("12");
-    offer.setDescription("Babysitte gerne, habe viel Erfahrung, von 2 bis 12 Jahren!");
-    offer.setTitle("Babysitten geboten!");
-    offer.setPrice(42);
-    offer.setCategory_id("Babysitten");
-    rep.save(offer);
-    
-    offer.setOffer_id("13");
-    offer.setDescription("Passe auf ihre Kinder auf, gerne auch abends, bevorzugt am Wochenende");
-    offer.setTitle("Babysitten!");
-    offer.setPrice(10);
-    offer.setCategory_id("Babysitten");
-    rep.save(offer);
-    
-    
-    offer.setOffer_id("14");
-    offer.setDescription("Bin ein guter Babysitter, habe schon auf viele Kinder aufgepasst.");
-    offer.setTitle("Kleinkinder hüten");
-    offer.setPrice(15);
-    offer.setCategory_id("Babysitten");
-    rep.save(offer);
-    
-    
-    offer.setOffer_id("15");
-    offer.setDescription("Passe gerne tagsüber auf Ihre Kinder auf!");
-    offer.setTitle("Babysitten tagsüber!");
-    offer.setPrice(20);
-    offer.setCategory_id("Babysitten");
-    rep.save(offer);
-  
-  
+
+  private void createSomeOffers() {
+    Offer offer1 = new Offer();
+    offer1.setOffer_id("off_id1");
+    offer1.setActive(true);
+    offer1.setAvailability(0);
+    offer1.setCurrency(0);
+    offer1.setDescription("Gassi gehen mit Hund, gerne auch täglich, ohne Bezahlung");
+    offer1.setPrice(100.0d);
+    offer1.setTitle("Hund ausführen");
+    offer1.setCategory_id("cat_id1");
+    offer1.setUser_id("1");
+    Offer offer2 = new Offer();
+    offer2.setOffer_id("off_id2");
+    offer2.setActive(true);
+    offer2.setAvailability(1);
+    offer2.setCurrency(0);
+    offer2.setDescription("Gartenarbeit für 10 euro die stunde!");
+    offer2.setPrice(50.0d);
+    offer2.setTitle("Gartenarbeit");
+    offer2.setCategory_id("cat_id2");
+    offer2.setUser_id("1");
+    Offer offer3 = new Offer();
+    offer3.setOffer_id("off_id3");
+    offer3.setActive(true);
+    offer3.setAvailability(2);
+    offer3.setCurrency(0);
+    offer3.setDescription("Biete Nachhilfe in Informatik");
+    offer3.setPrice(25.0d);
+    offer3.setTitle("Mathe Nachhilfe");
+    offer3.setCategory_id("cat_id3");
+    offer3.setUser_id("2");
+    Offer offer4 = new Offer();
+    offer4.setOffer_id("off_id4");
+    offer4.setActive(false);
+    offer4.setAvailability(3);
+    offer4.setCurrency(0);
+    offer4.setDescription("Babysitte gerne, habe viel Erfahrung, von 2 bis 12 Jahren!");
+    offer4.setPrice(75.0d);
+    offer4.setTitle("Babysitten geboten!");
+    offer4.setCategory_id("cat_id4");
+    offer4.setUser_id("2");
+    offerRepo.save(OfferMapper.mapOfferToBackend(offer1));
+    offerRepo.save(OfferMapper.mapOfferToBackend(offer2));
+    offerRepo.save(OfferMapper.mapOfferToBackend(offer3));
+    offerRepo.save(OfferMapper.mapOfferToBackend(offer4));
+
   }
 
 }

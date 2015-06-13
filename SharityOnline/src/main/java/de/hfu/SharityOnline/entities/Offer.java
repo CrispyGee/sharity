@@ -6,10 +6,10 @@ public class Offer {
   private String offer_id;
   private String title;
   private String description;
+  private String user_id;
   private double price;
   private int availability;
   private String category_id;
-  private String bezeichnung;
   private int currency;
   private long creation_date;
   private boolean active;
@@ -66,14 +66,6 @@ public class Offer {
     this.category_id = category_id;
   }
 
-  public String getBezeichnung() {
-    return bezeichnung;
-  }
-
-  public void setBezeichnung(String bezeichnung) {
-    this.bezeichnung = bezeichnung;
-  }
-
   public int getCurrency() {
     return currency;
   }
@@ -96,6 +88,14 @@ public class Offer {
 
   public void setActive(boolean active) {
     this.active = active;
+  }
+
+  public String getUser_id() {
+    return user_id;
+  }
+
+  public void setUser_id(String user_id) {
+    this.user_id = user_id;
   }
   
   
