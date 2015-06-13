@@ -10,10 +10,10 @@ public class SearchTest {
   public void testest(){
     Search search = new Search();
 //    search.searchTest("Muster");
-    search.searchTest("Student");
-    search.searchTest("student");
-    search.searchTest("77955");
-    search.searchTest("7795");
+    search.searchAllActive("Max Garten");
+    search.searchAllActive("Mathe");
+    search.searchAllActive("Gassi");
+    search.searchAllActive("Babysitten");
     search.close();
   }
 

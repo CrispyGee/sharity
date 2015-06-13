@@ -1,10 +1,5 @@
 package de.hfu.SharityOnline.paymill;
 
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.paymill.context.PaymillContext;
 import com.paymill.models.Client;
 import com.paymill.models.Fee;
@@ -12,7 +7,6 @@ import com.paymill.models.Interval.Period;
 import com.paymill.models.Offer;
 import com.paymill.models.Payment;
 import com.paymill.models.Transaction;
-import com.paymill.services.ClientService;
 import com.paymill.services.OfferService;
 import com.paymill.services.PaymentService;
 import com.paymill.services.TransactionService;
