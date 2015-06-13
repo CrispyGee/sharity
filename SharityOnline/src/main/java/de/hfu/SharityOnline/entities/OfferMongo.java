@@ -115,4 +115,12 @@ public class OfferMongo implements Serializable {
     this.userMongo = userMongo;
   }
 
+  @Override
+  public String toString() {
+    return "OfferMongo [offer_id=" + offer_id + ", title=" + title + ", description=" + description + ", userMongo="
+        + userMongo + ", price=" + price + ", availability=" + availability + ", category=" + category
+        + ", bezeichnung=" + bezeichnung + ", currency=" + currency + ", creation_date=" + creation_date + ", active="
+        + active + "]";
+  }
+  
 }

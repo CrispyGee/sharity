@@ -143,5 +143,14 @@ public class UserMongo implements Serializable {
   public void setUsernameAndPassword(String usernameAndPassword) {
     this.usernameAndPassword = usernameAndPassword;
   }
+
+  @Override
+  public String toString() {
+    return "UserMongo [id=" + id + ", username=" + username + ", password=" + password + ", usernameAndPassword="
+        + usernameAndPassword + ", userRole=" + userRole + ", salutation=" + salutation + ", lastname=" + lastname
+        + ", firstname=" + firstname + ", zip=" + zip + ", hometown=" + hometown + ", birthday=" + birthday
+        + ", phone=" + phone + ", email=" + email + ", activity=" + activity + ", references_experiences="
+        + references_experiences + ", selfportrait=" + selfportrait + ", creation_date=" + creation_date + "]";
+  }
   
 }
