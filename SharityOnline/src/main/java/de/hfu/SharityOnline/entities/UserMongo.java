@@ -8,7 +8,10 @@ import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
 
 import de.hfu.SharityOnline.innerObjects.Activity;
+import de.hfu.SharityOnline.innerObjects.EmployedInfo;
+import de.hfu.SharityOnline.innerObjects.PupilInfo;
 import de.hfu.SharityOnline.innerObjects.Salutation;
+import de.hfu.SharityOnline.innerObjects.StudentInfo;
 
 @Entity("users")
 public class UserMongo implements Serializable {
@@ -34,6 +37,9 @@ public class UserMongo implements Serializable {
   @Indexed(unique = true)
   private String email;
   private Activity activity;
+  private StudentInfo student_info;
+  private PupilInfo pupil_info;
+  private EmployedInfo employed_info;
   private String references_experiences;
   private String selfportrait;
   private long creation_date;
@@ -151,6 +157,30 @@ public class UserMongo implements Serializable {
         + ", firstname=" + firstname + ", zip=" + zip + ", hometown=" + hometown + ", birthday=" + birthday
         + ", phone=" + phone + ", email=" + email + ", activity=" + activity + ", references_experiences="
         + references_experiences + ", selfportrait=" + selfportrait + ", creation_date=" + creation_date + "]";
+  }
+
+  public StudentInfo getStudent_info() {
+    return student_info;
+  }
+
+  public void setStudent_info(StudentInfo student_info) {
+    this.student_info = student_info;
+  }
+
+  public PupilInfo getPupil_info() {
+    return pupil_info;
+  }
+
+  public void setPupil_info(PupilInfo pupil_info) {
+    this.pupil_info = pupil_info;
+  }
+
+  public EmployedInfo getEmployed_info() {
+    return employed_info;
+  }
+
+  public void setEmployed_info(EmployedInfo employed_info) {
+    this.employed_info = employed_info;
   }
   
 }

@@ -8,7 +8,7 @@ import com.paymill.models.Transaction;
 import de.hfu.SharityOnline.paymill.Paymill;
 
 
-public class sharityTest {
+public class PaymillTest {
 
   
   @Test

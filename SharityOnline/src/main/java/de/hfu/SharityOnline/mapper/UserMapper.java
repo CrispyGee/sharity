@@ -17,7 +17,7 @@ public class UserMapper {
   // private static boolean toFront = true;
   static {
     MODEL_MAPPER.addMappings(new UserToFrontendProps());
-    MODEL_MAPPER.addMappings(new ToBackendProps());
+    MODEL_MAPPER.addMappings(new UserToBackendProps());
   }
 
   public static User mapUserToFrontend(UserMongo userMongo) {
@@ -60,7 +60,7 @@ class UserToFrontendProps extends PropertyMap<UserMongo, User> {
   }
 }
 
-class ToBackendProps extends PropertyMap<User, UserMongo> {
+class UserToBackendProps extends PropertyMap<User, UserMongo> {
   @Override
   protected void configure() {
     skip().setActivity(null);
