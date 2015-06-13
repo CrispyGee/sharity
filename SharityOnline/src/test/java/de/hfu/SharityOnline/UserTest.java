@@ -1,6 +1,6 @@
 package de.hfu.SharityOnline;
 
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testUserName_zuKurz() {
@@ -31,7 +31,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   public void testUserName_valid() {
     boolean bool = true;
@@ -41,7 +41,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = false; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   /*
    *  Nachname - Tests
@@ -55,7 +55,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testNachnameUser_zuLang() {
@@ -66,7 +66,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testNachnameUser_zuKurz() {
@@ -77,7 +77,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testNachnameUser_valid() {
@@ -88,7 +88,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = false; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   /*
    * Vorname- Test
@@ -102,7 +102,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testVorname_zuLang() {
@@ -113,7 +113,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testVornameUser_zuKurz() {
@@ -124,7 +124,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testVornameUser_valid() {
@@ -135,7 +135,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = false; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   /*
    * Zip - Tests
@@ -150,7 +150,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testZip_zuLange() { 
@@ -161,7 +161,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testZip_zuKurz() {
@@ -172,7 +172,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testZip_valid() {
@@ -183,7 +183,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = false;
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   /*
    * Hometown - Tests
@@ -197,7 +197,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testHometown_zuLang() {
@@ -208,7 +208,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testHometown_valid() {
@@ -219,7 +219,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = false; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   /*
    * Birthday - Tests
@@ -233,7 +233,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testBirthday_valid() {
@@ -244,7 +244,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = false; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   /*
    * Phone - Tests
@@ -258,7 +258,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testPhone_mitBuchstaben() {
@@ -269,7 +269,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = true; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   @Test
   public void testPhone_valid() {
@@ -280,7 +280,7 @@ public class UserTest {
     } catch(IllegalArgumentException e) {
       bool = false; 
     }
-    Assert.assertTrue(bool);
+    assertTrue(bool);
   }
   /*
    * Email- Tests
