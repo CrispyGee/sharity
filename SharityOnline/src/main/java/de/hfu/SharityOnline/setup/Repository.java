@@ -1,6 +1,5 @@
 package de.hfu.SharityOnline.setup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.mongodb.morphia.Datastore;
@@ -8,8 +7,6 @@ import org.mongodb.morphia.Morphia;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
-
-import de.hfu.SharityOnline.entities.OfferMongo;
 
 public class Repository<T> {
   

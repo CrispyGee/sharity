@@ -8,6 +8,7 @@ import de.hfu.SharityOnline.entities.OfferMongo;
 import de.hfu.SharityOnline.entities.Page;
 import de.hfu.SharityOnline.entities.User;
 import de.hfu.SharityOnline.entities.UserMongo;
+import de.hfu.SharityOnline.innerObjects.EmployedInfo;
 import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.mapper.UserMapper;
 import de.hfu.SharityOnline.setup.Repository;
@@ -84,7 +85,7 @@ public class DbTest {
     user.setActivity(0);
     user.setSelfportrait("Huehuehue");
     user.setEmail("uwot@mate.de");
-    user.setZip("1234");
+    user.setZip("12345");
     user.setPhone("0007822");
     user.setHometown("Furtwangen");
     userRepo.save(UserMapper.mapUserToBackend(user));
@@ -105,6 +106,8 @@ public class DbTest {
     user.setZip("77955");
     user.setPhone("078228942");
     user.setHometown("Ettenheim");
+    EmployedInfo employed_info1 = new EmployedInfo();
+    user.setEmployed_info(employed_info1);
     user.setActivity(1);
     userRepo.save(UserMapper.mapUserToBackend(user));
     User user2 = new User();
@@ -115,10 +118,27 @@ public class DbTest {
     user2.setActivity(2);
     user2.setSelfportrait("Spinnenmann");
     user2.setEmail("müllerhorst@mustermann.de");
-    user2.setZip("1234");
+    user2.setZip("12345");
     user2.setPhone("0007822");
     user2.setHometown("Furtwangen");
     user2.setUsername("horstimülli");
+    EmployedInfo employed_info2 = new EmployedInfo();
+    user2.setEmployed_info(employed_info2);
+    userRepo.save(UserMapper.mapUserToBackend(user2));
+    User user3 = new User();
+    user3.setId("3");
+    user3.setLastname("Meyer");
+    user3.setFirstname("Gabi");
+    user3.setSalutation(1);
+    user3.setActivity(2);
+    user3.setSelfportrait("Cake Toppings");
+    user3.setEmail("gabi@meyer.de");
+    user3.setZip("79100");
+    user3.setPhone("0007822");
+    user3.setHometown("Freiburg");
+    user3.setUsername("gabigab");
+    EmployedInfo employed_info3 = new EmployedInfo();
+    user3.setEmployed_info(employed_info3);
     userRepo.save(UserMapper.mapUserToBackend(user2));
   }
 

@@ -1,8 +1,10 @@
 package de.hfu.SharityOnline.entities;
 
+import de.hfu.SharityOnline.innerObjects.EmployedInfo;
+import de.hfu.SharityOnline.innerObjects.PupilInfo;
+import de.hfu.SharityOnline.innerObjects.StudentInfo;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
+
 
 public class User{
 
@@ -19,9 +21,9 @@ public class User{
   private String phone;
   private String email;
   private int activity;
-  private String student_info;
-  private String pupil_info;
-  //TODO
+  private StudentInfo student_info;
+  private PupilInfo pupil_info;
+  private EmployedInfo employed_info;
   private String references_experiences;
   private String selfportrait;
   private long creation_date;
@@ -232,4 +234,28 @@ public class User{
     return false;
   }
 //TODO activity zeug
+
+  public StudentInfo getStudent_info() {
+    return student_info;
+  }
+
+  public void setStudent_info(StudentInfo student_info) {
+    this.student_info = student_info;
+  }
+
+  public PupilInfo getPupil_info() {
+    return pupil_info;
+  }
+
+  public void setPupil_info(PupilInfo pupil_info) {
+    this.pupil_info = pupil_info;
+  }
+
+  public EmployedInfo getEmployed_info() {
+    return employed_info;
+  }
+
+  public void setEmployed_info(EmployedInfo employed_info) {
+    this.employed_info = employed_info;
+  }
 }
