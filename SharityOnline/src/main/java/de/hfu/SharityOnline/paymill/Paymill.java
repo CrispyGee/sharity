@@ -20,6 +20,7 @@ import com.paymill.context.PaymillContext;
 
 @Entity("paymilltransactions")
 public class Paymill implements Serializable {
+  //TODO: POST RICHTIG
   
   /**
    * 

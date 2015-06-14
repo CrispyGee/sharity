@@ -8,6 +8,7 @@ import javax.ws.rs.core.Application;
 import de.hfu.SharityOnline.rest.OfferRestSchnittstelle;
 import de.hfu.SharityOnline.rest.CategoryRestSchnittstelle;
 import de.hfu.SharityOnline.rest.PageRestSchnittstelle;
+import de.hfu.SharityOnline.rest.PaymillRestSchnittstelle;
 import de.hfu.SharityOnline.rest.UserRestSchnittstelle;
 
 public class RestInit extends Application {
@@ -22,6 +23,7 @@ public class RestInit extends Application {
     this.singletons.add(new UserRestSchnittstelle());
     this.singletons.add(new CategoryRestSchnittstelle());
     this.singletons.add(new OfferRestSchnittstelle());
+    this.singletons.add(new PaymillRestSchnittstelle());
   }
 
   public Set<Class<?>> getClasses() {
