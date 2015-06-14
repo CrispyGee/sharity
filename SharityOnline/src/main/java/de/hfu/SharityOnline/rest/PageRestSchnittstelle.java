@@ -22,7 +22,7 @@ import de.hfu.SharityOnline.setup.Repository;
 @Produces(MediaType.APPLICATION_JSON)
 public class PageRestSchnittstelle {
 
-  private final String jsonErrorMsg = "{Error: \"x\"";
+  private final String jsonErrorMsg = "{Error: \"x\"}";
   // private final String jsonSuccessMsg = "{Success: \"x\"";
   private static final Repository<Page> repository = new Repository<Page>();
 
@@ -43,7 +43,7 @@ public class PageRestSchnittstelle {
     if (page != null) {
       return Response.status(200).entity(page).type(MediaType.APPLICATION_JSON).build();
     } else {
-      return Response.status(424).entity(jsonErrorMsg.replace("x", "Page with id " + id + " not found in database"))
+      return Response.status(424).entity(jsonErrorMsg.replace("x", "Response 424: Page with id " + id + " not found in database."))
           .type(MediaType.APPLICATION_JSON).build();
     }
     }

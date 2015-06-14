@@ -17,6 +17,7 @@ import de.hfu.SharityOnline.setup.Repository;
 @Produces(MediaType.APPLICATION_JSON)
 
 public class CategoryRestSchnittstelle {
+  private final String jsonErrorMsg = "{Error: \"x\"}";
   // private final String jsonErrorMsg = "{Error: \"x\"";
   // private final String jsonSuccessMsg = "{Success: \"x\"";
   private static final Repository<Category> repository = new Repository<Category>();
@@ -25,7 +26,7 @@ public class CategoryRestSchnittstelle {
   @GET
   @Path("")
   public Response loadEntity() {
-    List<Category> allCategories = repository.loadAll(Category.class);
+    List<Category> allCategories = repository.loadAll(Category.class); //TODO: richtige ausgabe..
     return Response.status(200).entity(allCategories).type(MediaType.APPLICATION_JSON).build();
   }
 
@@ -33,7 +34,16 @@ public class CategoryRestSchnittstelle {
   @GET
   @Path("/{category_id}")
   public Response loadEntityById(@PathParam("category_id") String category_id) {
+    try {
     Category cat = repository.loadById(Category.class, category_id);
-    return Response.status(200).entity(cat).type(MediaType.APPLICATION_JSON).build();
-  }
+    if (cat != null) {
+      return Response.status(200).entity(cat).type(MediaType.APPLICATION_JSON).build();
+    } else {
+      return Response.status(424).entity(jsonErrorMsg.replace("x", "Response 424: Category with id " + category_id + " not found in database."))
+          .type(MediaType.APPLICATION_JSON).build();
+    }
+    } catch(Exception e) {
+      return Response.status(500).entity(jsonErrorMsg.replace("x", e.toString())).type(MediaType.APPLICATION_JSON).build();
+      }
+    }
 }

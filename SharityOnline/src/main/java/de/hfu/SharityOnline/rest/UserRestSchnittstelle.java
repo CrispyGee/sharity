@@ -24,7 +24,8 @@ import de.hfu.SharityOnline.setup.Repository;
 
 @Path("/user")
 public class UserRestSchnittstelle extends Application {
-
+  
+  private final String jsonErrorMsg = "{Error: \"x\"}";
   // private final String jsonErrorMsg = "{Error: \"x\"";
   // private final String jsonSuccessMsg = "{Success: \"x\"";
   private static final Repository<UserMongo> repository = new Repository<UserMongo>();
@@ -42,10 +43,15 @@ public class UserRestSchnittstelle extends Application {
   @GET
   @Path("/{id}")
   public Response loadEntityById(@PathParam("id") String id) {
+    try {
     UserMongo user = repository.loadById(UserMongo.class, id);
     user.setPassword(null);
     user.setUsername(null);
     return Response.status(200).entity(UserMapper.mapUserToFrontend(user)).type(MediaType.APPLICATION_JSON).build();
+    } catch(Exception e) {
+      return Response.status(424).entity(jsonErrorMsg.replace("x", "Response 424: User with id " + id + " not found in database."))
+          .type(MediaType.APPLICATION_JSON).build();
+      }
   }
 
   @PermitAll
