@@ -1,5 +1,6 @@
 package de.hfu.SharityOnline.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +16,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.elasticsearch.index.query.FilterBuilder;
+
 import de.hfu.SharityOnline.elastic.Search;
 import de.hfu.SharityOnline.entities.Offer;
 import de.hfu.SharityOnline.entities.OfferMongo;
@@ -27,9 +30,7 @@ public class OfferRestSchnittstelle {
 
   // private final String jsonErrorMsg = "{Error: \"x\"";
   // private final String jsonSuccessMsg = "{Success: \"x\"";
-  private static final String offerFullSearch = "offer/search/{term}/{login_state}/salutation/{salutation}/hometown/"
-      + "{hometown}/within/{within}/age/{age}/price/{price}/availability/{availability}"
-      + "/category_id/{category_id}/creation_date/{creation_date}";
+  
   private static final Repository<OfferMongo> repository = new Repository<OfferMongo>();
   private static final Search search = new Search();
 
@@ -59,11 +60,26 @@ public class OfferRestSchnittstelle {
     return Response.status(200).entity(offers).type(MediaType.APPLICATION_JSON).build();
   }
 
+  
+  private static final String offerFullSearch = "offer/search/{term}/{login_state}/salutation/{salutation}/hometown/"
+      + "{hometown}/within/{within}/age/{age}/price/{price}/availability/{availability}"
+      + "/category_id/{category_id}/creation_date/{creation_date}";
   @PermitAll
   @GET
   @Path(offerFullSearch)
-  public Response searchFiltered(@PathParam("term") String term) {
-    List<OfferMongo> offerMongoList = search.searchAllActive(term);
+  public Response searchFiltered(@PathParam("term") String term, 
+      @PathParam("login_state") String login_state,
+      @PathParam("salutation") Integer salutation,
+      @PathParam("hometown") String hometown,
+      @PathParam("within") Double within,
+      @PathParam("age") Integer age,
+      @PathParam("price") Double price,
+      @PathParam("availability") Integer availability,
+      @PathParam("category_id") String category_id,
+      @PathParam("creation_date") Long creation_date) {
+    
+    FilterBuilder filter = search.mapFilterCriteria(login_state, salutation, hometown, within, age, price, availability, category_id, creation_date);
+    List<OfferMongo> offerMongoList = search.searchActiveWithFilter(filter, term);
     List<Offer> offers = OfferMapper.mapOfferListToFrontend(offerMongoList);
     return Response.status(200).entity(offers).type(MediaType.APPLICATION_JSON).build();
   }
