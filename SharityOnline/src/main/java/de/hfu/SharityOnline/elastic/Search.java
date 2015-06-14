@@ -5,6 +5,8 @@ import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
@@ -14,15 +16,18 @@ import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.node.Node;
 
+import de.hfu.SharityOnline.entities.Category;
 import de.hfu.SharityOnline.entities.OfferMongo;
+import de.hfu.SharityOnline.innerObjects.Availability;
 import de.hfu.SharityOnline.innerObjects.Salutation;
 
 public class Search {
 
   private Client client;
   private Node node;
-  private static final long MILLS_IN_YEAR = 1000L * 60 * 60 * 24 * 365; // Returns 31536000000
-
+  private static final long DAY_IN_MILLIS = 86400000;
+  private static final long YEAR_IN_MILLIS = DAY_IN_MILLIS * 365; // Returns
+                                                                  // 31536000000
 
   public Search() {
     node = nodeBuilder().node();
@@ -45,15 +50,16 @@ public class Search {
     }
   }
 
-  public List<OfferMongo> searchActiveWithFilter(List<FilterBuilder> filterList, String searchterm) {
+  public List<OfferMongo> searchActiveWithFilter(FilterBuilder filter, String searchterm) {
     String cleanSearchTerm = splitSearchTerm(searchterm);
-    if(filterList == null){
-      filterList = new ArrayList<FilterBuilder>();
-    }
-    filterList.add(buildActiveOnlyFilter());
-    SearchResponse response = client.prepareSearch("offers").setTypes("offer")
-        .setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(buildMatchFuzzyQuery(cleanSearchTerm))
-        .setPostFilter(combineAllFilters(filterList)).setFrom(0).setSize(20).setExplain(false).execute().actionGet();
+    SearchRequestBuilder searchRequestBuilder = new SearchRequestBuilder(client);
+    searchRequestBuilder.setIndices("offers").setTypes("offer").setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+        .setQuery(buildMatchFuzzyQuery(cleanSearchTerm)).setPostFilter(filter).setFrom(0).setSize(20).setExplain(false);
+    System.out.println(searchRequestBuilder.internalBuilder());
+    SearchResponse response = searchRequestBuilder.execute().actionGet();
+    // client.prepareSearch("offers").setTypes("offer")
+    // .setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(buildMatchFuzzyQuery(cleanSearchTerm))
+    // .setPostFilter(filter).setFrom(0).setSize(20).setExplain(false).execute().actionGet();
     return ElasticSearchMongoGrabber.getOffers(response);
   }
 
@@ -75,7 +81,7 @@ public class Search {
 
   public BoolQueryBuilder buildMatchFuzzyQuery(String suchterm) {
     BoolQueryBuilder qb = QueryBuilders.boolQuery();
-//    qb.should(QueryBuilders.matchQuery("_all", suchterm));
+    // qb.should(QueryBuilders.matchQuery("_all", suchterm));
     qb.should(QueryBuilders.fuzzyQuery("_all", suchterm));
     qb.should(QueryBuilders.matchPhrasePrefixQuery("_all", suchterm));
     return qb;
@@ -85,25 +91,71 @@ public class Search {
     node.close();
   }
 
-  private FilterBuilder combineAllFilters(List<FilterBuilder> filters){
+  private FilterBuilder combineAllFilters(List<FilterBuilder> filters) {
     return FilterBuilders.andFilter(filters.toArray(new FilterBuilder[filters.size()]));
   }
 
   private FilterBuilder buildActiveOnlyFilter() {
     return FilterBuilders.termFilter("active", true);
   }
-  
-  private FilterBuilder buildSalutationFilter(Salutation sal){
+
+  private FilterBuilder buildSalutationFilter(Salutation sal) {
     return FilterBuilders.termFilter("salutation", sal.name());
   }
-  
-  private FilterBuilder buildHometownFilter(String hometown){
+
+  private FilterBuilder buildHometownFilter(String hometown) {
     return FilterBuilders.prefixFilter("userMongo.hometown", hometown);
   }
-  
-  private FilterBuilder buildAgeFilter(int age){
-    long birthdayTimeInMillis = System.currentTimeMillis() - (MILLS_IN_YEAR * age);
-    return FilterBuilders.rangeFilter("birthday").from(birthdayTimeInMillis-MILLS_IN_YEAR).to(birthdayTimeInMillis + MILLS_IN_YEAR);
+
+  private FilterBuilder buildAgeFilter(int age) {
+    long birthdayTimeInMillis = System.currentTimeMillis() - (YEAR_IN_MILLIS * age);
+    return FilterBuilders.rangeFilter("birthday").from(birthdayTimeInMillis - YEAR_IN_MILLIS)
+        .to(birthdayTimeInMillis + YEAR_IN_MILLIS);
+  }
+
+  private FilterBuilder buildPriceFilter(double price) {
+    return FilterBuilders.rangeFilter("price").from(0.0d).to(price);
+  }
+
+  private FilterBuilder buildAvailabilityFilter(Availability availability) {
+    return FilterBuilders.termFilter("availability", availability.name());
+  }
+
+  private FilterBuilder buildCategoryFilter(String category_id) {
+    return FilterBuilders.termFilter("category.category_id", category_id);
+  }
+
+  private FilterBuilder buildCreationdateFilter(long timestamp) {
+    return FilterBuilders.rangeFilter("creation_date").from(timestamp - DAY_IN_MILLIS).to(timestamp + DAY_IN_MILLIS);
+  }
+
+  public FilterBuilder mapFilterCriteria(String login_state, Integer salutation, String hometown, Double within,
+      Integer age, Double price, Integer availability, String category_id, Long creation_date) {
+    List<FilterBuilder> filters = new ArrayList<FilterBuilder>();
+    filters.add(buildActiveOnlyFilter());
+    // TODO login_state, within
+    if (salutation != null) {
+      filters.add(buildSalutationFilter(Salutation.fromNumber(salutation)));
+    }
+    if (StringUtils.isNotBlank(hometown)) {
+      filters.add(buildHometownFilter(hometown));
+    }
+    if (age != null) {
+      filters.add(buildAgeFilter(age));
+    }
+    if (price != null) {
+      filters.add(buildPriceFilter(price));
+    }
+    if (availability != null) {
+      filters.add(buildAvailabilityFilter(Availability.fromNumber(availability)));
+    }
+    if (StringUtils.isNotBlank(category_id)) {
+      filters.add(buildCategoryFilter(category_id));
+    }
+    if (creation_date != null) {
+      filters.add(buildCreationdateFilter(creation_date));
+    }
+    return combineAllFilters(filters);
   }
 
   // private static void printResult(SearchResponse response) {
