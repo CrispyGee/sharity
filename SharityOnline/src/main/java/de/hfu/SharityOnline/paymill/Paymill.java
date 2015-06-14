@@ -18,7 +18,7 @@ import com.paymill.context.PaymillContext;
 //import com.paymill.services.PaymentService;
 //import com.paymill.services.TransactionService;
 
-@Entity("Paymill")
+@Entity("paymilltransactions")
 public class Paymill implements Serializable {
   
   /**
@@ -27,72 +27,60 @@ public class Paymill implements Serializable {
   private static final long serialVersionUID = 1L;
   @Id
   private String offer_id;
-  
-  PaymillContext paymillContext = new PaymillContext( "43359664a9f37c92a16737b711b0a26f" );
+  public static final PaymillContext paymillContext = new PaymillContext( "43359664a9f37c92a16737b711b0a26f" );
   private String iban;
   private String bic;
   private String holder;
   private long card_number;
   private String expires; //TODO: Numeric
   private int cvc;
-
-  
   
   public String getOffer_id() {
     return offer_id;
   }
-
   public void setOffer_id(String offer_id) {
     this.offer_id = offer_id;
   }
-
   public String getIban() {
     return iban;
   }
-
   public void setIban(String iban) {
     this.iban = iban;
   }
-
   public String getBic() {
     return bic;
   }
-
   public void setBic(String bic) {
     this.bic = bic;
   }
-
   public String getHolder() {
     return holder;
   }
-
   public void setHolder(String holder) {
     this.holder = holder;
   }
-
   public long getCard_number() {
     return card_number;
   }
-
   public void setCard_number(long card_number) {
     this.card_number = card_number;
   }
-
   public String getExpires() {
     return expires;
   }
-
   public void setExpires(String expires) {
     this.expires = expires;
   }
-
   public int getCvc() {
     return cvc;
   }
-
   public void setCvc(int cvc) {
     this.cvc = cvc;
   }
+
+  
+  
+  
 
 }
   
