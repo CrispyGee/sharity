@@ -27,6 +27,9 @@ public class OfferRestSchnittstelle {
 
   // private final String jsonErrorMsg = "{Error: \"x\"";
   // private final String jsonSuccessMsg = "{Success: \"x\"";
+  private static final String offerFullSearch = "offer/search/{term}/{login_state}/salutation/{salutation}/hometown/"
+      + "{hometown}/within/{within}/age/{age}/price/{price}/availability/{availability}"
+      + "/category_id/{category_id}/creation_date/{creation_date}";
   private static final Repository<OfferMongo> repository = new Repository<OfferMongo>();
   private static final Search search = new Search();
 
@@ -58,7 +61,7 @@ public class OfferRestSchnittstelle {
 
   @PermitAll
   @GET
-  @Path("offer/search/{term}/{login_state}/salutation/{salutation}/hometown/{hometown}/within/{within}/age/{age}/price/{price}/availability/{availability}/category_id/{category_id}/creation_date/{creation_date}")
+  @Path(offerFullSearch)
   public Response searchFiltered(@PathParam("term") String term) {
     List<OfferMongo> offerMongoList = search.searchAllActive(term);
     List<Offer> offers = OfferMapper.mapOfferListToFrontend(offerMongoList);

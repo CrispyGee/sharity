@@ -22,7 +22,6 @@ public class OfferMongo implements Serializable {
   private double price;
   private Availability availability;
   private Category category;
-  private String bezeichnung;
   private int currency;
   private long creation_date;
   private boolean active;
@@ -49,14 +48,6 @@ public class OfferMongo implements Serializable {
 
   public void setAvailability(Availability availability) {
     this.availability = availability;
-  }
-
-  public String getBezeichnung() {
-    return bezeichnung;
-  }
-
-  public void setBezeichnung(String bezeichnung) {
-    this.bezeichnung = bezeichnung;
   }
 
   public String getTitle() {
@@ -119,7 +110,7 @@ public class OfferMongo implements Serializable {
   public String toString() {
     return "OfferMongo [offer_id=" + offer_id + ", title=" + title + ", description=" + description + ", userMongo="
         + userMongo + ", price=" + price + ", availability=" + availability + ", category=" + category
-        + ", bezeichnung=" + bezeichnung + ", currency=" + currency + ", creation_date=" + creation_date + ", active="
+        + ", currency=" + currency + ", creation_date=" + creation_date + ", active="
         + active + "]";
   }
   
