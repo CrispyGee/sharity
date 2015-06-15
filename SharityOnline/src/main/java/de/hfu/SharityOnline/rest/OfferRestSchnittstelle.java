@@ -11,6 +11,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -80,7 +81,25 @@ public class OfferRestSchnittstelle {
     return Response.status(200).entity(offers).type(MediaType.APPLICATION_JSON).build();
   }
   
-  
+  @PermitAll
+  @GET
+  @Path("search/{term}/{login_state}")
+  public Response searchFilteredQuery(@PathParam("term") String term, 
+      @PathParam("login_state") String login_state,
+      @QueryParam("salutation") Integer salutation,
+      @QueryParam("hometown") String hometown,
+      @QueryParam("within") Double within,
+      @QueryParam("age") Integer age,
+      @QueryParam("price") Double price,
+      @QueryParam("availability") Integer availability,
+      @QueryParam("category_id") String category_id,
+      @QueryParam("creation_date") Long creation_date) {
+    System.out.println(login_state+ " " +  salutation+ " " +  hometown+ " " +  within+ " " +  age+ " " +  price+ " " +  availability+ " " +  category_id+ " " +  creation_date);
+    FilterBuilder filter = search.mapFilterCriteria(login_state, salutation, hometown, within, age, price, availability, category_id, creation_date);
+    List<OfferMongo> offerMongoList = search.searchActiveWithFilter(filter, term);
+    List<Offer> offers = OfferMapper.mapOfferListToFrontend(offerMongoList);
+    return Response.status(200).entity(offers).type(MediaType.APPLICATION_JSON).build();
+  }
 
   @Consumes(MediaType.APPLICATION_JSON)
   @POST
