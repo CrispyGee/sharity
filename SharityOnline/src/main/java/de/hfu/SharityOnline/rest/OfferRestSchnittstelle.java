@@ -116,14 +116,19 @@ public class OfferRestSchnittstelle {
   }
 
   public boolean angebotAnforderung(Offer offer) {
-    return true;
-    // if(angebot.gETBESCHREIBUNG() != NULL &&
-    // ANGEBOT.GETBEZEICHNUNG() != NULL &&
-    // ANGEBOT.GETKATEGORIE() != NULL) {
-    // RETURN TRUE;
-    // } ELSE {
-    // RETURN FALSE;
-    // }
+   if(Integer.toString(offer.getAvailability()) == null || offer.getCategory_id() == null || 
+         Long.toString(offer.getCreation_date()) == null || offer.getOffer_id() == null ||
+         offer.getDescription() == null || offer.getTitle() == null || offer.getUser_id() == null ||
+         Double.toString(offer.getPrice()) == null) {
+         return false;
+         }
+   if(offer.getTitle().length() < 1 || offer.getTitle().length() > 50) {
+     return false;
+   }
+   if(offer.getDescription().length() < 1 || offer.getDescription().length() > 50) {
+     return false;
+   }
+   return true;
   }
 
 }
