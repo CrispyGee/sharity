@@ -1,6 +1,5 @@
 package de.hfu.SharityOnline.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,12 +60,9 @@ public class OfferRestSchnittstelle {
   }
 
   
-  private static final String offerFullSearch = "offer/search/{term}/{login_state}/salutation/{salutation}/hometown/"
-      + "{hometown}/within/{within}/age/{age}/price/{price}/availability/{availability}"
-      + "/category_id/{category_id}/creation_date/{creation_date}";
   @PermitAll
   @GET
-  @Path(offerFullSearch)
+  @Path("search/{term}/{login_state}/salutation/{salutation}/hometown/{hometown}/within/{within}/age/{age}/price/{price}/availability/{availability}/category_id/{category_id}/creation_date/{creation_date}")
   public Response searchFiltered(@PathParam("term") String term, 
       @PathParam("login_state") String login_state,
       @PathParam("salutation") Integer salutation,
@@ -77,12 +73,14 @@ public class OfferRestSchnittstelle {
       @PathParam("availability") Integer availability,
       @PathParam("category_id") String category_id,
       @PathParam("creation_date") Long creation_date) {
-    
+    System.out.println(login_state+ " " +  salutation+ " " +  hometown+ " " +  within+ " " +  age+ " " +  price+ " " +  availability+ " " +  category_id+ " " +  creation_date);
     FilterBuilder filter = search.mapFilterCriteria(login_state, salutation, hometown, within, age, price, availability, category_id, creation_date);
     List<OfferMongo> offerMongoList = search.searchActiveWithFilter(filter, term);
     List<Offer> offers = OfferMapper.mapOfferListToFrontend(offerMongoList);
     return Response.status(200).entity(offers).type(MediaType.APPLICATION_JSON).build();
   }
+  
+  
 
   @Consumes(MediaType.APPLICATION_JSON)
   @POST
