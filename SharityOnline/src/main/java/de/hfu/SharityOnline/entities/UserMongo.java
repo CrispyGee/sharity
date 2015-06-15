@@ -32,7 +32,7 @@ public class UserMongo implements Serializable {
   private String firstname;
   private String zip;
   private String hometown;
-  private Calendar birthday;
+  private long birthday;
   private String phone;
   @Indexed(unique = true)
   private String email;
@@ -107,12 +107,6 @@ public class UserMongo implements Serializable {
   public void setHometown(String hometown) {
     this.hometown = hometown;
   }
-  public Calendar getBirthday() {
-    return birthday;
-  }
-  public void setBirthday(Calendar birthday) {
-    this.birthday = birthday;
-  }
   public String getPhone() {
     return phone;
   }
@@ -148,6 +142,14 @@ public class UserMongo implements Serializable {
   }
   public void setUsernameAndPassword(String usernameAndPassword) {
     this.usernameAndPassword = usernameAndPassword;
+  }
+
+  public long getBirthday() {
+    return birthday;
+  }
+
+  public void setBirthday(long birthday) {
+    this.birthday = birthday;
   }
 
   @Override

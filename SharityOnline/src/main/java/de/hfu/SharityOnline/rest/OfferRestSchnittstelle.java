@@ -1,6 +1,5 @@
 package de.hfu.SharityOnline.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,6 +11,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -59,25 +59,21 @@ public class OfferRestSchnittstelle {
     List<Offer> offers = OfferMapper.mapOfferListToFrontend(offerMongoList);
     return Response.status(200).entity(offers).type(MediaType.APPLICATION_JSON).build();
   }
-
   
-  private static final String offerFullSearch = "offer/search/{term}/{login_state}/salutation/{salutation}/hometown/"
-      + "{hometown}/within/{within}/age/{age}/price/{price}/availability/{availability}"
-      + "/category_id/{category_id}/creation_date/{creation_date}";
   @PermitAll
   @GET
-  @Path(offerFullSearch)
-  public Response searchFiltered(@PathParam("term") String term, 
+  @Path("search/{term}/{login_state}")
+  public Response searchFilteredQuery(@PathParam("term") String term, 
       @PathParam("login_state") String login_state,
-      @PathParam("salutation") Integer salutation,
-      @PathParam("hometown") String hometown,
-      @PathParam("within") Double within,
-      @PathParam("age") Integer age,
-      @PathParam("price") Double price,
-      @PathParam("availability") Integer availability,
-      @PathParam("category_id") String category_id,
-      @PathParam("creation_date") Long creation_date) {
-    
+      @QueryParam("salutation") Integer salutation,
+      @QueryParam("hometown") String hometown,
+      @QueryParam("within") Double within,
+      @QueryParam("age") Integer age,
+      @QueryParam("price") Double price,
+      @QueryParam("availability") Integer availability,
+      @QueryParam("category_id") String category_id,
+      @QueryParam("creation_date") Long creation_date) {
+    System.out.println(login_state+ " " +  salutation+ " " +  hometown+ " " +  within+ " " +  age+ " " +  price+ " " +  availability+ " " +  category_id+ " " +  creation_date);
     FilterBuilder filter = search.mapFilterCriteria(login_state, salutation, hometown, within, age, price, availability, category_id, creation_date);
     List<OfferMongo> offerMongoList = search.searchActiveWithFilter(filter, term);
     List<Offer> offers = OfferMapper.mapOfferListToFrontend(offerMongoList);
