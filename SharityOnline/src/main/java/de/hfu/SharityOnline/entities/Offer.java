@@ -7,6 +7,7 @@ public class Offer {
   private String title;
   private String description;
   private String user_id;
+  private int offer_duration;
   private double price;
   private int availability;
   private String category_id;
@@ -96,6 +97,14 @@ public class Offer {
 
   public void setUser_id(String user_id) {
     this.user_id = user_id;
+  }
+
+  public int getOffer_duration() {
+    return offer_duration;
+  }
+
+  public void setOffer_duration(int offer_duration) {
+    this.offer_duration = offer_duration;
   }
   
   

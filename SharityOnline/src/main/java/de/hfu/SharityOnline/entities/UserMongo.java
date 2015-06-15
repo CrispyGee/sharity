@@ -1,7 +1,6 @@
 package de.hfu.SharityOnline.entities;
 
 import java.io.Serializable;
-import java.util.Calendar;
 
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;

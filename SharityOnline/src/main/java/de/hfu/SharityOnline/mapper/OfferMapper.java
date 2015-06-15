@@ -11,6 +11,7 @@ import de.hfu.SharityOnline.entities.Offer;
 import de.hfu.SharityOnline.entities.OfferMongo;
 import de.hfu.SharityOnline.entities.UserMongo;
 import de.hfu.SharityOnline.innerObjects.Availability;
+import de.hfu.SharityOnline.innerObjects.OfferDuration;
 import de.hfu.SharityOnline.setup.Repository;
 
 public class OfferMapper {
@@ -32,6 +33,7 @@ public class OfferMapper {
     if (offerMongo.getUserMongo() != null) {
       offer.setUser_id(offerMongo.getUserMongo().getId());
     }
+    offer.setOffer_duration(offerMongo.getOfferDuration().getNumber());
     return offer;
   }
 
@@ -42,6 +44,7 @@ public class OfferMapper {
     UserMongo userMongo = userRepo.loadById(UserMongo.class, offer.getUser_id());
     offerMongo.setUserMongo(userMongo);
     offerMongo.setAvailability(Availability.fromNumber(offer.getAvailability()));
+    offerMongo.setOfferDuration(OfferDuration.fromNumber(offer.getOffer_duration()));
     return offerMongo;
   }
 
@@ -68,6 +71,7 @@ class OfferToFrontendProps extends PropertyMap<OfferMongo, Offer> {
     skip().setCategory_id(null);
     skip().setAvailability(0);
     skip().setUser_id(null);
+    skip().setOffer_duration(0);
   }
 }
 
@@ -77,5 +81,6 @@ class OfferToBackendProps extends PropertyMap<Offer, OfferMongo> {
     skip().setCategory(null);
     skip().setAvailability(null);
     skip().setUserMongo(null);
+    skip().setOfferDuration(null);
   }
 }

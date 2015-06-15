@@ -15,6 +15,7 @@ import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.mapper.UserMapper;
 import de.hfu.SharityOnline.paymill.Paymill;
 import de.hfu.SharityOnline.setup.Repository;
+import de.hfu.SharityOnline.setup.TimeHelper;
 
 public class DbTest {
 
@@ -157,9 +158,11 @@ public class DbTest {
     offer1.setCurrency(0);
     offer1.setDescription("Gassi gehen mit Hund, gerne auch täglich, ohne Bezahlung");
     offer1.setPrice(100.0d);
+    offer1.setCreation_date(System.currentTimeMillis() - 7 * TimeHelper.MONTH_IN_MILLIS);
     offer1.setTitle("Hund ausführen");
     offer1.setCategory_id("cat_id1");
     offer1.setUser_id("1");
+    offer1.setOffer_duration(0);
     Offer offer2 = new Offer();
     offer2.setOffer_id("off_id2");
     offer2.setActive(true);
@@ -167,9 +170,11 @@ public class DbTest {
     offer2.setCurrency(0);
     offer2.setDescription("Gartenarbeit für 10 euro die stunde!");
     offer2.setPrice(50.0d);
+    offer2.setCreation_date(System.currentTimeMillis() - 7 * TimeHelper.MONTH_IN_MILLIS);
     offer2.setTitle("Gartenarbeit");
     offer2.setCategory_id("cat_id2");
     offer2.setUser_id("1");
+    offer2.setOffer_duration(1);
     Offer offer3 = new Offer();
     offer3.setOffer_id("off_id3");
     offer3.setActive(true);
@@ -180,6 +185,8 @@ public class DbTest {
     offer3.setTitle("Mathe Nachhilfe");
     offer3.setCategory_id("cat_id3");
     offer3.setUser_id("2");
+    offer3.setOffer_duration(1);
+    offer3.setCreation_date(System.currentTimeMillis() - 13 * TimeHelper.MONTH_IN_MILLIS);
     Offer offer4 = new Offer();
     offer4.setOffer_id("off_id4");
     offer4.setActive(false);

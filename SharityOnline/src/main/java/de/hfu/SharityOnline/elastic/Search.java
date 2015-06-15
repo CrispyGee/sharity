@@ -19,14 +19,12 @@ import org.elasticsearch.node.Node;
 import de.hfu.SharityOnline.entities.OfferMongo;
 import de.hfu.SharityOnline.innerObjects.Availability;
 import de.hfu.SharityOnline.innerObjects.Salutation;
+import de.hfu.SharityOnline.setup.TimeHelper;
 
 public class Search {
 
   private Client client;
   private Node node;
-  private static final long DAY_IN_MILLIS = 86400000;
-  private static final long YEAR_IN_MILLIS = DAY_IN_MILLIS * 365; // Returns
-                                                                  // 31536000000
 
   public Search() {
     node = nodeBuilder().node();
@@ -107,9 +105,9 @@ public class Search {
   }
 
   private FilterBuilder buildAgeFilter(int age) {
-    long birthdayTimeInMillis = System.currentTimeMillis() - (YEAR_IN_MILLIS * age);
-    return FilterBuilders.rangeFilter("birthday").from(birthdayTimeInMillis - YEAR_IN_MILLIS)
-        .to(birthdayTimeInMillis + YEAR_IN_MILLIS);
+    long birthdayTimeInMillis = System.currentTimeMillis() - (TimeHelper.YEAR_IN_MILLIS * age);
+    return FilterBuilders.rangeFilter("birthday").from(birthdayTimeInMillis - TimeHelper.YEAR_IN_MILLIS)
+        .to(birthdayTimeInMillis + TimeHelper.YEAR_IN_MILLIS);
   }
 
   private FilterBuilder buildPriceFilter(double price) {
@@ -125,7 +123,7 @@ public class Search {
   }
 
   private FilterBuilder buildCreationdateFilter(long timestamp) {
-    return FilterBuilders.rangeFilter("creation_date").from(timestamp - DAY_IN_MILLIS).to(timestamp + DAY_IN_MILLIS);
+    return FilterBuilders.rangeFilter("creation_date").from(timestamp - TimeHelper.DAY_IN_MILLIS).to(timestamp + TimeHelper.DAY_IN_MILLIS);
   }
 
   public FilterBuilder mapFilterCriteria(String login_state, Integer salutation, String hometown, Double within,

@@ -6,6 +6,7 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
 import de.hfu.SharityOnline.innerObjects.Availability;
+import de.hfu.SharityOnline.innerObjects.OfferDuration;
 
 @Entity("offers")
 public class OfferMongo implements Serializable {
@@ -20,6 +21,7 @@ public class OfferMongo implements Serializable {
   private String description;
   private UserMongo userMongo;
   private double price;
+  private OfferDuration offerDuration;
   private Availability availability;
   private Category category;
   private int currency;
@@ -112,6 +114,14 @@ public class OfferMongo implements Serializable {
         + userMongo + ", price=" + price + ", availability=" + availability + ", category=" + category
         + ", currency=" + currency + ", creation_date=" + creation_date + ", active="
         + active + "]";
+  }
+
+  public OfferDuration getOfferDuration() {
+    return offerDuration;
+  }
+
+  public void setOfferDuration(OfferDuration offerDuration) {
+    this.offerDuration = offerDuration;
   }
   
 }
