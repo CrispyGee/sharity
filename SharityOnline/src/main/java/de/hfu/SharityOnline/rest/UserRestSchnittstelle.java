@@ -84,7 +84,7 @@ public class UserRestSchnittstelle extends Application {
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/update")
   public Response updateEntity(User user) {
-    if (user.getId() != null && profilanforderungen(user)) {
+    if (user.getId() != null && isValid(user)) {
       UserMongo foundUser = repository.loadById(UserMongo.class, user.getId());
       if (foundUser != null && foundUser.getPassword().equals(user.getPassword())
           && foundUser.getUsername().equals(user.getUsername())) {
@@ -120,29 +120,33 @@ public class UserRestSchnittstelle extends Application {
 
   }
   public boolean isValid(User user) {
-    if(user.max_Char(user.getUsername(), 20) && (user.getUsername().length() >= 1) && 
-          user.max_Char(user.getLastname(), 15) && !user.hasNumbers(user.getLastname()) && user.getLastname().length() > 1 &&
-          user.max_Char(user.getFirstname(), 15) && !user.hasNumbers(user.getFirstname()) && user.getFirstname().length() > 1 &&
-          user.exact_Char(user.getZip(), 5) && user.onlyNumbers(user.getZip()) &&
-          user.max_Char(user.getPhone(), 30) && user.onlyNumbers(user.getPhone())) {
-      return true;
+    if(user.getUsername() == null || user.getFirstname() == null || user.getLastname() == null || user.getZip() == null || user.getPhone() == null) {
+      return false;
     }
-    return false;
+    if(!isInsideBorders(user.getUsername(), 1, 20) || 
+      !isInsideBorders(user.getLastname(), 1, 15) || user.hasNumbers(user.getLastname()) ||
+      !isInsideBorders(user.getFirstname(), 1, 15) || user.hasNumbers(user.getFirstname()) ||
+      !user.exact_Char(user.getZip(), 5) || !user.onlyNumbers(user.getZip()) ||
+      !isInsideBorders(user.getPhone(), 1, 30) && !user.onlyNumbers(user.getPhone())) {
+      return false;
+    }
+    if(user.getHometown() != null && (user.hasNumbers(user.getHometown()) || !isInsideBorders(user.getHometown(), 1, 15))) {
+      return false;
+    }
+    if(user.getPhone() != null && (!user.onlyNumbers(user.getPhone()) || !isInsideBorders(user.getPhone(), 1, 31))) {
+      return false;
+    }
+    if(user.getBirthday() != 0 && (user.hasNumbers(Long.toString(user.getBirthday())) || !isInsideBorders((Long.toString(user.getBirthday())), 10, 10))) {
+      return false;
+    }
+    return true;
     
   }
-
-  public boolean profilanforderungen(User user) {
-    return true;
-    // if (user.getUsername() != null && user.getHashedPassword() != null &&
-    // user.getVorname() != null
-    // && user.getNachname() != null && user.getPlz() != null &&
-    // user.getWohnort() != null && user.getEmail() != null
-    // && // TODO - Je nach Tätigkeit, student
-    // // schüler etc ausfüllen.
-    // user.getTaetigkeit() != null) {
-    // return true;
-    // } else {
-    // return false;
-    // }
+  public boolean isInsideBorders(String s, int untergrenze, int obergrenze) {
+    if(s.length() <= obergrenze && s.length() >= untergrenze) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

@@ -109,11 +109,7 @@ public class User{
   }
 
   public void setHometown(String hometown) {
-    if(max_Char(hometown, 15) && !hasNumbers(hometown)) {
       this.hometown = hometown;
-    } else {
-      throw new IllegalArgumentException();
-    }
   }
 
   public long getBirthday() {
