@@ -57,7 +57,7 @@ public class PageRestSchnittstelle {
   @POST
   @Path("/new")
   public Response createEntity(Page page) {
-    if (page != null) {
+    if (page != null && pageIsCorrect(page)) {
       page.setId(UUID.randomUUID().toString());
       repository.save(page);
       return Response.status(200).entity(page.getId()).type(MediaType.APPLICATION_JSON).build();
@@ -65,4 +65,21 @@ public class PageRestSchnittstelle {
     return Response.status(Status.BAD_REQUEST).build();
   }
 
+
+
+  public boolean pageIsCorrect(Page page) {
+    //TODO: zu kurz darf möglich sein? also title, meta_description oder meta_keywords = null?
+    boolean bool = true;
+    if(page.getTitle() != null && (page.getTitle().length() > 100 || page.getTitle().length() < 1)) {
+      bool = false;
+    }
+    if(page.getMeta_description() != null && page.getMeta_description().length() > 156) {
+      bool = false;
+    }
+    if(page.getMeta_keywords() != null && page.getMeta_keywords().length() > 156) {
+      bool = false;
+    }
+    return bool;
+    }
+  
 }

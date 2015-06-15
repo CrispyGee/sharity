@@ -20,11 +20,11 @@ public class Page implements Serializable {
   private String meta_keywords;
   private String main_content;
 
-  public String getTitle() {
+  public String getTitle() { 
     return title;
   }
 
-  public void setTitle(String title) {
+  public void setTitle(String title) { //max_chars: 100
     this.title = title;
   }
 
