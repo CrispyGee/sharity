@@ -105,6 +105,7 @@ public class DbTest {
     user.setUserRole("FREE");
     user.setPassword("123");
     user.setUsername("asd");
+    user.setBirthday(System.currentTimeMillis());
     user.setSalutation(1);
     user.setSelfportrait("Ich bin cool");
     user.setEmail("max@mustermann.de");

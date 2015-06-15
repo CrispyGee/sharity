@@ -16,7 +16,6 @@ import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.node.Node;
 
-import de.hfu.SharityOnline.entities.Category;
 import de.hfu.SharityOnline.entities.OfferMongo;
 import de.hfu.SharityOnline.innerObjects.Availability;
 import de.hfu.SharityOnline.innerObjects.Salutation;
@@ -122,7 +121,7 @@ public class Search {
   }
 
   private FilterBuilder buildCategoryFilter(String category_id) {
-    return FilterBuilders.termFilter("category.category_id", category_id);
+    return FilterBuilders.termFilter("category._id", category_id);
   }
 
   private FilterBuilder buildCreationdateFilter(long timestamp) {
