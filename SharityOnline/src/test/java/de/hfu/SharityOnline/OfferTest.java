@@ -111,8 +111,8 @@ public class OfferTest {
     createOfferWithArguments(true, 1, "1", 1434442092L, 2, "Ich will babysitten, bin 17 Jahre alt, habe 2 Jahre Erfahrung", 15.0, "Babysitten - "
         + "besonders am Wochenende", "user_id1");
     createOfferWithArguments(true, 2, "1", 1434422092L, 2, "Biete professionelles Babysitten, besonders nachts", 15.0, "Ich kümmere mich um ihre Kinder!", "user_id2");
-    createOfferWithArguments(true, 3, "2", 1434441092L, 2, "Babysitte gerne, besonder nachts, kann gut mit Kindern umgehen", 15.0, "Babysitter", "user_id3");
-    createOfferWithArguments(true, 0, "2", 1434440092L, 2, "Weblicher Babysitter, mache gerade mein Abi und möchte etwas Geld nebenbei dazuverdienen", 
+    createOfferWithArguments(true, 3, "1", 1434441092L, 2, "Babysitte gerne, besonder nachts, kann gut mit Kindern umgehen", 15.0, "Babysitter", "user_id3");
+    createOfferWithArguments(true, 0, "1", 1434440092L, 2, "Weblicher Babysitter, mache gerade mein Abi und möchte etwas Geld nebenbei dazuverdienen", 
         20.0, "Babysitter, Abiturientin", "user_id4");
     createOfferWithArguments(true, 1, "1", 1434437092L, 2, "Babysitte gerne, keinerlei Erfahrung, lerne schnell", 10.0, "Babysitten - sehr günstig", "user_id5");
     createOfferWithArguments(true, 2, "1", 1434439092L, 2, "Biete günstiges Babysitten, auch an Feiertagen", 25.0, "Ich kümmere mich um ihre Kinder! ", "user_id6");
@@ -194,6 +194,13 @@ public class OfferTest {
     createOfferWithArguments(true, 1, "5", 1434422092L, 0, "Sehr gute Deutschmatikkentnisse, ich helfe gerne!", 15.0, "Durch eine Prüfung gefallen? ich helfe ihnen.", "user_id9");
     createOfferWithArguments(true, 2, "5", 1434429992L, 0, "Student sucht Nebenjob. Gebe gerne auch Nachhilfe, jedoch nur auf einem hohen Level", 30.0, "Deutsch-Nachhilfe für Profis", "user_id10");
   
-  
+  //5x Praktikumshilfe
+    createOfferWithArguments(true, 1, "6", 1434442092L, 0, "Praktikumsstelle: Sei intressiert und offen!", 25.0, "Praktikum Gastronomie", "user_id1");
+    createOfferWithArguments(true, 2, "6", 1434422092L, 0, "Suche Praktikant für unseren Betrieb. Realschulabschluss empfohlen!", 15.0, "Praktikum Mechatroniker", "user_id2");
+    createOfferWithArguments(true, 3, "6", 1434441092L, 0, "Ein Praktikum bei der deutschen Post, Zahlen sehr gut!", 30.0, "Praktikum Deutsche Post", "user_id3");
+    createOfferWithArguments(true, 0, "6", 1434440092L, 0, "Biete: einen Praktikumsplatz im Gastronomie bereich! Ein offenes, freundliches Team erwartet dich", 20.0, "Praktikum", "user_id4");
+    createOfferWithArguments(true, 1, "6", 1434437092L, 0, "2 praktikastellen à 3 Wochen zu vergeben!", 10.0, "Praktika", "user_id5");
+    
+    
   }
 }
