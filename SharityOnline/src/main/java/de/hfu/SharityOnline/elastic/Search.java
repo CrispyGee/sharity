@@ -12,14 +12,12 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.node.Node;
 
 import de.hfu.SharityOnline.entities.OfferMongo;
 import de.hfu.SharityOnline.innerObjects.Availability;
 import de.hfu.SharityOnline.innerObjects.Salutation;
-import de.hfu.SharityOnline.setup.TimeHelper;
 
 public class Search {
 
@@ -64,7 +62,7 @@ public class Search {
     String cleanSearchTerm = splitSearchTerm(searchterm);
     SearchResponse response = client.prepareSearch("offers").setTypes("offer")
         .setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(buildMatchFuzzyQuery(cleanSearchTerm))
-        .setPostFilter(buildActiveOnlyFilter()).setFrom(0).setSize(20).setExplain(false).execute().actionGet();
+        .setPostFilter(SharityFilterBuilder.buildActiveOnlyFilter()).setFrom(0).setSize(20).setExplain(false).execute().actionGet();
     return ElasticSearchMongoGrabber.getOffers(response);
   }
 
@@ -88,71 +86,33 @@ public class Search {
     node.close();
   }
 
-  private FilterBuilder combineAllFilters(List<FilterBuilder> filters) {
-    return FilterBuilders.andFilter(filters.toArray(new FilterBuilder[filters.size()]));
-  }
-
-  private FilterBuilder buildActiveOnlyFilter() {
-    return FilterBuilders.termFilter("active", true);
-  }
-
-  private FilterBuilder buildSalutationFilter(Salutation sal) {
-    return FilterBuilders.termFilter("salutation", sal.name());
-  }
-
-  private FilterBuilder buildHometownFilter(String hometown) {
-    return FilterBuilders.prefixFilter("userMongo.hometown", hometown);
-  }
-
-  private FilterBuilder buildAgeFilter(int age) {
-    long birthdayTimeInMillis = System.currentTimeMillis() - (TimeHelper.YEAR_IN_MILLIS * age);
-    return FilterBuilders.rangeFilter("birthday").from(birthdayTimeInMillis - TimeHelper.YEAR_IN_MILLIS)
-        .to(birthdayTimeInMillis + TimeHelper.YEAR_IN_MILLIS);
-  }
-
-  private FilterBuilder buildPriceFilter(double price) {
-    return FilterBuilders.rangeFilter("price").from(0.0d).to(price);
-  }
-
-  private FilterBuilder buildAvailabilityFilter(Availability availability) {
-    return FilterBuilders.termFilter("availability", availability.name());
-  }
-
-  private FilterBuilder buildCategoryFilter(String category_id) {
-    return FilterBuilders.termFilter("category._id", category_id);
-  }
-
-  private FilterBuilder buildCreationdateFilter(long timestamp) {
-    return FilterBuilders.rangeFilter("creation_date").from(timestamp - TimeHelper.DAY_IN_MILLIS).to(timestamp + TimeHelper.DAY_IN_MILLIS);
-  }
-
   public FilterBuilder mapFilterCriteria(String login_state, Integer salutation, String hometown, Double within,
       Integer age, Double price, Integer availability, String category_id, Long creation_date) {
     List<FilterBuilder> filters = new ArrayList<FilterBuilder>();
-    filters.add(buildActiveOnlyFilter());
+    filters.add(SharityFilterBuilder.buildActiveOnlyFilter());
     // TODO login_state, within
     if (salutation != null) {
-      filters.add(buildSalutationFilter(Salutation.fromNumber(salutation)));
+      filters.add(SharityFilterBuilder.buildSalutationFilter(Salutation.fromNumber(salutation)));
     }
     if (StringUtils.isNotBlank(hometown)) {
-      filters.add(buildHometownFilter(hometown));
+      filters.add(SharityFilterBuilder.buildHometownFilter(hometown));
     }
     if (age != null) {
-      filters.add(buildAgeFilter(age));
+      filters.add(SharityFilterBuilder.buildAgeFilter(age));
     }
     if (price != null) {
-      filters.add(buildPriceFilter(price));
+      filters.add(SharityFilterBuilder.buildPriceFilter(price));
     }
     if (availability != null) {
-      filters.add(buildAvailabilityFilter(Availability.fromNumber(availability)));
+      filters.add(SharityFilterBuilder.buildAvailabilityFilter(Availability.fromNumber(availability)));
     }
     if (StringUtils.isNotBlank(category_id)) {
-      filters.add(buildCategoryFilter(category_id));
+      filters.add(SharityFilterBuilder.buildCategoryFilter(category_id));
     }
     if (creation_date != null) {
-      filters.add(buildCreationdateFilter(creation_date));
+      filters.add(SharityFilterBuilder.buildCreationdateFilter(creation_date));
     }
-    return combineAllFilters(filters);
+    return SharityFilterBuilder.combineAllFilters(filters);
   }
 
   // private static void printResult(SearchResponse response) {
