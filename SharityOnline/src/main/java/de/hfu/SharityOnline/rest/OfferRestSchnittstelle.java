@@ -122,10 +122,10 @@ public class OfferRestSchnittstelle {
          Double.toString(offer.getPrice()) == null) {
          return false;
          }
-   if(offer.getTitle().length() < 1 || offer.getTitle().length() > 50) {
+   if(offer.getTitle().length() < 1 || offer.getTitle().length() > 100) {
      return false;
    }
-   if(offer.getDescription().length() < 1 || offer.getDescription().length() > 50) {
+   if(offer.getDescription().length() < 1 || offer.getDescription().length() > 200) {
      return false;
    }
    return true;

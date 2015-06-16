@@ -160,7 +160,7 @@ public class DbTest {
     offer1.setPrice(100.0d);
     offer1.setCreation_date(System.currentTimeMillis() - 7 * TimeHelper.MONTH_IN_MILLIS);
     offer1.setTitle("Hund ausführen");
-    offer1.setCategory_id("cat_id1");
+    offer1.setCategory_id("1");
     offer1.setUser_id("1");
     offer1.setOffer_duration(0);
     Offer offer2 = new Offer();
@@ -172,7 +172,7 @@ public class DbTest {
     offer2.setPrice(50.0d);
     offer2.setCreation_date(System.currentTimeMillis() - 7 * TimeHelper.MONTH_IN_MILLIS);
     offer2.setTitle("Gartenarbeit");
-    offer2.setCategory_id("cat_id2");
+    offer2.setCategory_id("2");
     offer2.setUser_id("1");
     offer2.setOffer_duration(1);
     Offer offer3 = new Offer();
@@ -183,7 +183,7 @@ public class DbTest {
     offer3.setDescription("Biete Nachhilfe in Informatik");
     offer3.setPrice(25.0d);
     offer3.setTitle("Mathe Nachhilfe");
-    offer3.setCategory_id("cat_id3");
+    offer3.setCategory_id("3");
     offer3.setUser_id("2");
     offer3.setOffer_duration(1);
     offer3.setCreation_date(System.currentTimeMillis() - 13 * TimeHelper.MONTH_IN_MILLIS);
@@ -195,7 +195,7 @@ public class DbTest {
     offer4.setDescription("Babysitte gerne, habe viel Erfahrung, von 2 bis 12 Jahren!");
     offer4.setPrice(75.0d);
     offer4.setTitle("Babysitten geboten!");
-    offer4.setCategory_id("cat_id4");
+    offer4.setCategory_id("4");
     offer4.setUser_id("2");
     offerRepo.save(OfferMapper.mapOfferToBackend(offer1));
     offerRepo.save(OfferMapper.mapOfferToBackend(offer2));
