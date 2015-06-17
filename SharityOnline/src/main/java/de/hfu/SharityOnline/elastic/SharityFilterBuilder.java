@@ -28,15 +28,13 @@ public class SharityFilterBuilder {
   }
 
   public static FilterBuilder buildAgeFilter(int age) {
-    //TODO +-2 Jahre
     long birthdayTimeInMillis = System.currentTimeMillis() - (TimeHelper.YEAR_IN_MILLIS * age);
-    return FilterBuilders.rangeFilter("birthday").from(birthdayTimeInMillis - TimeHelper.YEAR_IN_MILLIS)
-        .to(birthdayTimeInMillis + TimeHelper.YEAR_IN_MILLIS);
+    return FilterBuilders.rangeFilter("birthday").from(birthdayTimeInMillis - TimeHelper.YEAR_IN_MILLIS*2)
+        .to(birthdayTimeInMillis + TimeHelper.YEAR_IN_MILLIS*2);
   }
 
   public static FilterBuilder buildPriceFilter(double price) {
-    //TODO +- 10 euro
-    return FilterBuilders.rangeFilter("price").from(0.0d).to(price);
+    return FilterBuilders.rangeFilter("price").from(price - 10.0).to(price + 10.0);
   }
 
   public static FilterBuilder buildAvailabilityFilter(Availability availability) {
@@ -48,8 +46,7 @@ public class SharityFilterBuilder {
   }
 
   public static FilterBuilder buildCreationdateFilter(long timestamp) {
-    //TODO +- 1 Monat
-    return FilterBuilders.rangeFilter("creation_date").from(timestamp - TimeHelper.DAY_IN_MILLIS).to(timestamp + TimeHelper.DAY_IN_MILLIS);
+    return FilterBuilders.rangeFilter("creation_date").from(timestamp - TimeHelper.MONTH_IN_MILLIS).to(timestamp + TimeHelper.MONTH_IN_MILLIS);
   }
   
 }
