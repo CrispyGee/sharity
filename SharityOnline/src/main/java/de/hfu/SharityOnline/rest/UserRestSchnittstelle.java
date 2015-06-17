@@ -120,7 +120,8 @@ public class UserRestSchnittstelle extends Application {
 
   }
   public boolean isValid(User user) {
-    if(user.getUsername() == null || user.getFirstname() == null || user.getLastname() == null || user.getZip() == null || user.getPhone() == null) {
+    if(user.getUsername() == null || user.getFirstname() == null || user.getLastname() == null || user.getZip() == null || user.getHometown() == null ||
+        user.getEmail() == null) {
       return false;
     }
     if(!isInsideBorders(user.getUsername(), 1, 20) || 

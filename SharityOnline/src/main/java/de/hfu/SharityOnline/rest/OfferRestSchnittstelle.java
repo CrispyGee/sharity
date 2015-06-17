@@ -28,9 +28,6 @@ import de.hfu.SharityOnline.setup.Repository;
 @Produces(MediaType.APPLICATION_JSON)
 public class OfferRestSchnittstelle {
 
-  // private final String jsonErrorMsg = "{Error: \"x\"";
-  // private final String jsonSuccessMsg = "{Success: \"x\"";
-  
   private static final Repository<OfferMongo> repository = new Repository<OfferMongo>();
   private static final Search search = new Search();
 

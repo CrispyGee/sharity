@@ -1,7 +1,6 @@
 package de.hfu.SharityOnline.rest;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
@@ -15,8 +14,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import de.hfu.SharityOnline.entities.Category;
-import de.hfu.SharityOnline.entities.Offer;
-import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.setup.Repository;
 
 @Path("/categories")
