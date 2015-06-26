@@ -27,7 +27,7 @@ import de.hfu.SharityOnline.setup.Repository;
 @Path("/offer")
 @Produces(MediaType.APPLICATION_JSON)
 public class OfferRestSchnittstelle {
-
+  private final String jsonErrorMsg = "{Error: \"x\"}";
   private static final Repository<OfferMongo> repository = new Repository<OfferMongo>();
   private static final Search search = new Search();
 
@@ -44,8 +44,14 @@ public class OfferRestSchnittstelle {
   @GET
   @Path("/{id}")
   public Response loadEntityById(@PathParam("id") String id) {
+    try {
     OfferMongo offer = repository.loadById(OfferMongo.class, id);
     return Response.status(200).entity(OfferMapper.mapOfferToFrontend(offer)).type(MediaType.APPLICATION_JSON).build();
+    } catch(Exception e) {
+      return Response.status(424).entity(jsonErrorMsg.replace("x", "Response 424: Offer with id " 
+          + id + " not found in database."))
+          .type(MediaType.APPLICATION_JSON).build();
+      }
   }
 
   @PermitAll
