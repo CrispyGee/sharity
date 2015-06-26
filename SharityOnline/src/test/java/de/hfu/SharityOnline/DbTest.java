@@ -6,6 +6,7 @@ import de.hfu.SharityOnline.entities.Category;
 import de.hfu.SharityOnline.entities.Offer;
 import de.hfu.SharityOnline.entities.OfferMongo;
 import de.hfu.SharityOnline.entities.Page;
+import de.hfu.SharityOnline.entities.Paymill;
 import de.hfu.SharityOnline.entities.User;
 import de.hfu.SharityOnline.entities.UserMongo;
 import de.hfu.SharityOnline.innerObjects.EmployedInfo;
@@ -13,7 +14,6 @@ import de.hfu.SharityOnline.innerObjects.PupilInfo;
 import de.hfu.SharityOnline.innerObjects.StudentInfo;
 import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.mapper.UserMapper;
-import de.hfu.SharityOnline.paymill.Paymill;
 import de.hfu.SharityOnline.setup.Repository;
 import de.hfu.SharityOnline.setup.TimeHelper;
 
@@ -23,7 +23,6 @@ public class DbTest {
   private static final Repository<OfferMongo> offerRepo = new Repository<OfferMongo>();
   private static final Repository<Category> catRepo = new Repository<Category>();
   private static final Repository<Page> pageRepo = new Repository<Page>();
-  private static final Repository<Paymill> payRepo = new Repository<Paymill>();
 
   @Test
   public void fillDatabaseWithLegitData() {
@@ -32,7 +31,6 @@ public class DbTest {
     createNormalFreeUsers();
     createAdminUser();
     createSomeOffers();
-    createPaymill();
   }
 
   /**
@@ -201,21 +199,5 @@ public class DbTest {
     offerRepo.save(OfferMapper.mapOfferToBackend(offer2));
     offerRepo.save(OfferMapper.mapOfferToBackend(offer3));
     offerRepo.save(OfferMapper.mapOfferToBackend(offer4));
-  }
-  
-  private void createPaymill() {
-    Paymill pay1 = new Paymill();
-    pay1.setOffer_id("1");
-    pay1.setIban("DE19123412341234123412");
-    pay1.setBic("BELADEBEXXX");
-    pay1.setHolder("Manfred Mustermann");
-    Paymill pay2 = new Paymill();
-    pay2.setOffer_id("2");
-    pay2.setCard_number(1234567L);
-    pay2.setExpires("01/15");
-    pay2.setHolder("Mustermann max");
-    pay2.setCvc(1234);
-    payRepo.save(pay1); 
-    payRepo.save(pay2);
   }
 }

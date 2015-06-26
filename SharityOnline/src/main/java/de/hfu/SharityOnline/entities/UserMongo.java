@@ -24,7 +24,6 @@ public class UserMongo implements Serializable {
   @Indexed(unique = true)
   private String username;
   private String password;
-  private String usernameAndPassword;
   private String userRole;
   private Salutation salutation;
   private String lastname;
@@ -33,6 +32,7 @@ public class UserMongo implements Serializable {
   private String hometown;
   private long birthday;
   private String phone;
+  private Integer offerTokens;
   @Indexed(unique = true)
   private String email;
   private Activity activity;
@@ -42,7 +42,7 @@ public class UserMongo implements Serializable {
   private String references_experiences;
   private String selfportrait;
   private long creation_date;
-  
+
   public long getCreation_date() {
     return creation_date;
   }
@@ -50,97 +50,117 @@ public class UserMongo implements Serializable {
   public void setCreation_date(long creation_date) {
     this.creation_date = creation_date;
   }
-  
-  
+
   public String getId() {
     return id;
   }
+
   public void setId(String id) {
     this.id = id;
   }
+
   public String getUsername() {
     return username;
   }
+
   public void setUsername(String username) {
     this.username = username;
   }
+
   public String getPassword() {
     return password;
   }
+
   public void setPassword(String password) {
     this.password = password;
   }
+
   public String getUserRole() {
     return userRole;
   }
+
   public void setUserRole(String userRole) {
     this.userRole = userRole;
   }
+
   public Salutation getSalutation() {
     return salutation;
   }
+
   public void setSalutation(Salutation salutation) {
     this.salutation = salutation;
   }
+
   public String getLastname() {
     return lastname;
   }
+
   public void setLastname(String lastname) {
     this.lastname = lastname;
   }
+
   public String getFirstname() {
     return firstname;
   }
+
   public void setFirstname(String firstname) {
     this.firstname = firstname;
   }
+
   public String getZip() {
     return zip;
   }
+
   public void setZip(String zip) {
     this.zip = zip;
   }
+
   public String getHometown() {
     return hometown;
   }
+
   public void setHometown(String hometown) {
     this.hometown = hometown;
   }
+
   public String getPhone() {
     return phone;
   }
+
   public void setPhone(String phone) {
     this.phone = phone;
   }
+
   public String getEmail() {
     return email;
   }
+
   public void setEmail(String email) {
     this.email = email;
   }
+
   public Activity getActivity() {
     return activity;
   }
+
   public void setActivity(Activity activity) {
     this.activity = activity;
   }
+
   public String getReferences_experiences() {
     return references_experiences;
   }
+
   public void setReferences_experiences(String references_experiences) {
     this.references_experiences = references_experiences;
   }
+
   public String getSelfportrait() {
     return selfportrait;
   }
+
   public void setSelfportrait(String selfportrait) {
     this.selfportrait = selfportrait;
-  }
-  public String getUsernameAndPassword() {
-    return usernameAndPassword;
-  }
-  public void setUsernameAndPassword(String usernameAndPassword) {
-    this.usernameAndPassword = usernameAndPassword;
   }
 
   public long getBirthday() {
@@ -149,15 +169,6 @@ public class UserMongo implements Serializable {
 
   public void setBirthday(long birthday) {
     this.birthday = birthday;
-  }
-
-  @Override
-  public String toString() {
-    return "UserMongo [id=" + id + ", username=" + username + ", password=" + password + ", usernameAndPassword="
-        + usernameAndPassword + ", userRole=" + userRole + ", salutation=" + salutation + ", lastname=" + lastname
-        + ", firstname=" + firstname + ", zip=" + zip + ", hometown=" + hometown + ", birthday=" + birthday
-        + ", phone=" + phone + ", email=" + email + ", activity=" + activity + ", references_experiences="
-        + references_experiences + ", selfportrait=" + selfportrait + ", creation_date=" + creation_date + "]";
   }
 
   public StudentInfo getStudent_info() {
@@ -183,5 +194,32 @@ public class UserMongo implements Serializable {
   public void setEmployed_info(EmployedInfo employed_info) {
     this.employed_info = employed_info;
   }
-  
+
+  public Integer getOfferTokens() {
+    return offerTokens;
+  }
+
+  public void setOfferTokens(Integer offerTokens) {
+    this.offerTokens = offerTokens;
+  }
+
+  public boolean hasOfferTokens() {
+    if (this.offerTokens != null && this.offerTokens.compareTo(0) > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  public void removeOfferToken() {
+    this.offerTokens = this.offerTokens - 1;
+  }
+
+  public void increaseOfferTokens() {
+    if (this.offerTokens == null) {
+      this.offerTokens = new Integer(1);
+    } else {
+      this.offerTokens = this.offerTokens + 1;
+    }
+  }
+
 }

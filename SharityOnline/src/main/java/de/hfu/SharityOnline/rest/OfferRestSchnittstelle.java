@@ -21,21 +21,25 @@ import org.elasticsearch.index.query.FilterBuilder;
 import de.hfu.SharityOnline.elastic.Search;
 import de.hfu.SharityOnline.entities.Offer;
 import de.hfu.SharityOnline.entities.OfferMongo;
+import de.hfu.SharityOnline.entities.UserMongo;
 import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.setup.Repository;
 
 @Path("/offer")
 @Produces(MediaType.APPLICATION_JSON)
 public class OfferRestSchnittstelle {
+  private final String jsonErrorMsg = "{Error: \"x\"}";
 
-  private static final Repository<OfferMongo> repository = new Repository<OfferMongo>();
+  private static final Repository<OfferMongo> OFFER_REPO = new Repository<OfferMongo>();
+  private static final Repository<UserMongo> USER_REPO = new Repository<UserMongo>();
+
   private static final Search search = new Search();
 
   @PermitAll
   @GET
   @Path("")
   public Response loadEntity() {
-    List<OfferMongo> alleAngebote = repository.loadAll(OfferMongo.class);
+    List<OfferMongo> alleAngebote = OFFER_REPO.loadAll(OfferMongo.class);
     return Response.status(200).entity(OfferMapper.mapOfferListToFrontend(alleAngebote))
         .type(MediaType.APPLICATION_JSON).build();
   }
@@ -44,7 +48,7 @@ public class OfferRestSchnittstelle {
   @GET
   @Path("/{id}")
   public Response loadEntityById(@PathParam("id") String id) {
-    OfferMongo offer = repository.loadById(OfferMongo.class, id);
+    OfferMongo offer = OFFER_REPO.loadById(OfferMongo.class, id);
     return Response.status(200).entity(OfferMapper.mapOfferToFrontend(offer)).type(MediaType.APPLICATION_JSON).build();
   }
 
@@ -56,22 +60,19 @@ public class OfferRestSchnittstelle {
     List<Offer> offers = OfferMapper.mapOfferListToFrontend(offerMongoList);
     return Response.status(200).entity(offers).type(MediaType.APPLICATION_JSON).build();
   }
-  
+
   @PermitAll
   @GET
   @Path("search/{term}/{login_state}")
-  public Response searchFilteredQuery(@PathParam("term") String term, 
-      @PathParam("login_state") String login_state,
-      @QueryParam("salutation") Integer salutation,
-      @QueryParam("hometown") String hometown,
-      @QueryParam("within") Double within,
-      @QueryParam("age") Integer age,
-      @QueryParam("price") Double price,
-      @QueryParam("availability") Integer availability,
-      @QueryParam("category_id") String category_id,
+  public Response searchFilteredQuery(@PathParam("term") String term, @PathParam("login_state") String login_state,
+      @QueryParam("salutation") Integer salutation, @QueryParam("hometown") String hometown,
+      @QueryParam("within") Double within, @QueryParam("age") Integer age, @QueryParam("price") Double price,
+      @QueryParam("availability") Integer availability, @QueryParam("category_id") String category_id,
       @QueryParam("creation_date") Long creation_date) {
-    System.out.println(login_state+ " " +  salutation+ " " +  hometown+ " " +  within+ " " +  age+ " " +  price+ " " +  availability+ " " +  category_id+ " " +  creation_date);
-    FilterBuilder filter = search.mapFilterCriteria(login_state, salutation, hometown, within, age, price, availability, category_id, creation_date);
+    System.out.println(login_state + " " + salutation + " " + hometown + " " + within + " " + age + " " + price + " "
+        + availability + " " + category_id + " " + creation_date);
+    FilterBuilder filter = search.mapFilterCriteria(login_state, salutation, hometown, within, age, price,
+        availability, category_id, creation_date);
     List<OfferMongo> offerMongoList = search.searchActiveWithFilter(filter, term);
     List<Offer> offers = OfferMapper.mapOfferListToFrontend(offerMongoList);
     return Response.status(200).entity(offers).type(MediaType.APPLICATION_JSON).build();
@@ -82,9 +83,17 @@ public class OfferRestSchnittstelle {
   @Path("/new")
   public Response createEntity(Offer offer) {
     if (offer != null && angebotAnforderung(offer)) {
-      offer.setOffer_id(UUID.randomUUID().toString());
-      repository.save(OfferMapper.mapOfferToBackend(offer));
-      return Response.status(200).entity(offer.getOffer_id()).type(MediaType.APPLICATION_JSON).build();
+      UserMongo userMongo = USER_REPO.loadById(UserMongo.class, offer.getUser_id());
+      if (userMongo != null && userMongo.hasOfferTokens()) {
+        offer.setOffer_id(UUID.randomUUID().toString());
+        userMongo.removeOfferToken();
+        OFFER_REPO.save(OfferMapper.mapOfferToBackend(offer));
+        return Response.status(200).entity(offer.getOffer_id()).type(MediaType.APPLICATION_JSON).build();
+      } else {
+        return Response.status(Status.FORBIDDEN)
+            .entity(jsonErrorMsg.replace("x", "User was not allowed to create offer since no payments were done"))
+            .build();
+      }
     }
     return Response.status(Status.BAD_REQUEST).build();
   }
@@ -94,7 +103,7 @@ public class OfferRestSchnittstelle {
   @Path("/update")
   public Response updateEntity(Offer offer) {
     if (offer.getOffer_id() != null && angebotAnforderung(offer)) {
-      repository.save(OfferMapper.mapOfferToBackend(offer));
+      OFFER_REPO.save(OfferMapper.mapOfferToBackend(offer));
       return Response.status(200).entity(offer.getOffer_id()).type(MediaType.APPLICATION_JSON).build();
     }
     return Response.status(Status.BAD_REQUEST).build();
@@ -104,7 +113,7 @@ public class OfferRestSchnittstelle {
   @GET
   @Path("/delete/{id}")
   public Response deleteEntity(@PathParam("id") String id) {
-    if (repository.deleteByID(OfferMongo.class, id)) {
+    if (OFFER_REPO.deleteByID(OfferMongo.class, id)) {
       return Response.status(200).build();
     } else {
       return Response.status(204).build();
@@ -113,19 +122,19 @@ public class OfferRestSchnittstelle {
   }
 
   public boolean angebotAnforderung(Offer offer) {
-   if(Integer.toString(offer.getAvailability()) == null || offer.getCategory_id() == null || 
-         Long.toString(offer.getCreation_date()) == null || offer.getOffer_id() == null ||
-         offer.getDescription() == null || offer.getTitle() == null || offer.getUser_id() == null ||
-         Double.toString(offer.getPrice()) == null) {
-         return false;
-         }
-   if(offer.getTitle().length() < 1 || offer.getTitle().length() > 100) {
-     return false;
-   }
-   if(offer.getDescription().length() < 1 || offer.getDescription().length() > 200) {
-     return false;
-   }
-   return true;
+    if (Integer.toString(offer.getAvailability()) == null || offer.getCategory_id() == null
+        || Long.toString(offer.getCreation_date()) == null || offer.getOffer_id() == null
+        || offer.getDescription() == null || offer.getTitle() == null || offer.getUser_id() == null
+        || Double.toString(offer.getPrice()) == null) {
+      return false;
+    }
+    if (offer.getTitle().length() < 1 || offer.getTitle().length() > 100) {
+      return false;
+    }
+    if (offer.getDescription().length() < 1 || offer.getDescription().length() > 200) {
+      return false;
+    }
+    return true;
   }
 
 }

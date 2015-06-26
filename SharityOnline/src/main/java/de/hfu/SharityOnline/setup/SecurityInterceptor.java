@@ -76,7 +76,6 @@ public class SecurityInterceptor implements javax.ws.rs.container.ContainerReque
       if (method.isAnnotationPresent(RolesAllowed.class)) {
         RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
         Set<String> rolesSet = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
-
         // Is user valid?
         if (!isUserAllowed(username, password, rolesSet)) {
           requestContext.abortWith(ACCESS_DENIED);

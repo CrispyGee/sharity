@@ -82,19 +82,9 @@
 		</dependency>
 		<!-- Paymill -->
 		<dependency>
-  			<groupId>com.paymill</groupId>
-  			<artifactId>paymill-java</artifactId>
-  			<version>5.0.0</version>
-		</dependency>
-		<dependency>
-			  <groupId>org.apache.httpcomponents</groupId>
-			  <artifactId>httpclient</artifactId>
-			  <version>4.3.6</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.mashape.unirest</groupId>
-		    <artifactId>unirest-java</artifactId>
-		    <version>1.4.5</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -106,16 +96,5 @@
 			<artifactId>httpmime</artifactId>
 			<version>4.3.6</version>
 		</dependency>
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20140107</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>javax.mail-api</artifactId>
-			<version>1.5.1</version>
-		</dependency>
-
 	</dependencies>
 </project>

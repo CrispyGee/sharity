@@ -10,10 +10,13 @@ import de.hfu.SharityOnline.entities.User;
 import de.hfu.SharityOnline.entities.UserMongo;
 import de.hfu.SharityOnline.innerObjects.Activity;
 import de.hfu.SharityOnline.innerObjects.Salutation;
+import de.hfu.SharityOnline.setup.Repository;
 
 public class UserMapper {
 
   private static final ModelMapper MODEL_MAPPER = new ModelMapper();
+  private static final Repository<UserMongo> userRepo = new Repository<UserMongo>();
+
   // private static boolean toFront = true;
   static {
     MODEL_MAPPER.addMappings(new UserToFrontendProps());
@@ -28,9 +31,14 @@ public class UserMapper {
   }
 
   public static UserMongo mapUserToBackend(User user) throws IllegalArgumentException {
+
     UserMongo userMongo = MODEL_MAPPER.map(user, UserMongo.class);
     userMongo.setSalutation(Salutation.fromNumber(user.getSalutation()));
     userMongo.setActivity(Activity.fromNumber(user.getActivity()));
+    UserMongo existingUserMongo = userRepo.loadById(UserMongo.class, user.getId());
+    if (existingUserMongo!=null){
+      userMongo.setOfferTokens(existingUserMongo.getOfferTokens());
+    }
     return userMongo;
   }
 
@@ -65,5 +73,6 @@ class UserToBackendProps extends PropertyMap<User, UserMongo> {
   protected void configure() {
     skip().setActivity(null);
     skip().setSalutation(null);
+    skip().setOfferTokens(null);
   }
 }
