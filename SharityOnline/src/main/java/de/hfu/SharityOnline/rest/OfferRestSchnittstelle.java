@@ -32,7 +32,6 @@ public class OfferRestSchnittstelle {
 
   private static final Repository<OfferMongo> OFFER_REPO = new Repository<OfferMongo>();
   private static final Repository<UserMongo> USER_REPO = new Repository<UserMongo>();
-
   private static final Search search = new Search();
 
   @PermitAll
@@ -48,8 +47,15 @@ public class OfferRestSchnittstelle {
   @GET
   @Path("/{id}")
   public Response loadEntityById(@PathParam("id") String id) {
-    OfferMongo offer = OFFER_REPO.loadById(OfferMongo.class, id);
-    return Response.status(200).entity(OfferMapper.mapOfferToFrontend(offer)).type(MediaType.APPLICATION_JSON).build();
+    try {
+      OfferMongo offer = OFFER_REPO.loadById(OfferMongo.class, id);
+      return Response.status(200).entity(OfferMapper.mapOfferToFrontend(offer)).type(MediaType.APPLICATION_JSON)
+          .build();
+    } catch (Exception e) {
+      return Response.status(424)
+          .entity(jsonErrorMsg.replace("x", "Response 424: Offer with id " + id + " not found in database."))
+          .type(MediaType.APPLICATION_JSON).build();
+    }
   }
 
   @PermitAll
