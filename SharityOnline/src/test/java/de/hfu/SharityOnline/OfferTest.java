@@ -1,13 +1,8 @@
 package de.hfu.SharityOnline;
 
-import static org.junit.Assert.*;
-
-import javax.ws.rs.core.Response;
-
 import org.junit.Test;
 
 import de.hfu.SharityOnline.entities.Offer;
-import de.hfu.SharityOnline.entities.User;
 import de.hfu.SharityOnline.rest.OfferRestSchnittstelle;
 
 public class OfferTest {
@@ -161,7 +156,7 @@ public class OfferTest {
     createOfferWithArguments(true, 1, "3", 1434422092L, 0, "Sehr gute Mathematikkentnisse, ich helfe gerne!", 15.0, "Durch eine Prüfung gefallen? ich helfe ihnen.", "user_id9");
     createOfferWithArguments(true, 2, "3", 1434429992L, 0, "Student sucht Nebenjob. Gebe gerne auch Nachhilfe, jedoch nur auf einem hohen Level", 30.0, "Mathe-Nachhilfe für Profis", "user_id10");
   //20x Alten Menschen Helfen
-    createOfferWithArguments(true, 1, "4", 1434442092L, 0, "Kleinere Besorgungen, helfe im Haushalt gerne", 25.0, "Sie kommen im Alltag nicht zurecht? Ich helfe Ihnen gerne", "user_id1");
+    createOfferWithArguments(true, 1, "4", 1434442092L, 0, "Kleinere Beorgungen, helfe im Haushalt gerne", 25.0, "Sie kommen im Alltag nicht zurecht? Ich helfe Ihnen gerne", "user_id1");
     createOfferWithArguments(true, 2, "4", 1434422092L, 0, "Student aus Furtwangen im 3ten Semester. Ich möchte mir eine Kleinigkeit dazu verdienen und einem anderen Menschen den Alltag erleichtern!", 15.0, "Ich helfe Ihnen beim einkaufen", "user_id2");
     createOfferWithArguments(true, 3, "4", 1434441092L, 0, "Ich Helfe Ihnen gerne, bin handwerklich sehr begabt, helfe gerne im Haushalt und bei Gartenarbeiten", 30.0, "Haushalt und Gartenarbeit!", "user_id3");
     createOfferWithArguments(true, 0, "4", 1434440092L, 0, "Ich kaufe für Sie ein, ich koche, ich kümmere mich um sie!", 20.0, "Sie schaffen es nicht alleine? ich bind a!", "user_id4");

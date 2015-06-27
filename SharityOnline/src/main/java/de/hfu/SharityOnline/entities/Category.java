@@ -16,6 +16,7 @@ public class Category implements Serializable {
   @Id
   private String category_id;
   private String category_term;
+  private int category_price;
   
   public String getCategory_id() {
     return category_id;
@@ -28,6 +29,12 @@ public class Category implements Serializable {
   }
   public void setCategory_term(String category_term) {
     this.category_term = category_term;
+  }
+  public int getCategory_price() {
+    return category_price;
+  }
+  public void setCategory_price(int category_price) {
+    this.category_price = category_price;
   }
   
 

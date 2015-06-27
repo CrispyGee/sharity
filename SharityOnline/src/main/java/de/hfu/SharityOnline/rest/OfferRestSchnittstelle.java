@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -90,14 +91,14 @@ public class OfferRestSchnittstelle {
   public Response createEntity(Offer offer) {
     if (offer != null && angebotAnforderung(offer)) {
       UserMongo userMongo = USER_REPO.loadById(UserMongo.class, offer.getUser_id());
-      if (userMongo != null && userMongo.hasOfferTokens()) {
+      if (userMongo != null && userMongo.hasOfferCategoryTokens(offer.getCategory_id())) {
         offer.setOffer_id(UUID.randomUUID().toString());
-        userMongo.removeOfferToken();
+        userMongo.removeOfferCategoryToken(offer.getCategory_id());
         OFFER_REPO.save(OfferMapper.mapOfferToBackend(offer));
         return Response.status(200).entity(offer.getOffer_id()).type(MediaType.APPLICATION_JSON).build();
       } else {
         return Response.status(Status.FORBIDDEN)
-            .entity(jsonErrorMsg.replace("x", "User was not allowed to create offer since no payments were done"))
+            .entity(jsonErrorMsg.replace("x", "User was not allowed to create offer with this category, since no payment for it was done."))
             .build();
       }
     }
@@ -116,6 +117,7 @@ public class OfferRestSchnittstelle {
   }
 
   @Consumes(MediaType.APPLICATION_JSON)
+  @RolesAllowed({"ADMIN"})
   @GET
   @Path("/delete/{id}")
   public Response deleteEntity(@PathParam("id") String id) {

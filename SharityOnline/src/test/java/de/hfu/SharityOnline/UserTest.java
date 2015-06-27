@@ -1,9 +1,5 @@
 package de.hfu.SharityOnline;
 
-import static org.junit.Assert.*;
-
-import javax.ws.rs.core.Response;
-
 import org.junit.Test;
 
 import de.hfu.SharityOnline.entities.User;

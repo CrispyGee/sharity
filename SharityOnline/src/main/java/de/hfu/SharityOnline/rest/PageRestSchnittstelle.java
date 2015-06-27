@@ -52,7 +52,7 @@ public class PageRestSchnittstelle {
     }
   }
 
-  @RolesAllowed({ "ADMIN", "VERIFIEDUSER" })
+  @RolesAllowed({ "ADMIN" })
   @Consumes(MediaType.APPLICATION_JSON)
   @POST
   @Path("/new")

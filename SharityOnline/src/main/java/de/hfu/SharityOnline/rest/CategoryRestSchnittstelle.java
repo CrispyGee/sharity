@@ -3,6 +3,7 @@ package de.hfu.SharityOnline.rest;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -49,6 +50,7 @@ public class CategoryRestSchnittstelle {
     }
   
   @Consumes(MediaType.APPLICATION_JSON)
+  @RolesAllowed({"ADMIN"})
   @POST
   @Path("/new")
   public Response createEntity(Category category) {

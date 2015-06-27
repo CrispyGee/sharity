@@ -1,6 +1,8 @@
 package de.hfu.SharityOnline.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -32,7 +34,7 @@ public class UserMongo implements Serializable {
   private String hometown;
   private long birthday;
   private String phone;
-  private Integer offerTokens;
+  private List<String> offerCategoryTokens;
   @Indexed(unique = true)
   private String email;
   private Activity activity;
@@ -195,31 +197,31 @@ public class UserMongo implements Serializable {
     this.employed_info = employed_info;
   }
 
-  public Integer getOfferTokens() {
-    return offerTokens;
+  public List<String> getOfferCategoryTokens() {
+    return offerCategoryTokens;
   }
 
-  public void setOfferTokens(Integer offerTokens) {
-    this.offerTokens = offerTokens;
+  public void setOfferCategoryTokens(List<String> offerCategoryTokens) {
+    this.offerCategoryTokens = offerCategoryTokens;
   }
 
-  public boolean hasOfferTokens() {
-    if (this.offerTokens != null && this.offerTokens.compareTo(0) > 0) {
+  public boolean hasOfferCategoryTokens(String category_id) {
+    if (this.offerCategoryTokens != null && this.offerCategoryTokens.contains(category_id))  {
       return true;
     }
     return false;
   }
 
-  public void removeOfferToken() {
-    this.offerTokens = this.offerTokens - 1;
+  public void removeOfferCategoryToken(String category_id) {
+    this.offerCategoryTokens.remove(category_id);
   }
 
-  public void increaseOfferTokens() {
-    if (this.offerTokens == null) {
-      this.offerTokens = new Integer(1);
+  public void increaseOfferCategoryTokens(String category_id) {
+    if (this.offerCategoryTokens == null) {
+      this.offerCategoryTokens = new ArrayList<String>();
     } else {
-      this.offerTokens = this.offerTokens + 1;
+      this.offerCategoryTokens.add(category_id);
     }
   }
-
+  
 }

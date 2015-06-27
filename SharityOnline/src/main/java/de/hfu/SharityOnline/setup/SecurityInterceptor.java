@@ -1,5 +1,6 @@
 package de.hfu.SharityOnline.setup;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import javax.ws.rs.ext.Provider;
 import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ServerResponse;
+import org.jboss.resteasy.util.Base64;
 
 import de.hfu.SharityOnline.entities.UserMongo;
 
@@ -32,8 +34,8 @@ public class SecurityInterceptor implements javax.ws.rs.container.ContainerReque
       new Headers<Object>());;
   private static final ServerResponse ACCESS_FORBIDDEN = new ServerResponse("Nobody can access this resource", 403,
       new Headers<Object>());;
-//  private static final ServerResponse SERVER_ERROR = new ServerResponse("INTERNAL SERVER ERROR", 500,
-//      new Headers<Object>());;
+  private static final ServerResponse SERVER_ERROR = new ServerResponse("INTERNAL SERVER ERROR", 500,
+      new Headers<Object>());;
   private static final Repository<UserMongo> repository = new Repository<UserMongo>();
 
   @Override
@@ -61,7 +63,20 @@ public class SecurityInterceptor implements javax.ws.rs.container.ContainerReque
         return;
       }
 
-      final String usernameAndPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+      // Get encoded username and password
+      final String encodedUserPassword = authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
+
+      // Decode username and password
+      String usernameAndPassword;
+      try {
+        usernameAndPassword = new String(Base64.decode(encodedUserPassword));
+      } catch (IOException e) {
+        requestContext.abortWith(SERVER_ERROR);
+        return;
+      }
+
+      // usernameAndPassword =
+      // authorization.get(0).replaceFirst(AUTHENTICATION_SCHEME + " ", "");
 
       // Split username and password tokens
       final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");

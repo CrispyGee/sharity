@@ -35,7 +35,7 @@
       var token = result.token;
       // Insert token into form in order to submit to server
       console.log(token);
-      var user_id = "1"; //user_id des eingeloggten Nutzers hier einfuegen.
+      var user_id = "2"; //user_id des eingeloggten Nutzers hier einfuegen.
       $.ajax({
          type: "GET",
          url: "http://localhost:8080/SharityOnline/payment/" + user_id + "/" + token,

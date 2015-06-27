@@ -26,6 +26,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
+import de.hfu.SharityOnline.entities.Category;
 import de.hfu.SharityOnline.entities.Paymill;
 import de.hfu.SharityOnline.entities.UserMongo;
 import de.hfu.SharityOnline.setup.Repository;
@@ -36,7 +37,9 @@ public class PaymillRestSchnittstelle {
   private final String jsonErrorMsg = "{Error: \"x\"}";
   private static final Repository<UserMongo> USER_REPO = new Repository<UserMongo>();
   private static final Repository<Paymill> PAYMENT_REPO = new Repository<Paymill>();
+  private static final Repository<Category> CATEGORY_REPO = new Repository<Category>();
   private static final String privateKey = "43359664a9f37c92a16737b711b0a26f";
+
   // private static final String publicKey = "71850066712bad20cdf3f646c5c74761";
 
   @PermitAll
@@ -46,20 +49,56 @@ public class PaymillRestSchnittstelle {
       throws Exception {
     UserMongo userMongo = USER_REPO.loadById(UserMongo.class, userId);
     if (userMongo != null) {
-      try{
-      CloseableHttpClient httpClient = HttpClients.createDefault();
-      CloseableHttpResponse paymentResponse = callPaymentRest(token, httpClient);
-      String pay_id = getIdFromResponse(paymentResponse);
-      CloseableHttpResponse transactionResponse = callTransactionRest(pay_id, httpClient, userMongo.getUsername());
-      String trans_id = getIdFromResponse(transactionResponse);
-      paymentResponse.close();
-      transactionResponse.close();
-      updatePaymillLog(userId, pay_id, trans_id);
-      updateUserTokens(userMongo);
-      return Response.status(Status.ACCEPTED).build();
+      try {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpResponse paymentResponse = callPaymentRest(token, httpClient);
+        String pay_id = getIdFromResponse(paymentResponse);
+        CloseableHttpResponse transactionResponse = callTransactionRest(pay_id, httpClient, userMongo.getUsername(), "1000");
+        String trans_id = getIdFromResponse(transactionResponse);
+        paymentResponse.close();
+        transactionResponse.close();
+        updatePaymillLog(userId, pay_id, trans_id);
+        updateUserTokens(userMongo, "default_category");
+        return Response.status(Status.ACCEPTED).build();
+      } catch (Exception e) {
+        return Response.status(Status.BAD_REQUEST)
+            .entity(jsonErrorMsg.replace("x", "There was an error during the payment process, possibly a fraud"))
+            .build();
       }
-      catch(Exception e){
-        return Response.status(Status.BAD_REQUEST).entity(jsonErrorMsg.replace("x", "There was an error during the payment process, possibly a fraud")).build();
+    } else {
+      return Response.status(Status.PRECONDITION_FAILED)
+          .entity(jsonErrorMsg.replace("x", "User not logged in or not found")).build();
+    }
+  }
+
+  @PermitAll
+  @GET
+  @Path("/{userId}/{token}/{category_id}")
+  public Response transferPaymentWithCategory(@PathParam("userId") String userId, @PathParam("token") String token,
+      @PathParam("category_id") String category_id) throws Exception {
+    UserMongo userMongo = USER_REPO.loadById(UserMongo.class, userId);
+    if (userMongo != null) {
+      Category category = CATEGORY_REPO.loadById(Category.class, category_id);
+      if (category != null) {
+        try {
+          CloseableHttpClient httpClient = HttpClients.createDefault();
+          CloseableHttpResponse paymentResponse = callPaymentRest(token, httpClient);
+          String pay_id = getIdFromResponse(paymentResponse);
+          CloseableHttpResponse transactionResponse = callTransactionRest(pay_id, httpClient, userMongo.getUsername(), Integer.toString(category.getCategory_price()));
+          String trans_id = getIdFromResponse(transactionResponse);
+          paymentResponse.close();
+          transactionResponse.close();
+          updatePaymillLog(userId, pay_id, trans_id);
+          updateUserTokens(userMongo, category_id);
+          return Response.status(Status.ACCEPTED).build();
+        } catch (Exception e) {
+          return Response.status(Status.BAD_REQUEST)
+              .entity(jsonErrorMsg.replace("x", "There was an error during the payment process, possibly a fraud"))
+              .build();
+        }
+      } else {
+        return Response.status(Status.PRECONDITION_FAILED).entity(jsonErrorMsg.replace("x", "Category not found"))
+            .build();
       }
     } else {
       return Response.status(Status.PRECONDITION_FAILED)
@@ -89,12 +128,12 @@ public class PaymillRestSchnittstelle {
   }
 
   @SuppressWarnings("deprecation")
-  private CloseableHttpResponse callTransactionRest(String pay_id, CloseableHttpClient httpClient, String description)
+  private CloseableHttpResponse callTransactionRest(String pay_id, CloseableHttpClient httpClient, String description, String price)
       throws IOException, ClientProtocolException {
     HttpPost httpPost = new HttpPost("https://api.paymill.com/v2.1/transactions");
     httpPost.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(privateKey, ""), "UTF-8", false));
     List<NameValuePair> formData = new ArrayList<NameValuePair>();
-    formData.add(new BasicNameValuePair("amount", "1500"));
+    formData.add(new BasicNameValuePair("amount", price));
     formData.add(new BasicNameValuePair("currency", "EUR"));
     formData.add(new BasicNameValuePair("payment", pay_id));
     formData.add(new BasicNameValuePair("description", description));
@@ -114,8 +153,8 @@ public class PaymillRestSchnittstelle {
     return result;
   }
 
-  private void updateUserTokens(UserMongo userMongo) {
-    userMongo.increaseOfferTokens();
+  private void updateUserTokens(UserMongo userMongo, String category_id) {
+    userMongo.increaseOfferCategoryTokens(category_id);
     USER_REPO.save(userMongo);
   }
 

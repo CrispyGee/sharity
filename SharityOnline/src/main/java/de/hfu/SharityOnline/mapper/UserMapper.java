@@ -37,7 +37,7 @@ public class UserMapper {
     userMongo.setActivity(Activity.fromNumber(user.getActivity()));
     UserMongo existingUserMongo = userRepo.loadById(UserMongo.class, user.getId());
     if (existingUserMongo!=null){
-      userMongo.setOfferTokens(existingUserMongo.getOfferTokens());
+      userMongo.setOfferCategoryTokens(existingUserMongo.getOfferCategoryTokens());
     }
     return userMongo;
   }
@@ -73,6 +73,6 @@ class UserToBackendProps extends PropertyMap<User, UserMongo> {
   protected void configure() {
     skip().setActivity(null);
     skip().setSalutation(null);
-    skip().setOfferTokens(null);
+    skip().setOfferCategoryTokens(null);
   }
 }
