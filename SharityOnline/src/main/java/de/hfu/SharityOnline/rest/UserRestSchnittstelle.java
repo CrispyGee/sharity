@@ -1,5 +1,6 @@
 package de.hfu.SharityOnline.rest;
 
+import java.security.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,24 +20,26 @@ import javax.ws.rs.core.Response.Status;
 import de.hfu.SharityOnline.entities.User;
 import de.hfu.SharityOnline.entities.UserMongo;
 import de.hfu.SharityOnline.mapper.UserMapper;
-import de.hfu.SharityOnline.setup.PasswordHasher;
 import de.hfu.SharityOnline.setup.Repository;
 
 @Path("/user")
 public class UserRestSchnittstelle extends Application {
   
-  private final String jsonErrorMsg = "{Error: \"x\"}";
-  // private final String jsonErrorMsg = "{Error: \"x\"";
-  // private final String jsonSuccessMsg = "{Success: \"x\"";
+  private final String jsonErrorMsg = "{\"error\": \"x\"}";
   private static final Repository<UserMongo> repository = new Repository<UserMongo>();
 
   @RolesAllowed("ADMIN")
   @GET
   @Path("")
   public Response loadEntity() {
+    try {
     List<UserMongo> allProfiles = repository.loadAll(UserMongo.class);
     return Response.status(200).entity(UserMapper.mapUserListToFrontend(allProfiles)).type(MediaType.APPLICATION_JSON)
         .build();
+    } catch (Exception e) {
+      return Response.status(424).entity(jsonErrorMsg.replace("x", "No Users found in Database."))
+          .type(MediaType.APPLICATION_JSON).build();
+    }
   }
 
   @PermitAll
@@ -47,9 +50,11 @@ public class UserRestSchnittstelle extends Application {
     UserMongo user = repository.loadById(UserMongo.class, id);
     user.setPassword(null);
     user.setUsername(null);
-    return Response.status(200).entity(UserMapper.mapUserToFrontend(user)).type(MediaType.APPLICATION_JSON).build();
+    return Response.status(200).entity(UserMapper.mapUserToFrontend(user)).
+          type(MediaType.APPLICATION_JSON).build();
     } catch(Exception e) {
-      return Response.status(424).entity(jsonErrorMsg.replace("x", "Response 424: User with id " + id + " not found in database."))
+      return Response.status(424).entity(jsonErrorMsg.replace("x", "Response 424: User with id " 
+          + id + " not found in database."))
           .type(MediaType.APPLICATION_JSON).build();
       }
   }
@@ -67,28 +72,32 @@ public class UserRestSchnittstelle extends Application {
           UserMongo userBackend = UserMapper.mapUserToBackend(user);
           userBackend.setId(UUID.randomUUID().toString());
           userBackend.setUserRole("FREE");
-          userBackend.setPassword(PasswordHasher.getEncryptor().encryptPassword(user.getPassword()));
+          try {
+            userBackend.setPassword(encodePassword(user.getPassword()));
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
           repository.save(userBackend);
         } catch(IllegalArgumentException e) {
           return Response.status(Status.BAD_REQUEST).build();
         }
         return Response.status(Status.ACCEPTED).build();
       }
-    return Response.status(Status.BAD_REQUEST).build();
     }
-    return Response.status(Status.UNAUTHORIZED).build();
+    return Response.status(Status.BAD_REQUEST).build();
   }
 
   @PermitAll
   @PUT
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/update")
-  public Response updateEntity(User user) {
-    if (user.getId() != null && isValid(user)) {
+  public Response updateEntity(User user) throws Exception {
+    if (user.getId() != null) {
       UserMongo foundUser = repository.loadById(UserMongo.class, user.getId());
-      if (foundUser != null && foundUser.getPassword().equals(user.getPassword())
+      if (foundUser != null && foundUser.getPassword().equals(encodePassword(user.getPassword()))
           && foundUser.getUsername().equals(user.getUsername())) {
         user.setUserRole(foundUser.getUserRole());
+        user.setPassword(encodePassword(user.getPassword()));
         repository.save(UserMapper.mapUserToBackend(user));
         return Response.status(Status.ACCEPTED).build();
       }
@@ -108,7 +117,7 @@ public class UserRestSchnittstelle extends Application {
   // }
   // return Response.status(Status.BAD_REQUEST).build();
   // }
-
+  
   @GET
   @Path("/delete/{id}")
   public Response deleteEntity(@PathParam("id") String id) {
@@ -149,5 +158,16 @@ public class UserRestSchnittstelle extends Application {
     } else {
       return false;
     }
+  }
+  public String encodePassword(String passwort) throws Exception  {
+    MessageDigest md5 = MessageDigest.getInstance("MD5");
+    md5.reset();
+    md5.update(passwort.getBytes());
+    byte[] result = md5.digest();
+    StringBuffer hexString = new StringBuffer();
+    for (int i=0; i<result.length; i++) {
+        hexString.append(Integer.toHexString(0xFF & result[i]));
+    }
+    return hexString.toString();
   }
 }

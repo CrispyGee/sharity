@@ -17,11 +17,12 @@ public class Repository<T> {
 
   public Repository() {
     // For Authentication:
-    // MongoCredential mongoC = MongoCredential.createCredential("chris2",
-    // "admin", "passwort".toCharArray());
-    // ds = new Morphia().createDatastore(new MongoClient(new
-    // ServerAddress("localhost"), Arrays.asList(mongoC)), "sharitydb");
-    // Unauthorized:
+//    MongoCredential mongoC = MongoCredential.createCredential("chris2",
+//         "admin", "passwort".toCharArray());
+//     ds = new Morphia().createDatastore(new MongoClient(new
+//         ServerAddress("localhost"), Arrays.asList(mongoC)), "sharitydb");
+    
+     //Unauthorized:
     ds = new Morphia().createDatastore(new MongoClient(new ServerAddress("localhost")), "sharityonlinedb");
   }
 
@@ -61,7 +62,7 @@ public class Repository<T> {
     return (List<T>) ds.find(T).field(key).equal(value).asList();
   }
 
-  public void save(Object entity) {
+  public void save(Object entity) { 
     ds.save(entity);
   }
 
@@ -69,7 +70,7 @@ public class Repository<T> {
   public List<T> loadWithLimit(int limit, Class<?> T) {
     return (List<T>) ds.find(T).limit(limit).asList();
   }
-
+  
   @SuppressWarnings("unchecked")
   public List<T> loadAll(Class<?> T) {
     return (List<T>) ds.find(T).asList();
