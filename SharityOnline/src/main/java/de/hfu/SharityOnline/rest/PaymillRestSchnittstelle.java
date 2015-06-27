@@ -34,7 +34,7 @@ import de.hfu.SharityOnline.setup.Repository;
 @Path("/payment")
 @Produces(MediaType.APPLICATION_JSON)
 public class PaymillRestSchnittstelle {
-  private final String jsonErrorMsg = "{Error: \"x\"}";
+  private final String jsonErrorMsg = "{\"error\": \"x\"}";
   private static final Repository<UserMongo> USER_REPO = new Repository<UserMongo>();
   private static final Repository<Paymill> PAYMENT_REPO = new Repository<Paymill>();
   private static final Repository<Category> CATEGORY_REPO = new Repository<Category>();

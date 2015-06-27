@@ -1,1 +1,25 @@
 http://docs.mongodb.org/manual/tutorial/deploy-replica-set-with-auth/
+
+Server-configuration:
+
+1. path-variable setzen
+
+2. "mongod --smallfiles --dbpath ~/mongodb/dbdata"
+
+3. "mongo" -> connecten
+
+use admin
+
+db.createUser( {
+    user: "siteUserAdmin",
+    pwd: "ChrisSophLe0",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  });
+
+db.createUser( {
+	user: "siteRootAdmin",
+	pwd: "ChrisSophLe0",
+	roles: [ { role: "root", db: "admin" } ]
+});
+
+mongod --smallfiles --dbpath ~/mongodb/dbdata --keyFile ~/mongodb/keyfile/mongodb-keyfile --replSet "rs0"

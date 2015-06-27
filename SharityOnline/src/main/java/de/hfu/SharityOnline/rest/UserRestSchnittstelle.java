@@ -25,7 +25,7 @@ import de.hfu.SharityOnline.setup.Repository;
 @Path("/user")
 public class UserRestSchnittstelle extends Application {
   
-  private final String jsonErrorMsg = "{Error: \"x\"}";
+  private final String jsonErrorMsg = "{\"error\": \"x\"}";
   // private final String jsonErrorMsg = "{Error: \"x\"";
   // private final String jsonSuccessMsg = "{Success: \"x\"";
   private static final Repository<UserMongo> repository = new Repository<UserMongo>();

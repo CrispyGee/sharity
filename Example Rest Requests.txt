@@ -1,0 +1,8 @@
+Rest-Request Examples:
+
+user-get-all:
+http://localhost:8080/SharityOnline/user
+Authorization: name:w8KOkxoFvQyWvJmaXHGdCMbxf+IL6gc3qd4vDyRZJItvqgqHUO76ANUzantaz0jT
+
+Search:
+http://localhost:8080/SharityOnline/offer/search/Max/online?hometown=ettenheim&age=0&price=50&within=100&salutation=1&availability=1&category_id=cat_id2&creation_date=1434386430100
