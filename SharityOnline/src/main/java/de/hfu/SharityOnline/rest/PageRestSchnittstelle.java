@@ -22,7 +22,7 @@ import de.hfu.SharityOnline.setup.Repository;
 @Produces(MediaType.APPLICATION_JSON)
 public class PageRestSchnittstelle {
 
-  private final String jsonErrorMsg = "{Error: \"x\"}";
+  private final String jsonErrorMsg = "{\"error\": \"x\"}";
   // private final String jsonSuccessMsg = "{Success: \"x\"";
   private static final Repository<Page> repository = new Repository<Page>();
 

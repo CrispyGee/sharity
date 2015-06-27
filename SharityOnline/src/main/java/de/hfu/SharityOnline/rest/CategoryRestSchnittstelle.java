@@ -21,7 +21,7 @@ import de.hfu.SharityOnline.setup.Repository;
 @Produces(MediaType.APPLICATION_JSON)
 
 public class CategoryRestSchnittstelle {
-  private final String jsonErrorMsg = "{Error: \"x\"}";
+  private final String jsonErrorMsg = "{\"error\": \"x\"}";
   private static final Repository<Category> repository = new Repository<Category>();
 
   @PermitAll
