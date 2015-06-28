@@ -1,6 +1,5 @@
 package de.hfu.SharityOnline.rest;
 
-import java.security.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +19,7 @@ import javax.ws.rs.core.Response.Status;
 import de.hfu.SharityOnline.entities.User;
 import de.hfu.SharityOnline.entities.UserMongo;
 import de.hfu.SharityOnline.mapper.UserMapper;
+import de.hfu.SharityOnline.setup.PasswordEncryptor;
 import de.hfu.SharityOnline.setup.Repository;
 
 @Path("/user")
@@ -73,7 +73,7 @@ public class UserRestSchnittstelle extends Application {
           userBackend.setId(UUID.randomUUID().toString());
           userBackend.setUserRole("FREE");
           try {
-            userBackend.setPassword(encodePassword(user.getPassword()));
+            userBackend.setPassword(PasswordEncryptor.encodePassword(user.getPassword()));
           } catch (Exception e) {
             e.printStackTrace();
           }
@@ -94,10 +94,10 @@ public class UserRestSchnittstelle extends Application {
   public Response updateEntity(User user) throws Exception {
     if (user.getId() != null) {
       UserMongo foundUser = repository.loadById(UserMongo.class, user.getId());
-      if (foundUser != null && foundUser.getPassword().equals(encodePassword(user.getPassword()))
+      if (foundUser != null && foundUser.getPassword().equals(PasswordEncryptor.encodePassword(user.getPassword()))
           && foundUser.getUsername().equals(user.getUsername())) {
         user.setUserRole(foundUser.getUserRole());
-        user.setPassword(encodePassword(user.getPassword()));
+        user.setPassword(PasswordEncryptor.encodePassword(user.getPassword()));
         repository.save(UserMapper.mapUserToBackend(user));
         return Response.status(Status.ACCEPTED).build();
       }
@@ -159,15 +159,5 @@ public class UserRestSchnittstelle extends Application {
       return false;
     }
   }
-  public String encodePassword(String passwort) throws Exception  {
-    MessageDigest md5 = MessageDigest.getInstance("MD5");
-    md5.reset();
-    md5.update(passwort.getBytes());
-    byte[] result = md5.digest();
-    StringBuffer hexString = new StringBuffer();
-    for (int i=0; i<result.length; i++) {
-        hexString.append(Integer.toHexString(0xFF & result[i]));
-    }
-    return hexString.toString();
-  }
+  
 }

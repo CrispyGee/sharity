@@ -13,7 +13,7 @@ import de.hfu.SharityOnline.innerObjects.PupilInfo;
 import de.hfu.SharityOnline.innerObjects.StudentInfo;
 import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.mapper.UserMapper;
-import de.hfu.SharityOnline.setup.PasswordHasher;
+import de.hfu.SharityOnline.setup.PasswordEncryptor;
 import de.hfu.SharityOnline.setup.Repository;
 import de.hfu.SharityOnline.setup.TimeHelper;
 
@@ -25,7 +25,7 @@ public class DbTest {
   private static final Repository<Page> pageRepo = new Repository<Page>();
 
   @Test
-  public void fillDatabaseWithLegitData() {
+  public void fillDatabaseWithLegitData() throws Exception {
     createPages();
     createCategories();
     createNormalFreeUsers();
@@ -82,21 +82,16 @@ public class DbTest {
     pageRepo.save(page2);
   }
 
-  private void createAdminUser() {
+  private void createAdminUser() throws Exception {
     User user = new User();
-    user.setId("3");
+    user.setId("ChrisSoph");
     user.setUserRole("ADMIN");
-    user.setLastname("Uwot");
-    user.setFirstname("Mate");
-    user.setPassword(PasswordHasher.getEncryptor().encryptPassword("123"));
-    user.setUsername("name");
+    user.setLastname("Chris");
+    user.setFirstname("Soph");
+    user.setPassword(PasswordEncryptor.encodePassword("sharity!rest"));
+    user.setUsername("Admin");
     user.setSalutation(1);
     user.setActivity(0);
-    user.setSelfportrait("Huehuehue");
-    user.setEmail("uwot@mate.de");
-    user.setZip("12345");
-    user.setPhone("0007822");
-    user.setHometown("Furtwangen");
     userRepo.save(UserMapper.mapUserToBackend(user));
 
   }

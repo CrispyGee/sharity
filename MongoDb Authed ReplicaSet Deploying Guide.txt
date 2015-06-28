@@ -2,7 +2,11 @@ http://docs.mongodb.org/manual/tutorial/deploy-replica-set-with-auth/
 
 Server-configuration:
 
-1. path-variable setzen
+1. path-variable setzen 
+   -cd root
+   -nano .bashrc
+   -PATH=$PATH:~/mongodb/mongodb-linux-x86_64-3.0.4/bin:~/elastic/elasticsearch-0.9$...
+   -export PATH
 
 2. "mongod --smallfiles --dbpath ~/mongodb/dbdata"
 
@@ -22,4 +26,22 @@ db.createUser( {
 	roles: [ { role: "root", db: "admin" } ]
 });
 
-mongod --smallfiles --dbpath ~/mongodb/dbdata --keyFile ~/mongodb/keyfile/mongodb-keyfile --replSet "rs0"
+use sharityonlinedb
+
+db.users.insert({
+    "_id" : "ChrisSoph",
+    "className" : "de.hfu.SharityOnline.entities.UserMongo",
+    "username" : "Admin",
+    "password" : "1c96e8885ca4178848958e93f958a20",
+    "userRole" : "ADMIN",
+    "salutation" : "maennlich",
+    "lastname" : "Chris",
+    "firstname" : "Soph",
+    "birthday" : NumberLong(0),
+    "activity" : "student",
+    "creation_date" : NumberLong(1435488594567)
+})
+
+
+
+mongod --smallfiles --dbpath ~/mongodb/dbdata --replSet "rs0" --keyFile ~/mongodb/keyfile/mongodb-keyfile 

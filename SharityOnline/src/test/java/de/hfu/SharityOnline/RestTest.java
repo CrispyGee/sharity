@@ -11,10 +11,12 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.hfu.SharityOnline.entities.User;
 
+@Ignore
 public class RestTest {
   public User createUserWithArguments(String id, String username, String firstname, String lastname, String zip, String phone, String email, String hometown) {
     User user = new User();
