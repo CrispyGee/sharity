@@ -110,7 +110,7 @@ public class SecurityInterceptor implements javax.ws.rs.container.ContainerReque
     // password wrong
     String doubleEncryptedPassword = user.getPassword();
     try {
-      if (!PasswordHasher.getEncryptor().checkPassword(singleEncryptedPassword, doubleEncryptedPassword)) {
+      if (!PasswordEncryptor.encodePassword(singleEncryptedPassword).equals(doubleEncryptedPassword)) {
         System.out.println("pw wrong");
         return false;
       }

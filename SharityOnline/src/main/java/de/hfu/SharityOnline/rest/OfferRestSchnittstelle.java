@@ -91,7 +91,7 @@ public class OfferRestSchnittstelle {
   public Response createEntity(Offer offer) {
     if (offer != null && angebotAnforderung(offer)) {
       UserMongo userMongo = USER_REPO.loadById(UserMongo.class, offer.getUser_id());
-      if (userMongo != null && userMongo.hasOfferCategoryTokens(offer.getCategory_id())) {
+      if (userMongo != null /*&& userMongo.hasOfferCategoryTokens(offer.getCategory_id())*/) {
         offer.setOffer_id(UUID.randomUUID().toString());
         userMongo.removeOfferCategoryToken(offer.getCategory_id());
         OFFER_REPO.save(OfferMapper.mapOfferToBackend(offer));
@@ -106,6 +106,7 @@ public class OfferRestSchnittstelle {
   }
 
   @Consumes(MediaType.APPLICATION_JSON)
+  @RolesAllowed({"ADMIN"})
   @PUT
   @Path("/update")
   public Response updateEntity(Offer offer) {
