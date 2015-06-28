@@ -106,6 +106,7 @@ public class OfferRestSchnittstelle {
   }
 
   @Consumes(MediaType.APPLICATION_JSON)
+  @RolesAllowed({"ADMIN"})
   @PUT
   @Path("/update")
   public Response updateEntity(Offer offer) {

@@ -206,7 +206,7 @@ public class UserMongo implements Serializable {
   }
 
   public boolean hasOfferCategoryTokens(String category_id) {
-    if (this.offerCategoryTokens != null && this.offerCategoryTokens.contains(category_id))  {
+    if (this.offerCategoryTokens != null && this.offerCategoryTokens.contains(category_id)) {
       return true;
     }
     return false;
@@ -219,9 +219,8 @@ public class UserMongo implements Serializable {
   public void increaseOfferCategoryTokens(String category_id) {
     if (this.offerCategoryTokens == null) {
       this.offerCategoryTokens = new ArrayList<String>();
-    } else {
-      this.offerCategoryTokens.add(category_id);
     }
+    this.offerCategoryTokens.add(category_id);
   }
-  
+
 }
