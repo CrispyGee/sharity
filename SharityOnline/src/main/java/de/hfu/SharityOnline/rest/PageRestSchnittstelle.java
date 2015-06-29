@@ -8,6 +8,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -15,7 +16,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import de.hfu.SharityOnline.entities.Offer;
 import de.hfu.SharityOnline.entities.Page;
+import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.setup.Repository;
 
 @Path("/page")
@@ -59,6 +62,18 @@ public class PageRestSchnittstelle {
   public Response createEntity(Page page) {
     if (page != null && pageIsCorrect(page)) {
       page.setId(UUID.randomUUID().toString());
+      repository.save(page);
+      return Response.status(200).entity(page.getId()).type(MediaType.APPLICATION_JSON).build();
+    }
+    return Response.status(Status.BAD_REQUEST).build();
+  }
+  
+  @Consumes(MediaType.APPLICATION_JSON)
+  @RolesAllowed({ "ADMIN" })
+  @PUT
+  @Path("/update")
+  public Response updateEntity(Page page) {
+    if (page.getId() != null && pageIsCorrect(page)) {
       repository.save(page);
       return Response.status(200).entity(page.getId()).type(MediaType.APPLICATION_JSON).build();
     }
