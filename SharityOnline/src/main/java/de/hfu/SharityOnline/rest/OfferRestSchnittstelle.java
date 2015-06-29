@@ -21,12 +21,10 @@ import javax.ws.rs.core.Response.Status;
 import org.elasticsearch.index.query.FilterBuilder;
 
 import de.hfu.SharityOnline.elastic.Search;
-import de.hfu.SharityOnline.entities.Category;
 import de.hfu.SharityOnline.entities.CategoryToken;
 import de.hfu.SharityOnline.entities.Offer;
 import de.hfu.SharityOnline.entities.OfferMongo;
 import de.hfu.SharityOnline.entities.UserMongo;
-import de.hfu.SharityOnline.innerObjects.OfferDuration;
 import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.setup.Repository;
 
@@ -37,7 +35,6 @@ public class OfferRestSchnittstelle {
 
   private static final Repository<OfferMongo> OFFER_REPO = new Repository<OfferMongo>();
   private static final Repository<UserMongo> USER_REPO = new Repository<UserMongo>();
-  private static final Repository<Category> CAT_REPO = new Repository<Category>();
   private static final Search search = new Search();
 
   @PermitAll
@@ -147,6 +144,7 @@ public class OfferRestSchnittstelle {
         categoryToken.setSupply_demand(offerMongo.getSupply_demand());
         categoryToken.setOfferDuration(offerMongo.getOfferDuration());
         if (userMongo.removeOfferCategoryToken(categoryToken)) {
+          USER_REPO.save(userMongo);
           OFFER_REPO.save(offerMongo);
           return Response.status(200).entity(offer.getOffer_id()).type(MediaType.APPLICATION_JSON).build();
         } else {

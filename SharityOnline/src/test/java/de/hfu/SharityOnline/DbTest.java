@@ -1,5 +1,6 @@
 package de.hfu.SharityOnline;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.hfu.SharityOnline.entities.Category;
@@ -17,6 +18,7 @@ import de.hfu.SharityOnline.setup.PasswordEncryptor;
 import de.hfu.SharityOnline.setup.Repository;
 import de.hfu.SharityOnline.setup.TimeHelper;
 
+@Ignore
 public class DbTest {
 
   private static final Repository<UserMongo> userRepo = new Repository<UserMongo>();

@@ -80,6 +80,11 @@ public class PaymillRestSchnittstelle {
       @PathParam("category_id") String category_id, @PathParam("supply_demand") String supply_demand,
       @PathParam("offer_duration") OfferDuration offer_duration) throws Exception {
     try {
+      System.out.println(userId);
+      System.out.println(token);
+      System.out.println(category_id);
+      System.out.println(supply_demand);
+      System.out.println(offer_duration);
       UserMongo userMongo = USER_REPO.loadById(UserMongo.class, userId);
       if (userMongo != null) {
         Category category = CATEGORY_REPO.loadById(Category.class, category_id);

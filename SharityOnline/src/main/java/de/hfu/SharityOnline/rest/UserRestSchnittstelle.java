@@ -61,22 +61,21 @@ public class UserRestSchnittstelle extends Application {
           .type(MediaType.APPLICATION_JSON).build();
     }
   }
-  
+
   @PermitAll
   @GET
   @Path("/username/{name}")
   public Response loadEntityByName(@PathParam("name") String name) {
     try {
-    UserMongo user = repository.loadByKey(UserMongo.class, "username", name);
-    user.setPassword(null);
-    user.setUsername(null);
-    return Response.status(200).entity(UserMapper.mapUserToFrontend(user)).
-          type(MediaType.APPLICATION_JSON).build();
-    } catch(Exception e) {
-      return Response.status(424).entity(jsonErrorMsg.replace("x", "Response 424: User with name " 
-          + name + " not found in database."))
+      UserMongo user = repository.loadByKey(UserMongo.class, "username", name);
+      user.setPassword(null);
+      user.setUsername(null);
+      return Response.status(200).entity(UserMapper.mapUserToFrontend(user)).type(MediaType.APPLICATION_JSON).build();
+    } catch (Exception e) {
+      return Response.status(424)
+          .entity(jsonErrorMsg.replace("x", "Response 424: User with name " + name + " not found in database."))
           .type(MediaType.APPLICATION_JSON).build();
-      }
+    }
   }
 
   @PermitAll
@@ -153,7 +152,8 @@ public class UserRestSchnittstelle extends Application {
     try {
       UserMongo user = repository.loadByKey(UserMongo.class, "username", username);
       if (user.getPassword().equals(PasswordEncryptor.encodePassword(passwordhash))) {
-        String cookie = "{\"sharitylogin\" : \"" + Base64.encodeBytes((username + " " + user.getPassword()).getBytes()) + "\"}";
+        String cookie = "{\"sharitylogin\" : \"" + Base64.encodeBytes((username + " " + user.getPassword()).getBytes())
+            + "\"}";
         System.out.println(cookie + " success");
         return Response.status(200).entity(cookie).type(MediaType.APPLICATION_JSON).build();
       } else {
@@ -165,26 +165,27 @@ public class UserRestSchnittstelle extends Application {
       return Response.status(424).entity("Benutzer nicht gefunden").type(MediaType.APPLICATION_JSON).build();
     }
   }
-  
+
   @PermitAll
   @GET
   @Consumes(MediaType.APPLICATION_JSON)
   @Path("/login/who")
   public Response loggedInAs(@HeaderParam("sharitylogin") String sharitylogin) {
     try {
-//      UserMongo user = repository.loadByKey(UserMongo.class, "username", username);
-//      if (user.getPassword().equals(PasswordEncryptor.encodePassword(passwordhash))) {
-        System.out.println(sharitylogin);
-        System.out.println(sharitylogin.split("\"")[2]);
-        String cookie = Base64.decode(sharitylogin).toString();
-        System.out.println(cookie + " success");
-        return Response.status(200).entity(cookie).type(MediaType.APPLICATION_JSON).build();
-//      } else {
-//        System.out.println("wrong pw: " + passwordhash);
-//        return Response.status(424).entity("Passwort falsch").type(MediaType.APPLICATION_JSON).build();
-//      }
+      System.out.println(sharitylogin);
+      String cookie = new String(Base64.decode(sharitylogin));
+      System.out.println(cookie);
+      String username = cookie.split(" ")[0];
+      System.out.println(username);
+      String password = cookie.split(" ")[1];
+      System.out.println(password);
+      UserMongo user = repository.loadByKey(UserMongo.class, "username", username);
+      if (user.getPassword().equals(password)) {
+        return Response.status(200).entity(UserMapper.mapUserToFrontend(user)).type(MediaType.APPLICATION_JSON).build();
+      }
+      return Response.status(424).entity("Kein gueltiges Login Token").type(MediaType.APPLICATION_JSON).build();
     } catch (Exception e) {
-      System.out.println("Buggg: ");
+      System.out.println("Buggg: User not found");
       return Response.status(424).entity("Benutzer nicht gefunden").type(MediaType.APPLICATION_JSON).build();
     }
   }
