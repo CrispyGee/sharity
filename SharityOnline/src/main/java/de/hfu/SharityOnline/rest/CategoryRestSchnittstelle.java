@@ -84,6 +84,8 @@ public class CategoryRestSchnittstelle {
   @Path("/update")
   public Response updateeEntity(Category category) {
     if (category != null) {
+      Category cat = repository.loadByKey(Category.class, "category_term", category.getCategory_term());
+      repository.deleteByID(Category.class, cat.getCategory_id());
       repository.save(category);
       return Response.status(200).entity(category.getCategory_id()).type(MediaType.APPLICATION_JSON).build();
     }
