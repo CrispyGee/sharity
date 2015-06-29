@@ -175,6 +175,7 @@ public class UserRestSchnittstelle extends Application {
 //      UserMongo user = repository.loadByKey(UserMongo.class, "username", username);
 //      if (user.getPassword().equals(PasswordEncryptor.encodePassword(passwordhash))) {
         System.out.println(sharitylogin);
+        System.out.println(sharitylogin.split("\"")[2]);
         String cookie = Base64.decode(sharitylogin).toString();
         System.out.println(cookie + " success");
         return Response.status(200).entity(cookie).type(MediaType.APPLICATION_JSON).build();
@@ -187,19 +188,6 @@ public class UserRestSchnittstelle extends Application {
       return Response.status(424).entity("Benutzer nicht gefunden").type(MediaType.APPLICATION_JSON).build();
     }
   }
-
-  // @GET
-  // @Path("/upgradeAccount/{id}")
-  // public Response upgradeAccount(@PathParam("id") String id) {
-  // User foundUser = repository.loadById(User.class, id);
-  // // TODO Paypal/Paymill check here
-  // if (foundUser != null) {
-  // foundUser.setUserRole("VERIFIEDUSER");
-  // repository.save(foundUser);
-  // return Response.status(Status.ACCEPTED).build();
-  // }
-  // return Response.status(Status.BAD_REQUEST).build();
-  // }
 
   @RolesAllowed("ADMIN")
   @GET

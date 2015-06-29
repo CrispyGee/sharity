@@ -5,8 +5,6 @@ import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -23,7 +21,7 @@ import de.hfu.SharityOnline.innerObjects.Salutation;
 
 public class Search {
   
-  private static final Logger LOGGER = LogManager.getLogger(Search.class);
+//  private static final Logger LOGGER = LogManager.getLogger(Search.class);
 
 
   private Client client;
@@ -55,7 +53,7 @@ public class Search {
     SearchRequestBuilder searchRequestBuilder = new SearchRequestBuilder(client);
     searchRequestBuilder.setIndices("offers").setTypes("offer").setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
         .setQuery(buildMatchFuzzyQuery(cleanSearchTerm)).setPostFilter(filter).setFrom(0).setSize(20).setExplain(false);
-    LOGGER.info(searchRequestBuilder.internalBuilder());
+//    LOGGER.info(searchRequestBuilder.internalBuilder());
     SearchResponse response = searchRequestBuilder.execute().actionGet();
     // client.prepareSearch("offers").setTypes("offer")
     // .setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(buildMatchFuzzyQuery(cleanSearchTerm))
