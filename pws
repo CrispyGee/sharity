@@ -4,4 +4,4 @@ mongodb: siteUserAdmin ChrisSophLe0
 mongodb: siteRootAdmin ChrisSophLe0
 tomcat: admin ChrSophLe0
 tomcat: manager ChrSophLe0
-rest: admin sharity!rest
+rest: Admin sharity!rest

@@ -148,6 +148,28 @@ public class UserRestSchnittstelle extends Application {
       return Response.status(424).entity("Benutzer nicht gefunden").type(MediaType.APPLICATION_JSON).build();
     }
   }
+  
+  @PermitAll
+  @GET
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/login/who")
+  public Response loggedInAs(@HeaderParam("sharitylogin") String sharitylogin) {
+    try {
+//      UserMongo user = repository.loadByKey(UserMongo.class, "username", username);
+//      if (user.getPassword().equals(PasswordEncryptor.encodePassword(passwordhash))) {
+        System.out.println(sharitylogin);
+        String cookie = Base64.decode(sharitylogin).toString();
+        System.out.println(cookie + " success");
+        return Response.status(200).entity(cookie).type(MediaType.APPLICATION_JSON).build();
+//      } else {
+//        System.out.println("wrong pw: " + passwordhash);
+//        return Response.status(424).entity("Passwort falsch").type(MediaType.APPLICATION_JSON).build();
+//      }
+    } catch (Exception e) {
+      System.out.println("Buggg: ");
+      return Response.status(424).entity("Benutzer nicht gefunden").type(MediaType.APPLICATION_JSON).build();
+    }
+  }
 
   // @GET
   // @Path("/upgradeAccount/{id}")

@@ -7,6 +7,7 @@ public class Offer {
   private String title;
   private String description;
   private String user_id;
+  private String supply_demand;
   private int offer_duration;
   private double price;
   private int availability;
@@ -105,6 +106,14 @@ public class Offer {
 
   public void setOffer_duration(int offer_duration) {
     this.offer_duration = offer_duration;
+  }
+
+  public String getSupply_demand() {
+    return supply_demand;
+  }
+
+  public void setSupply_demand(String supply_demand) {
+    this.supply_demand = supply_demand;
   }
   
   

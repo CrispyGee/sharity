@@ -3,12 +3,15 @@ package de.hfu.SharityOnline;
 import org.junit.Test;
 
 import de.hfu.SharityOnline.entities.Offer;
+import de.hfu.SharityOnline.entities.OfferMongo;
+import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.rest.OfferRestSchnittstelle;
+import de.hfu.SharityOnline.setup.Repository;
 
 public class OfferTest {
   
-  
-  public static OfferRestSchnittstelle u = new OfferRestSchnittstelle();
+  private static final Repository<OfferMongo> OFFER_REPO = new Repository<OfferMongo>();
+
   private static String id = "1";
   
   
@@ -33,7 +36,7 @@ public class OfferTest {
     offer.setPrice(Price);
     offer.setTitle(title);
     offer.setUser_id(user_id);
-    u.createEntity(offer);
+    OFFER_REPO.save(OfferMapper.mapOfferToBackend(offer));
   }
   
   public Offer createOffer() {
