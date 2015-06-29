@@ -61,6 +61,23 @@ public class UserRestSchnittstelle extends Application {
           .type(MediaType.APPLICATION_JSON).build();
     }
   }
+  
+  @PermitAll
+  @GET
+  @Path("/username/{name}")
+  public Response loadEntityByName(@PathParam("name") String name) {
+    try {
+    UserMongo user = repository.loadByKey(UserMongo.class, "username", name);
+    user.setPassword(null);
+    user.setUsername(null);
+    return Response.status(200).entity(UserMapper.mapUserToFrontend(user)).
+          type(MediaType.APPLICATION_JSON).build();
+    } catch(Exception e) {
+      return Response.status(424).entity(jsonErrorMsg.replace("x", "Response 424: User with name " 
+          + name + " not found in database."))
+          .type(MediaType.APPLICATION_JSON).build();
+      }
+  }
 
   @PermitAll
   @POST

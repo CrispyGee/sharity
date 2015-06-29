@@ -61,6 +61,28 @@ public class OfferRestSchnittstelle {
           .type(MediaType.APPLICATION_JSON).build();
     }
   }
+  
+  @PermitAll
+  @GET
+  @Path("/{username}/{offername}")
+  public Response loadEntityById(@PathParam("username") String username, @PathParam("offername") String offername) {
+    try {
+      List<OfferMongo> alleAngebote = OFFER_REPO.loadAll(OfferMongo.class);
+      for (OfferMongo offerMongo : alleAngebote) {
+        if (offerMongo.getUserMongo().getUsername().equals(username)&& offerMongo.getTitle().equals(offername)) {
+          return Response.status(200).entity(OfferMapper.mapOfferToFrontend(offerMongo)).type(MediaType.APPLICATION_JSON)
+              .build();
+        }
+      }
+    } catch (Exception e) {
+      return Response.status(424)
+          .entity(jsonErrorMsg.replace("x", "Response 424: Offer with titel " + offername + "by user: " + username +" not found in database."))
+          .type(MediaType.APPLICATION_JSON).build();
+    }
+    return Response.status(424)
+        .entity(jsonErrorMsg.replace("x", "Response 424: Offer with titel " + offername + " by user: " + username +" not found in database."))
+        .type(MediaType.APPLICATION_JSON).build();
+  }
 
   @PermitAll
   @GET
