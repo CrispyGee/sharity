@@ -158,6 +158,7 @@ public class UserRestSchnittstelle extends Application {
 //      UserMongo user = repository.loadByKey(UserMongo.class, "username", username);
 //      if (user.getPassword().equals(PasswordEncryptor.encodePassword(passwordhash))) {
         System.out.println(sharitylogin);
+        System.out.println(sharitylogin.split("\"")[2]);
         String cookie = Base64.decode(sharitylogin).toString();
         System.out.println(cookie + " success");
         return Response.status(200).entity(cookie).type(MediaType.APPLICATION_JSON).build();
