@@ -20,9 +20,12 @@ import javax.ws.rs.core.Response.Status;
 import org.elasticsearch.index.query.FilterBuilder;
 
 import de.hfu.SharityOnline.elastic.Search;
+import de.hfu.SharityOnline.entities.Category;
+import de.hfu.SharityOnline.entities.CategoryToken;
 import de.hfu.SharityOnline.entities.Offer;
 import de.hfu.SharityOnline.entities.OfferMongo;
 import de.hfu.SharityOnline.entities.UserMongo;
+import de.hfu.SharityOnline.innerObjects.OfferDuration;
 import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.setup.Repository;
 
@@ -113,22 +116,33 @@ public class OfferRestSchnittstelle {
   public Response createEntity(Offer offer) {
     if (offer != null && angebotAnforderung(offer)) {
       UserMongo userMongo = USER_REPO.loadById(UserMongo.class, offer.getUser_id());
-      if (userMongo != null /*&& userMongo.hasOfferCategoryTokens(offer.getCategory_id())*/) {
+      if (userMongo != null) {
         offer.setOffer_id(UUID.randomUUID().toString());
-        userMongo.removeOfferCategoryToken(offer.getCategory_id());
-        OFFER_REPO.save(OfferMapper.mapOfferToBackend(offer));
-        return Response.status(200).entity(offer.getOffer_id()).type(MediaType.APPLICATION_JSON).build();
+        OfferMongo offerMongo = OfferMapper.mapOfferToBackend(offer);
+        CategoryToken categoryToken = new CategoryToken();
+        categoryToken.setCategory(offerMongo.getCategory());
+        categoryToken.setSupply_demand(offerMongo.getSupply_demand());
+        categoryToken.setOfferDuration(offerMongo.getOfferDuration());
+        if (userMongo.removeOfferCategoryToken(categoryToken)) {
+          OFFER_REPO.save(offerMongo);
+          return Response.status(200).entity(offer.getOffer_id()).type(MediaType.APPLICATION_JSON).build();
+        } else {
+          return Response
+              .status(Status.FORBIDDEN)
+              .entity(
+                  jsonErrorMsg.replace("x",
+                      "User was not allowed to create offer with this category, since no payment for it was done."))
+              .build();
+        }
       } else {
-        return Response.status(Status.FORBIDDEN)
-            .entity(jsonErrorMsg.replace("x", "User was not allowed to create offer with this category, since no payment for it was done."))
-            .build();
+        return Response.status(Status.FORBIDDEN).entity(jsonErrorMsg.replace("x", "User not found")).build();
       }
     }
     return Response.status(Status.BAD_REQUEST).build();
   }
 
   @Consumes(MediaType.APPLICATION_JSON)
-  @RolesAllowed({"ADMIN"})
+  @RolesAllowed({ "ADMIN" })
   @PUT
   @Path("/update")
   public Response updateEntity(Offer offer) {
@@ -140,7 +154,7 @@ public class OfferRestSchnittstelle {
   }
 
   @Consumes(MediaType.APPLICATION_JSON)
-  @RolesAllowed({"ADMIN"})
+  @RolesAllowed({ "ADMIN" })
   @GET
   @Path("/delete/{id}")
   public Response deleteEntity(@PathParam("id") String id) {

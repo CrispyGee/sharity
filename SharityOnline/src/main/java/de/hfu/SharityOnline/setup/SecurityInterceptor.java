@@ -70,6 +70,7 @@ public class SecurityInterceptor implements javax.ws.rs.container.ContainerReque
       String usernameAndPassword;
       try {
         usernameAndPassword = new String(Base64.decode(encodedUserPassword));
+        System.out.println(usernameAndPassword);
       } catch (IOException e) {
         requestContext.abortWith(SERVER_ERROR);
         return;

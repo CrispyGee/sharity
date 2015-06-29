@@ -42,6 +42,4 @@ db.users.insert({
     "creation_date" : NumberLong(1435488594567)
 })
 
-
-
-mongod --smallfiles --dbpath ~/mongodb/dbdata --replSet "rs0" --keyFile ~/mongodb/keyfile/mongodb-keyfile 
+mongod --smallfiles --dbpath ~/mongodb/dbdata --replSet rs0 --keyFile ~/mongodb/keyfile/mongodb-keyfile 

@@ -27,8 +27,10 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
 import de.hfu.SharityOnline.entities.Category;
+import de.hfu.SharityOnline.entities.CategoryToken;
 import de.hfu.SharityOnline.entities.Paymill;
 import de.hfu.SharityOnline.entities.UserMongo;
+import de.hfu.SharityOnline.innerObjects.OfferDuration;
 import de.hfu.SharityOnline.setup.Repository;
 
 @Path("/payment")
@@ -53,12 +55,12 @@ public class PaymillRestSchnittstelle {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse paymentResponse = callPaymentRest(token, httpClient);
         String pay_id = getIdFromResponse(paymentResponse);
-        CloseableHttpResponse transactionResponse = callTransactionRest(pay_id, httpClient, userMongo.getUsername(), "1000");
+        CloseableHttpResponse transactionResponse = callTransactionRest(pay_id, httpClient, userMongo.getUsername(),
+            "1000");
         String trans_id = getIdFromResponse(transactionResponse);
         paymentResponse.close();
         transactionResponse.close();
         updatePaymillLog(userId, pay_id, trans_id);
-        updateUserTokens(userMongo, "default_category");
         return Response.status(Status.ACCEPTED).build();
       } catch (Exception e) {
         return Response.status(Status.BAD_REQUEST)
@@ -73,36 +75,42 @@ public class PaymillRestSchnittstelle {
 
   @PermitAll
   @GET
-  @Path("/{userId}/{token}/{category_id}")
+  @Path("/{userId}/{token}/{category_id}/{supply_demand}/{offer_duration}")
   public Response transferPaymentWithCategory(@PathParam("userId") String userId, @PathParam("token") String token,
-      @PathParam("category_id") String category_id) throws Exception {
-    UserMongo userMongo = USER_REPO.loadById(UserMongo.class, userId);
-    if (userMongo != null) {
-      Category category = CATEGORY_REPO.loadById(Category.class, category_id);
-      if (category != null) {
-        try {
-          CloseableHttpClient httpClient = HttpClients.createDefault();
-          CloseableHttpResponse paymentResponse = callPaymentRest(token, httpClient);
-          String pay_id = getIdFromResponse(paymentResponse);
-          CloseableHttpResponse transactionResponse = callTransactionRest(pay_id, httpClient, userMongo.getUsername(), Integer.toString(category.getCategory_price()));
-          String trans_id = getIdFromResponse(transactionResponse);
-          paymentResponse.close();
-          transactionResponse.close();
-          updatePaymillLog(userId, pay_id, trans_id);
-          updateUserTokens(userMongo, category_id);
-          return Response.status(Status.ACCEPTED).build();
-        } catch (Exception e) {
-          return Response.status(Status.BAD_REQUEST)
-              .entity(jsonErrorMsg.replace("x", "There was an error during the payment process, possibly a fraud"))
+      @PathParam("category_id") String category_id, @PathParam("supply_demand") String supply_demand,
+      @PathParam("offer_duration") OfferDuration offer_duration) throws Exception {
+    try {
+      UserMongo userMongo = USER_REPO.loadById(UserMongo.class, userId);
+      if (userMongo != null) {
+        Category category = CATEGORY_REPO.loadById(Category.class, category_id);
+        if (category != null) {
+          try {
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            CloseableHttpResponse paymentResponse = callPaymentRest(token, httpClient);
+            String pay_id = getIdFromResponse(paymentResponse);
+            CloseableHttpResponse transactionResponse = callTransactionRest(pay_id, httpClient,
+                userMongo.getUsername(), Integer.toString(category.getPrice(supply_demand, offer_duration)));
+            String trans_id = getIdFromResponse(transactionResponse);
+            paymentResponse.close();
+            transactionResponse.close();
+            updatePaymillLog(userId, pay_id, trans_id);
+            updateUserTokens(userMongo, category_id, offer_duration, supply_demand);
+            return Response.status(Status.ACCEPTED).build();
+          } catch (Exception e) {
+            return Response.status(Status.BAD_REQUEST)
+                .entity(jsonErrorMsg.replace("x", "There was an error during the payment process, possibly a fraud"))
+                .build();
+          }
+        } else {
+          return Response.status(Status.PRECONDITION_FAILED).entity(jsonErrorMsg.replace("x", "Category not found"))
               .build();
         }
       } else {
-        return Response.status(Status.PRECONDITION_FAILED).entity(jsonErrorMsg.replace("x", "Category not found"))
-            .build();
+        return Response.status(Status.PRECONDITION_FAILED)
+            .entity(jsonErrorMsg.replace("x", "User not logged in or not found")).build();
       }
-    } else {
-      return Response.status(Status.PRECONDITION_FAILED)
-          .entity(jsonErrorMsg.replace("x", "User not logged in or not found")).build();
+    } catch (Exception e) {
+      return Response.status(Status.BAD_REQUEST).build();
     }
   }
 
@@ -128,8 +136,8 @@ public class PaymillRestSchnittstelle {
   }
 
   @SuppressWarnings("deprecation")
-  private CloseableHttpResponse callTransactionRest(String pay_id, CloseableHttpClient httpClient, String description, String price)
-      throws IOException, ClientProtocolException {
+  private CloseableHttpResponse callTransactionRest(String pay_id, CloseableHttpClient httpClient, String description,
+      String price) throws IOException, ClientProtocolException {
     HttpPost httpPost = new HttpPost("https://api.paymill.com/v2.1/transactions");
     httpPost.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(privateKey, ""), "UTF-8", false));
     List<NameValuePair> formData = new ArrayList<NameValuePair>();
@@ -153,8 +161,10 @@ public class PaymillRestSchnittstelle {
     return result;
   }
 
-  private void updateUserTokens(UserMongo userMongo, String category_id) {
-    userMongo.increaseOfferCategoryTokens(category_id);
+  private void updateUserTokens(UserMongo userMongo, String category_id, OfferDuration offer_duration,
+      String supply_demand) {
+    Category category = CATEGORY_REPO.loadById(Category.class, category_id);
+    userMongo.increaseOfferCategoryTokens(new CategoryToken(offer_duration, category, supply_demand));
     USER_REPO.save(userMongo);
   }
 

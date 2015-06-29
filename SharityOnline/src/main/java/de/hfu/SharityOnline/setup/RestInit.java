@@ -10,6 +10,7 @@ import de.hfu.SharityOnline.rest.OfferRestSchnittstelle;
 import de.hfu.SharityOnline.rest.CategoryRestSchnittstelle;
 import de.hfu.SharityOnline.rest.PageRestSchnittstelle;
 import de.hfu.SharityOnline.rest.PaymillRestSchnittstelle;
+import de.hfu.SharityOnline.rest.TestRestSchnittstelle;
 import de.hfu.SharityOnline.rest.UserRestSchnittstelle;
 
 public class RestInit extends Application {
@@ -20,12 +21,19 @@ public class RestInit extends Application {
   public RestInit() {
     // ADD YOUR RESTFUL RESOURCES HERE
     OffersPolling.startPolling();
+    this.singletons.add(addCorsFilter());
     this.singletons.add(new SecurityInterceptor());
     this.singletons.add(new PageRestSchnittstelle());
     this.singletons.add(new UserRestSchnittstelle());
     this.singletons.add(new CategoryRestSchnittstelle());
     this.singletons.add(new OfferRestSchnittstelle());
     this.singletons.add(new PaymillRestSchnittstelle());
+    this.singletons.add(new TestRestSchnittstelle());
+  }
+
+  private CorsFilter addCorsFilter() {
+    CorsFilter corsFilter = new CorsFilter();
+    return corsFilter;
   }
 
   public Set<Class<?>> getClasses() {

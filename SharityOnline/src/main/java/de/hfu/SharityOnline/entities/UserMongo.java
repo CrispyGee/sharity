@@ -34,7 +34,7 @@ public class UserMongo implements Serializable {
   private String hometown;
   private long birthday;
   private String phone;
-  private List<String> offerCategoryTokens;
+  private List<CategoryToken> offerCategoryTokens;
   @Indexed(unique = true)
   private String email;
   private Activity activity;
@@ -197,30 +197,34 @@ public class UserMongo implements Serializable {
     this.employed_info = employed_info;
   }
 
-  public List<String> getOfferCategoryTokens() {
+  public List<CategoryToken> getOfferCategoryTokens() {
     return offerCategoryTokens;
   }
 
-  public void setOfferCategoryTokens(List<String> offerCategoryTokens) {
+  public void setOfferCategoryTokens(List<CategoryToken> offerCategoryTokens) {
     this.offerCategoryTokens = offerCategoryTokens;
   }
 
-  public boolean hasOfferCategoryTokens(String category_id) {
-    if (this.offerCategoryTokens != null && this.offerCategoryTokens.contains(category_id)) {
+  public boolean hasOfferCategoryTokens(CategoryToken offerCategoryToken) {
+    if (this.offerCategoryTokens != null && this.offerCategoryTokens.contains(offerCategoryToken)) {
       return true;
     }
     return false;
   }
 
-  public void removeOfferCategoryToken(String category_id) {
-    this.offerCategoryTokens.remove(category_id);
+  public boolean removeOfferCategoryToken(CategoryToken offerCategoryToken) {
+    if (this.offerCategoryTokens.contains(offerCategoryToken)) {
+      this.offerCategoryTokens.remove(offerCategoryTokens);
+      return true;
+    }
+    return false;
   }
 
-  public void increaseOfferCategoryTokens(String category_id) {
+  public void increaseOfferCategoryTokens(CategoryToken offerCategoryToken) {
     if (this.offerCategoryTokens == null) {
-      this.offerCategoryTokens = new ArrayList<String>();
+      this.offerCategoryTokens = new ArrayList<CategoryToken>();
     }
-    this.offerCategoryTokens.add(category_id);
+    this.offerCategoryTokens.add(offerCategoryToken);
   }
 
 }
