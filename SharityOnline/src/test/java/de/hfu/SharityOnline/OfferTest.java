@@ -1,5 +1,6 @@
 package de.hfu.SharityOnline;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.hfu.SharityOnline.entities.Offer;
@@ -8,6 +9,7 @@ import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.rest.OfferRestSchnittstelle;
 import de.hfu.SharityOnline.setup.Repository;
 
+@Ignore
 public class OfferTest {
   
   private static final Repository<OfferMongo> OFFER_REPO = new Repository<OfferMongo>();

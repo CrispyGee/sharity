@@ -1,10 +1,12 @@
 package de.hfu.SharityOnline;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.hfu.SharityOnline.entities.Category;
-import de.hfu.SharityOnline.rest.CategoryRestSchnittstelle;;
+import de.hfu.SharityOnline.rest.CategoryRestSchnittstelle;
 
+@Ignore
 public class CategoryTest {
   public static CategoryRestSchnittstelle u = new CategoryRestSchnittstelle();
 

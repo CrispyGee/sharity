@@ -1,10 +1,12 @@
 package de.hfu.SharityOnline;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.hfu.SharityOnline.entities.User;
 import de.hfu.SharityOnline.rest.UserRestSchnittstelle;
 
+@Ignore
 public class UserTest {
   public static UserRestSchnittstelle u = new UserRestSchnittstelle();
   private static String id = "1";
