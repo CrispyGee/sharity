@@ -1,5 +1,6 @@
 package de.hfu.SharityOnline.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,6 +37,7 @@ public class OfferRestSchnittstelle {
 
   private static final Repository<OfferMongo> OFFER_REPO = new Repository<OfferMongo>();
   private static final Repository<UserMongo> USER_REPO = new Repository<UserMongo>();
+  private static final Repository<Category> CAT_REPO = new Repository<Category>();
   private static final Search search = new Search();
 
   @PermitAll
@@ -58,6 +60,27 @@ public class OfferRestSchnittstelle {
     } catch (Exception e) {
       return Response.status(424)
           .entity(jsonErrorMsg.replace("x", "Response 424: Offer with id " + id + " not found in database."))
+          .type(MediaType.APPLICATION_JSON).build();
+    }
+  }
+  
+  @PermitAll
+  @GET
+  @Path("/category/{cat_name}")
+  public Response loadEntityByCategory(@PathParam("cat_name") String cat_name) {
+    try {
+      List<OfferMongo> alleAngebote = OFFER_REPO.loadAll(OfferMongo.class);
+      List<OfferMongo> alleCatAngebote = new ArrayList<OfferMongo>();
+      for (OfferMongo offerMongo : alleAngebote) {
+        if (offerMongo.getCategory().getCategory_term().equals(cat_name)) {
+          alleCatAngebote.add(offerMongo);
+        }
+      }
+        return Response.status(200).entity(OfferMapper.mapOfferListToFrontend(alleCatAngebote))
+            .type(MediaType.APPLICATION_JSON).build();
+    } catch (Exception e) {
+      return Response.status(424)
+          .entity(jsonErrorMsg.replace("x", "Response 424: Offer with category " + cat_name + " not found in database."))
           .type(MediaType.APPLICATION_JSON).build();
     }
   }
