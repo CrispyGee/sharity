@@ -29,7 +29,7 @@ public class TestRestSchnittstelle {
     offer.setActive(active);
     offer.setAvailability(available);
     offer.setCategory_id(category_id);
-    offer.setCreation_date(creation_date);
+//    offer.setCreation_date(creation_date);
     offer.setCurrency(currency);
     offer.setDescription(description);
     offer.setOffer_id(Integer.toString(offerid++));
