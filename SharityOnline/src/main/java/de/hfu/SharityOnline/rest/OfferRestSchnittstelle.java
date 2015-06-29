@@ -23,6 +23,7 @@ import de.hfu.SharityOnline.elastic.Search;
 import de.hfu.SharityOnline.entities.Offer;
 import de.hfu.SharityOnline.entities.OfferMongo;
 import de.hfu.SharityOnline.entities.UserMongo;
+import de.hfu.SharityOnline.innerObjects.OfferDuration;
 import de.hfu.SharityOnline.mapper.OfferMapper;
 import de.hfu.SharityOnline.setup.Repository;
 
@@ -94,7 +95,11 @@ public class OfferRestSchnittstelle {
       if (userMongo != null /*&& userMongo.hasOfferCategoryTokens(offer.getCategory_id())*/) {
         offer.setOffer_id(UUID.randomUUID().toString());
         userMongo.removeOfferCategoryToken(offer.getCategory_id());
-        OFFER_REPO.save(OfferMapper.mapOfferToBackend(offer));
+        OfferMongo offerMongo = OfferMapper.mapOfferToBackend(offer);
+        if (offerMongo.getOfferDuration() == null){
+          offerMongo.setOfferDuration(OfferDuration.SECHS_MONATE);
+        }
+        OFFER_REPO.save(offerMongo);
         return Response.status(200).entity(offer.getOffer_id()).type(MediaType.APPLICATION_JSON).build();
       } else {
         return Response.status(Status.FORBIDDEN)

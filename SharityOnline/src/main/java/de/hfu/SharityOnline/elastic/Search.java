@@ -25,7 +25,7 @@ public class Search {
   private Node node;
 
   public Search() {
-    node = nodeBuilder().node();
+    node = nodeBuilder().data(false).client(true).node();
     client = node.client();
   }
 

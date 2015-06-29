@@ -44,4 +44,4 @@ db.users.insert({
 
 
 
-mongod --smallfiles --dbpath ~/mongodb/dbdata --replSet "rs0" --keyFile ~/mongodb/keyfile/mongodb-keyfile 
+mongod --smallfiles --dbpath ~/mongodb/dbdata --replSet rs0 --keyFile ~/mongodb/keyfile/mongodb-keyfile 
