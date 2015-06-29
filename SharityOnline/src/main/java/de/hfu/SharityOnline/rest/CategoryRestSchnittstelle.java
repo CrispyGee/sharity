@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response.Status;
 import de.hfu.SharityOnline.entities.Category;
 import de.hfu.SharityOnline.setup.Repository;
 
-@Path("/categories")
+@Path("/category")
 @Produces(MediaType.APPLICATION_JSON)
 
 public class CategoryRestSchnittstelle {
@@ -49,12 +49,29 @@ public class CategoryRestSchnittstelle {
       }
     }
   
+  @PermitAll
+  @GET
+  @Path("/name/{category_term}")
+  public Response loadEntityByTerm(@PathParam("category_term") String category_term) {
+    try {
+    Category cat = repository.loadByKey(Category.class, "category_term" , category_term);
+    if (cat != null) {
+      return Response.status(200).entity(cat).type(MediaType.APPLICATION_JSON).build();
+    } else {
+      return Response.status(424).entity(jsonErrorMsg.replace("x", "Response 424: Category with name " + category_term + " not found in database."))
+          .type(MediaType.APPLICATION_JSON).build();
+    }
+    } catch(Exception e) {
+      return Response.status(500).entity(jsonErrorMsg.replace("x", e.toString())).type(MediaType.APPLICATION_JSON).build();
+      }
+    }
+  
   @Consumes(MediaType.APPLICATION_JSON)
   @RolesAllowed({"ADMIN"})
   @POST
   @Path("/new")
   public Response createEntity(Category category) {
-    if (category != null) {
+    if (category != null && repository.loadByKey(Category.class, "category_term", category.getCategory_term()) == null) {
       repository.save(category);
       return Response.status(200).entity(category.getCategory_id()).type(MediaType.APPLICATION_JSON).build();
     }
