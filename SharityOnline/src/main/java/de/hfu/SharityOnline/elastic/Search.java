@@ -54,6 +54,7 @@ public class Search {
     searchRequestBuilder.setIndices("offers").setTypes("offer").setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
         .setQuery(buildMatchFuzzyQuery(cleanSearchTerm)).setPostFilter(filter).setFrom(0).setSize(20).setExplain(false);
 //    LOGGER.info(searchRequestBuilder.internalBuilder());
+    System.out.println(searchRequestBuilder.internalBuilder());
     SearchResponse response = searchRequestBuilder.execute().actionGet();
     // client.prepareSearch("offers").setTypes("offer")
     // .setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(buildMatchFuzzyQuery(cleanSearchTerm))
@@ -98,7 +99,7 @@ public class Search {
       filters.add(SharityFilterBuilder.buildSalutationFilter(Salutation.fromNumber(salutation)));
     }
     if (StringUtils.isNotBlank(hometown)) {
-      filters.add(SharityFilterBuilder.buildHometownFilter(hometown));
+      filters.add(SharityFilterBuilder.buildHometownFilter(hometown.toLowerCase()));
     }
     if (age != null) {
       filters.add(SharityFilterBuilder.buildAgeFilter(age));

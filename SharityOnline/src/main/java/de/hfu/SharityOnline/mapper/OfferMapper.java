@@ -27,16 +27,20 @@ public class OfferMapper {
   }
 
   public static Offer mapOfferToFrontend(OfferMongo offerMongo) {
-    Offer offer = MODEL_MAPPER.map(offerMongo, Offer.class);
-    if(offerMongo.getCategory()!=null)
-    offer.setCategory_id(offerMongo.getCategory().getCategory_id());
-    if(offerMongo.getAvailability()!=null)
-    offer.setAvailability(offerMongo.getAvailability().getNumber());
-    if (offerMongo.getUserMongo() != null) {
-      offer.setUser_id(offerMongo.getUserMongo().getId());
-    }
-    offer.setOffer_duration(offerMongo.getOfferDuration().getNumber());
-    return offer;
+//    if (offerMongo != null) {
+      Offer offer = MODEL_MAPPER.map(offerMongo, Offer.class);
+      if (offerMongo.getCategory() != null)
+        offer.setCategory_id(offerMongo.getCategory().getCategory_id());
+      if (offerMongo.getAvailability() != null)
+        offer.setAvailability(offerMongo.getAvailability().getNumber());
+      if (offerMongo.getUserMongo() != null) {
+        offer.setUser_id(offerMongo.getUserMongo().getId());
+      }
+      offer.setOffer_duration(offerMongo.getOfferDuration().getNumber());
+      return offer;
+//    } else {
+//      return null;
+//    }
   }
 
   public static OfferMongo mapOfferToBackend(Offer offer) {
