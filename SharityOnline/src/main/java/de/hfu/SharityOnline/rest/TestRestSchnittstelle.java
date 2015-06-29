@@ -367,6 +367,8 @@ public class TestRestSchnittstelle {
   @GET
   @Path("delete")
   public void deleteTestData() {
+    userid=0;
+    offerid=0;
     for (int i = 0; i < 10; i++) {
       USER_REPO.deleteByID(UserMongo.class, Integer.toString(i));
     }
