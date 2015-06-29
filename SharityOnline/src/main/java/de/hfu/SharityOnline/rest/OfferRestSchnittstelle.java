@@ -138,6 +138,7 @@ public class OfferRestSchnittstelle {
       UserMongo userMongo = USER_REPO.loadById(UserMongo.class, offer.getUser_id());
       if (userMongo != null) {
         offer.setOffer_id(UUID.randomUUID().toString());
+        offer.setUser_id(userMongo.getId());
         OfferMongo offerMongo = OfferMapper.mapOfferToBackend(offer);
         CategoryToken categoryToken = new CategoryToken();
         categoryToken.setCategory(offerMongo.getCategory());
