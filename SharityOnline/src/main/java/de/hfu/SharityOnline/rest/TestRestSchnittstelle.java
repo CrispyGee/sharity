@@ -327,7 +327,7 @@ public class TestRestSchnittstelle {
     user.setZip(zip);
     user.setPhone(phone);
     user.setBirthday(TimeHelper.YEAR_IN_MILLIS * random.nextInt(35));
-    switch (random.nextInt(2)) {
+    switch (random.nextInt(3)) {
     case 0:
       user.setHometown("Freiburg");
       break;
