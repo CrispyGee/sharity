@@ -189,19 +189,6 @@ public class UserRestSchnittstelle extends Application {
     }
   }
 
-  // @GET
-  // @Path("/upgradeAccount/{id}")
-  // public Response upgradeAccount(@PathParam("id") String id) {
-  // User foundUser = repository.loadById(User.class, id);
-  // // TODO Paypal/Paymill check here
-  // if (foundUser != null) {
-  // foundUser.setUserRole("VERIFIEDUSER");
-  // repository.save(foundUser);
-  // return Response.status(Status.ACCEPTED).build();
-  // }
-  // return Response.status(Status.BAD_REQUEST).build();
-  // }
-
   @RolesAllowed("ADMIN")
   @GET
   @Path("/delete/{id}")
