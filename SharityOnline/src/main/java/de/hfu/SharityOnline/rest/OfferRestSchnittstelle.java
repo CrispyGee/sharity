@@ -101,7 +101,7 @@ public class OfferRestSchnittstelle {
         categoryToken.setCategory(offerMongo.getCategory());
         categoryToken.setSupply_demand(offerMongo.getSupply_demand());
         categoryToken.setOfferDuration(offerMongo.getOfferDuration());
-        if (userMongo.removeOfferCategoryToken(categoryToken) == true) {
+        if (userMongo.removeOfferCategoryToken(categoryToken)) {
           OFFER_REPO.save(offerMongo);
           return Response.status(200).entity(offer.getOffer_id()).type(MediaType.APPLICATION_JSON).build();
         } else {
