@@ -5,8 +5,6 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
-import org.jboss.resteasy.plugins.interceptors.CorsFilter;
-
 import de.hfu.SharityOnline.polling.OffersPolling;
 import de.hfu.SharityOnline.rest.OfferRestSchnittstelle;
 import de.hfu.SharityOnline.rest.CategoryRestSchnittstelle;
@@ -22,14 +20,18 @@ public class RestInit extends Application {
   public RestInit() {
     // ADD YOUR RESTFUL RESOURCES HERE
     OffersPolling.startPolling();
-    CorsFilter corsFilter = new CorsFilter();
-    corsFilter.getAllowedOrigins().add("*");
+    this.singletons.add(addCorsFilter());
     this.singletons.add(new SecurityInterceptor());
     this.singletons.add(new PageRestSchnittstelle());
     this.singletons.add(new UserRestSchnittstelle());
     this.singletons.add(new CategoryRestSchnittstelle());
     this.singletons.add(new OfferRestSchnittstelle());
     this.singletons.add(new PaymillRestSchnittstelle());
+  }
+
+  private CorsFilter addCorsFilter() {
+    CorsFilter corsFilter = new CorsFilter();
+    return corsFilter;
   }
 
   public Set<Class<?>> getClasses() {

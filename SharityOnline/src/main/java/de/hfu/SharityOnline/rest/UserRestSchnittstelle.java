@@ -130,12 +130,13 @@ public class UserRestSchnittstelle extends Application {
 
   @PermitAll
   @GET
-  @Path("/login/{username}/{passwordhash}")
-  public Response login(@PathParam("username") String username, @PathParam("passwordhash") String passwordhash) {
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Path("/login/{username}")
+  public Response login(@PathParam("username") String username, @HeaderParam("passwordhash") String passwordhash) {
     try {
       UserMongo user = repository.loadByKey(UserMongo.class, "username", username);
       if (user.getPassword().equals(PasswordEncryptor.encodePassword(passwordhash))) {
-        String cookie = "{sharitylogin : \"" + Base64.encodeBytes((username + " " + user.getPassword()).getBytes()) + "\"}";
+        String cookie = "{\"sharitylogin\" : \"" + Base64.encodeBytes((username + " " + user.getPassword()).getBytes()) + "\"}";
         System.out.println(cookie + " success");
         return Response.status(200).entity(cookie).type(MediaType.APPLICATION_JSON).build();
       } else {
