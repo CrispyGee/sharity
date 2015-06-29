@@ -77,4 +77,17 @@ public class CategoryRestSchnittstelle {
     }
     return Response.status(Status.BAD_REQUEST).build();
   }
+  
+  @Consumes(MediaType.APPLICATION_JSON)
+  @RolesAllowed({"ADMIN"})
+  @POST
+  @Path("/update")
+  public Response updateeEntity(Category category) {
+    if (category != null) {
+      repository.save(category);
+      return Response.status(200).entity(category.getCategory_id()).type(MediaType.APPLICATION_JSON).build();
+    }
+    return Response.status(Status.BAD_REQUEST).build();
+  }
+  
 }
