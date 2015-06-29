@@ -28,7 +28,7 @@ public class TestRestSchnittstelle {
     Offer offer = new Offer();
     offer.setActive(active);
     offer.setAvailability(available);
-    offer.setCategory_id(category_id);
+//    offer.setCategory_id(category_id);
 //    offer.setCreation_date(creation_date);
     offer.setCurrency(currency);
     offer.setDescription(description);
