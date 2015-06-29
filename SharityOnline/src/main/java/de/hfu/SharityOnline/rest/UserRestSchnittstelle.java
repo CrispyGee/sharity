@@ -201,6 +201,19 @@ public class UserRestSchnittstelle extends Application {
     }
 
   }
+  
+  @RolesAllowed("ADMIN")
+  @GET
+  @Path("/delete/username/{name}")
+  public Response deleteEntitybyName(@PathParam("name") String name) {
+    String id = repository.loadByKey(UserMongo.class, "username", name).getId();
+    if (repository.deleteByID(UserMongo.class, id)) {
+      return Response.status(200).build();
+    } else {
+      return Response.status(204).build();
+    }
+
+  }
 
   public boolean isValid(User user) { // TODO: Passwort?
     if (user.getUsername() == null || user.getFirstname() == null || user.getLastname() == null
