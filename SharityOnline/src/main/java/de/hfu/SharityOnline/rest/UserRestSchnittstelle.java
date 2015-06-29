@@ -227,7 +227,7 @@ public class UserRestSchnittstelle extends Application {
         || user.hasNumbers(user.getLastname()) || !isInsideBorders(user.getFirstname(), 1, 15)
         || user.hasNumbers(user.getFirstname()) || !user.exact_Char(user.getZip(), 5)
         || !user.onlyNumbers(user.getZip()) || !isInsideBorders(user.getPhone(), 1, 30)
-        && !user.onlyNumbers(user.getPhone())) {
+        ) {
       return false;
     }
     if (user.getHometown() != null
