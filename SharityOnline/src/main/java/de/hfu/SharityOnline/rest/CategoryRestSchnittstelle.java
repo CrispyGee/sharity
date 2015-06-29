@@ -71,7 +71,7 @@ public class CategoryRestSchnittstelle {
   @POST
   @Path("/new")
   public Response createEntity(Category category) {
-    if (category != null && repository.loadByKey(Category.class, "category_term", category.getCategory_term()) == null) {
+    if (category != null && repository.loadByKey(Category.class, "category_term", category.getCategory_term()) != null) {
       repository.save(category);
       return Response.status(200).entity(category.getCategory_id()).type(MediaType.APPLICATION_JSON).build();
     }
