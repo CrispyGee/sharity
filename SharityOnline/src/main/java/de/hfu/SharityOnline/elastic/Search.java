@@ -12,6 +12,7 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.common.lang3.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.node.Node;
 
@@ -20,9 +21,8 @@ import de.hfu.SharityOnline.innerObjects.Availability;
 import de.hfu.SharityOnline.innerObjects.Salutation;
 
 public class Search {
-  
-//  private static final Logger LOGGER = LogManager.getLogger(Search.class);
 
+  // private static final Logger LOGGER = LogManager.getLogger(Search.class);
 
   private Client client;
   private Node node;
@@ -53,7 +53,7 @@ public class Search {
     SearchRequestBuilder searchRequestBuilder = new SearchRequestBuilder(client);
     searchRequestBuilder.setIndices("offers").setTypes("offer").setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
         .setQuery(buildMatchFuzzyQuery(cleanSearchTerm)).setPostFilter(filter).setFrom(0).setSize(20).setExplain(false);
-//    LOGGER.info(searchRequestBuilder.internalBuilder());
+    // LOGGER.info(searchRequestBuilder.internalBuilder());
     System.out.println(searchRequestBuilder.internalBuilder());
     SearchResponse response = searchRequestBuilder.execute().actionGet();
     // client.prepareSearch("offers").setTypes("offer")
@@ -66,7 +66,8 @@ public class Search {
     String cleanSearchTerm = splitSearchTerm(searchterm);
     SearchResponse response = client.prepareSearch("offers").setTypes("offer")
         .setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(buildMatchFuzzyQuery(cleanSearchTerm))
-        .setPostFilter(SharityFilterBuilder.buildActiveOnlyFilter()).setFrom(0).setSize(20).setExplain(false).execute().actionGet();
+        .setPostFilter(SharityFilterBuilder.buildActiveOnlyFilter()).setFrom(0).setSize(20).setExplain(false).execute()
+        .actionGet();
     return ElasticSearchMongoGrabber.getOffers(response);
   }
 
@@ -80,9 +81,13 @@ public class Search {
 
   public BoolQueryBuilder buildMatchFuzzyQuery(String suchterm) {
     BoolQueryBuilder qb = QueryBuilders.boolQuery();
-    // qb.should(QueryBuilders.matchQuery("_all", suchterm));
-    qb.should(QueryBuilders.fuzzyQuery("_all", suchterm));
-    qb.should(QueryBuilders.matchPhrasePrefixQuery("_all", suchterm));
+    qb.must(QueryBuilders.matchQuery("title", suchterm).operator(Operator.OR));
+    qb.should(QueryBuilders.matchQuery("title", suchterm));
+    qb.should(QueryBuilders.fuzzyQuery("title", suchterm));
+    qb.should(QueryBuilders.matchPhrasePrefixQuery("title", suchterm));
+    qb.should(QueryBuilders.fuzzyQuery("description", suchterm));
+    qb.should(QueryBuilders.matchQuery("description", suchterm));
+    qb.should(QueryBuilders.matchPhrasePrefixQuery("description", suchterm));
     return qb;
   }
 

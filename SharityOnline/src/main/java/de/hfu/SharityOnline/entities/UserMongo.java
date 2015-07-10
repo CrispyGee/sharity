@@ -213,7 +213,7 @@ public class UserMongo implements Serializable {
   }
 
   public boolean removeOfferCategoryToken(CategoryToken offerCategoryToken) {
-    if (this.offerCategoryTokens.contains(offerCategoryToken)) {
+    if (this.offerCategoryTokens != null && this.offerCategoryTokens.contains(offerCategoryToken)) {
       this.offerCategoryTokens.remove(offerCategoryTokens);
       return true;
     }

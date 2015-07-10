@@ -60,7 +60,7 @@ public class OfferRestSchnittstelle {
           .type(MediaType.APPLICATION_JSON).build();
     }
   }
-  
+
   @PermitAll
   @GET
   @Path("/category/{cat_name}")
@@ -73,15 +73,17 @@ public class OfferRestSchnittstelle {
           alleCatAngebote.add(offerMongo);
         }
       }
-        return Response.status(200).entity(OfferMapper.mapOfferListToFrontend(alleCatAngebote))
-            .type(MediaType.APPLICATION_JSON).build();
+      return Response.status(200).entity(OfferMapper.mapOfferListToFrontend(alleCatAngebote))
+          .type(MediaType.APPLICATION_JSON).build();
     } catch (Exception e) {
-      return Response.status(424)
-          .entity(jsonErrorMsg.replace("x", "Response 424: Offer with category " + cat_name + " not found in database."))
+      return Response
+          .status(424)
+          .entity(
+              jsonErrorMsg.replace("x", "Response 424: Offer with category " + cat_name + " not found in database."))
           .type(MediaType.APPLICATION_JSON).build();
     }
   }
-  
+
   @PermitAll
   @GET
   @Path("/{username}/{offername}")
@@ -89,19 +91,23 @@ public class OfferRestSchnittstelle {
     try {
       List<OfferMongo> alleAngebote = OFFER_REPO.loadAll(OfferMongo.class);
       for (OfferMongo offerMongo : alleAngebote) {
-        if (offerMongo.getUserMongo().getUsername().equals(username)&& offerMongo.getTitle().equals(offername)) {
-          return Response.status(200).entity(OfferMapper.mapOfferToFrontend(offerMongo)).type(MediaType.APPLICATION_JSON)
-              .build();
+        if (offerMongo.getUserMongo().getUsername().equals(username) && offerMongo.getTitle().equals(offername)) {
+          return Response.status(200).entity(OfferMapper.mapOfferToFrontend(offerMongo))
+              .type(MediaType.APPLICATION_JSON).build();
         }
       }
     } catch (Exception e) {
-      return Response.status(424)
-          .entity(jsonErrorMsg.replace("x", "Response 424: Offer with titel " + offername + "by user: " + username +" not found in database."))
-          .type(MediaType.APPLICATION_JSON).build();
+      return Response
+          .status(424)
+          .entity(
+              jsonErrorMsg.replace("x", "Response 424: Offer with titel " + offername + "by user: " + username
+                  + " not found in database.")).type(MediaType.APPLICATION_JSON).build();
     }
-    return Response.status(424)
-        .entity(jsonErrorMsg.replace("x", "Response 424: Offer with titel " + offername + " by user: " + username +" not found in database."))
-        .type(MediaType.APPLICATION_JSON).build();
+    return Response
+        .status(424)
+        .entity(
+            jsonErrorMsg.replace("x", "Response 424: Offer with titel " + offername + " by user: " + username
+                + " not found in database.")).type(MediaType.APPLICATION_JSON).build();
   }
 
   @PermitAll
@@ -144,11 +150,20 @@ public class OfferRestSchnittstelle {
         categoryToken.setCategory(offerMongo.getCategory());
         categoryToken.setSupply_demand(offerMongo.getSupply_demand());
         categoryToken.setOfferDuration(offerMongo.getOfferDuration());
-        if (userMongo.removeOfferCategoryToken(categoryToken)) {
-          USER_REPO.save(userMongo);
-          OFFER_REPO.save(offerMongo);
-          return Response.status(200).entity(offer.getOffer_id()).type(MediaType.APPLICATION_JSON).build();
-        } else {
+        try {
+          if (userMongo.removeOfferCategoryToken(categoryToken)) {
+            USER_REPO.save(userMongo);
+            OFFER_REPO.save(offerMongo);
+            return Response.status(200).entity(offer.getOffer_id()).type(MediaType.APPLICATION_JSON).build();
+          } else {
+            return Response
+                .status(Status.FORBIDDEN)
+                .entity(
+                    jsonErrorMsg.replace("x",
+                        "User was not allowed to create offer with this category, since no payment for it was done."))
+                .build();
+          }
+        } catch (Exception e) {
           return Response
               .status(Status.FORBIDDEN)
               .entity(
